@@ -2,7 +2,7 @@ package Project.TrainingData;
 
 import java.io.IOException;
 
-
+//ליטף הייתה פה
 public class App 
 {
     public static void main( String[] args )
