@@ -10,6 +10,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class FileParser {
 	
 	 enum ProteinEnum {
@@ -21,18 +22,18 @@ public class FileParser {
 	 * @return structure details in ArrayList<Structure> type
 	 */
 	@SuppressWarnings("resource")
-	public static ArrayList<Structure> ReadStructureDateFile()
+	public static ArrayList<Structure> ReadStructureDateFile(String ProteinPath)
 	{
 		 Scanner sc2 = null;
 		
 		 ArrayList<Structure> structure = new ArrayList<Structure>();
-		 
+		
 		 Structure temp  = new Structure();
 		 double[] t = temp.getCoordinates();
 		 int ctr = -1 ;
 		 
 		    try {
-		        sc2 = new Scanner(new File("d10gsa1.ent"));
+		        sc2 = new Scanner(new File("C:\\pdbstyle-2.06\\"+ProteinPath));
 		    } catch (FileNotFoundException e) {
 		        e.printStackTrace();  
 		    }
@@ -124,7 +125,7 @@ public class FileParser {
 	 * Reads the Astral Data from the file
 	 * @throws IOException 
 	 */
-	public static void ReadAstralDB() throws IOException
+	public static Protein ReadAstralDB() throws IOException
 	{
 			Protein p = null;
 			ProteinEnum state = null;
@@ -144,6 +145,8 @@ public class FileParser {
 					  buffer = "";
 					  
 					  //add to arrayList
+					  
+					  return p ; // return for check purpose
 				  }
 					  
 				  p = new Protein();
@@ -219,7 +222,7 @@ public class FileParser {
 			}
 			
 			
-			
+			return null;
 			
 		 /*  Scanner sc2 = null;
 		    try {

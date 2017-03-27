@@ -10,12 +10,23 @@ public class App
 {
     public static void main( String[] args )
     {
-       // StructReader.ReadStructureDateFile();
+    	Protein p = null;
+    	
+        
     	try {
-			FileParser.ReadAstralDB();
-		} catch (IOException e) {
+			 p = FileParser.ReadAstralDB();
+			} 
+    	catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+							  }
+    	
+    	System.out.println(p.getfolderIndex());
+    	
+    	FileParser.ReadStructureDateFile(p.getfolderIndex()+"\\"+p.getFileName());
+    	
+    	
+    	
+    	
     }
 }

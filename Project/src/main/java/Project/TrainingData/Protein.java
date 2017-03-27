@@ -53,5 +53,16 @@ public class Protein {
 	public void setAminoAcids(String aminoAcids) {
 		this.aminoAcids = aminoAcids;
 	}
+	
+	
+	public String getfolderIndex()
+	{
+		return this.astralID.substring(this.astralID.length()- 5 , this.astralID.length() - 3);
+	}
+	
+	public String getFileName()
+	{
+		return this.astralID+".ent";
+	}
 
 }
