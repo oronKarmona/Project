@@ -2,7 +2,6 @@ package Project.TrainingData;
 
 import java.io.IOException;
 
-//ליטף  לא הייתה פה
 public class App 
 {
     public static void main( String[] args )
