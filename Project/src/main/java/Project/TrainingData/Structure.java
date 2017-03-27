@@ -1,10 +1,13 @@
 package Project.TrainingData;
 
+import ProGAL.geom3d.Point;
+
 public class Structure 
 {
 	int index;
 	String type ; 
 	String AminoAcid;
+	Point p ;  // representation of x,y,z as point
 	double[] coordinates = new double[3];
 	
 	/***
@@ -41,7 +44,21 @@ public class Structure
 		return coordinates;
 	}
 	public void setCoordinates(double[] coordinates) {
+		
 		this.coordinates = coordinates;
+		
+		if(this.coordinates.length == 3)
+			p = new Point(this.coordinates);
 	}
+
+	public Point getP() {
+		return p;
+	}
+
+	public void setP(Point p) {
+		this.p = p;
+	}
+	
+	
 
 }

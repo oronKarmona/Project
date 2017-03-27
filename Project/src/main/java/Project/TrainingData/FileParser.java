@@ -10,6 +10,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import ProGAL.geom3d.superposition.RMSD;
 
 public class FileParser {
 	
@@ -25,7 +26,7 @@ public class FileParser {
 	public static ArrayList<Structure> ReadStructureDateFile(String ProteinPath)
 	{
 		 Scanner sc2 = null;
-		
+		 RMSD r = new RMSD();
 		 ArrayList<Structure> structure = new ArrayList<Structure>();
 		
 		 Structure temp  = new Structure();
@@ -224,19 +225,7 @@ public class FileParser {
 			
 			return null;
 			
-		 /*  Scanner sc2 = null;
-		    try {
-		        sc2 = new Scanner(new File("astral.txt"));
-		    } catch (FileNotFoundException e) {
-		        e.printStackTrace();  
-		    }
-		    while (sc2.hasNextLine()) {
-		            Scanner s2 = new Scanner(sc2.nextLine());
-		        while (s2.hasNext()) {
-		            String s = s2.next();
-		            System.out.println(s);
-		        }
-		    }*/
+	
 	}
 
 }

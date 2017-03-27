@@ -1,5 +1,11 @@
 package Project.TrainingData;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ProGAL.geom3d.Point;
+
 public class Protein {
 	
 	String astralID;
@@ -10,7 +16,9 @@ public class Protein {
 	String TaxId;
 	String aminoAcids;
 	
+	ArrayList<Structure> structure = new ArrayList<Structure>();
 	
+
 	public String getAstralID() {
 		return astralID;
 	}
@@ -63,6 +71,22 @@ public class Protein {
 	public String getFileName()
 	{
 		return this.astralID+".ent";
+	}
+	
+	/***
+	 * Retrieving only the points of the structures
+	 * @return list of points
+	 */
+	public List<Point> getCoordinatesOnly()
+	{
+		
+		List<Point> l = new ArrayList<Point>();
+		
+		for(Structure s : structure)
+			l.add(s.getP());
+		
+		return l ;
+		
 	}
 
 }
