@@ -5,20 +5,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ProGAL.geom3d.Point;
-
+/***
+ * This class represent protein  properties with its structure
+ * @author Oron
+ *
+ */
 public class Protein {
 	
+	/***
+	 * Protein's asrtral ID
+	 */
 	String astralID;
+	/***
+	 * Protein's classification
+	 */
 	String classification;
+	/***
+	 * Protein's type
+	 */
 	String type;
+	/***
+	 * Protein's matched type
+	 */
 	String matched;
+	/***
+	 * Protein's name
+	 */
 	String name;
+	/***
+	 * Protein's TaxId
+	 */
 	String TaxId;
+	/***
+	 * Protein's amino acid chain
+	 */
 	String aminoAcids;
-	
+	/***
+	 * Protein's structure
+	 */
 	ArrayList<Structure> structure = new ArrayList<Structure>();
 	
-
+	
 	public String getAstralID() {
 		return astralID;
 	}
@@ -62,12 +89,19 @@ public class Protein {
 		this.aminoAcids = aminoAcids;
 	}
 	
-	
+	/***
+	 * Retreiving the folder index as written in the structural database
+	 * @return folder index
+	 */
 	public String getfolderIndex()
 	{
 		return this.astralID.substring(this.astralID.length()- 5 , this.astralID.length() - 3);
 	}
 	
+	/***
+	 * Retrieving the protein's structures file name
+	 * @return protein's structures file name
+	 */
 	public String getFileName()
 	{
 		return this.astralID+".ent";
