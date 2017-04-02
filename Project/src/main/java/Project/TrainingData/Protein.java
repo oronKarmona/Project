@@ -44,7 +44,10 @@ public class Protein {
 	 * Protein's structure
 	 */
 	ArrayList<Structure> structure = new ArrayList<Structure>();
-	
+	/***
+	 * Protein's fragment (20 aa long each with overlapping)
+	 */
+	ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 	
 	public String getAstralID() {
 		return astralID;
@@ -121,6 +124,53 @@ public class Protein {
 		
 		return l ;
 		
+	}
+	
+	
+	public ArrayList<Structure> getStructure() {
+		return structure;
+	}
+	public void setStructure(ArrayList<Structure> structure) {
+		this.structure = structure;
+	}
+	public ArrayList<Fragment> getFragments() {
+		return fragments;
+	}
+	public void setFragments(ArrayList<Fragment> fragments) {
+		this.fragments = fragments;
+	}
+
+	/***
+	 * This method will create a 20 amino acid long fragments for the protein represented in this class
+	 */
+	public void DivisionToFragments()
+	{
+		String aminoStr = new String(this.aminoAcids);
+		int ctr = 0 ; 
+		List<Structure> s = new ArrayList<Structure>(this.getStructure());
+		String temp = "";
+		aminoStr = aminoStr.replace("\n", "").replace("\r", "");
+		//while the size of the aa acid chain is higher than 20 keep dividing
+		while(aminoStr.length()>20)
+		{
+			//getting the 20 aa 
+			for(int i = 0 ; i <= 20 ; i++)
+			{
+				temp += aminoStr.charAt(i);
+			}
+			
+			this.fragments.add(new Fragment(temp,new ArrayList<Structure>(s.subList(0,21)),ctr)); // add to fragment list
+			//removing first amino acid details
+			if(ctr == 0)
+				aminoStr = aminoStr.substring(2);
+			else
+				aminoStr = aminoStr.substring(1);
+			s.remove(0);
+			temp = "";
+			ctr++; // next index
+		}
+		
+		this.fragments.add(new Fragment(temp,new ArrayList<Structure>(s.subList(0,21)),ctr)); // add to fragment list the last element
 	}
 
 }

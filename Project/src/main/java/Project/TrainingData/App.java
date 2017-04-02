@@ -19,9 +19,9 @@ public class App
     	
     	System.out.println(p.getfolderIndex());
     	
-    	FileParser.ReadStructureDateFile(p.getfolderIndex()+"\\"+p.getFileName());
+    	p.setStructure(FileParser.ReadStructureDateFile(p.getfolderIndex()+"\\"+p.getFileName()) );
     	
-    	
+    	p.DivisionToFragments();
     	
     	
     }

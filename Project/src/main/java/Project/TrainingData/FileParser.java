@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import ProGAL.geom3d.Point;
-import ProGAL.geom3d.superposition.RMSD;
+
 /***
  * This class contains 2 static methods which will be used to parse the ASTRAL database files
  * one method is used for the properties file 
@@ -38,7 +38,6 @@ public class FileParser {
 	public static ArrayList<Structure> ReadStructureDateFile(String ProteinPath)
 	{
 		 Scanner sc2 = null;
-		 RMSD r = new RMSD();
 		 ArrayList<Structure> structure = new ArrayList<Structure>();
 		
 		 Structure temp  = new Structure();
@@ -143,6 +142,7 @@ public class FileParser {
 	{
 			Protein p = null;
 			ProteinEnum state = null;
+			@SuppressWarnings("resource")
 			BufferedReader reader = new BufferedReader( new InputStreamReader(new FileInputStream("Astral.txt"),Charset.forName("UTF-8")));
 			int c;
 			String buffer = "" ; 
