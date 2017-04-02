@@ -16,7 +16,7 @@ public class Fragment
 	 */
 	public Fragment(String aminoAcid, ArrayList<Structure> structure,
 			int fragmentIndex) {
-		
+		System.out.println(App.check(aminoAcid, new ArrayList<Structure>(structure)));
 		this.aminoAcid = aminoAcid;
 		this.structure = structure;
 		this.fragmentIndex = fragmentIndex;

@@ -154,23 +154,23 @@ public class Protein {
 		while(aminoStr.length()>20)
 		{
 			//getting the 20 aa 
-			for(int i = 0 ; i <= 20 ; i++)
+			for(int i = 0 ; i < 20 ; i++)
 			{
 				temp += aminoStr.charAt(i);
 			}
 			
 			this.fragments.add(new Fragment(temp,new ArrayList<Structure>(s.subList(0,21)),ctr)); // add to fragment list
 			//removing first amino acid details
-			if(ctr == 0)
+		/*	if(ctr == 0)
 				aminoStr = aminoStr.substring(2);
-			else
+			else*/
 				aminoStr = aminoStr.substring(1);
 			s.remove(0);
 			temp = "";
 			ctr++; // next index
 		}
 		
-		this.fragments.add(new Fragment(temp,new ArrayList<Structure>(s.subList(0,21)),ctr)); // add to fragment list the last element
+		this.fragments.add(new Fragment(aminoStr,new ArrayList<Structure>(s.subList(0,s.size())),ctr)); // add to fragment list the last element
 	}
 
 }
