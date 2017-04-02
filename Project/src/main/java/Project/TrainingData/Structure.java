@@ -1,14 +1,30 @@
 package Project.TrainingData;
 
 import ProGAL.geom3d.Point;
-
+/***
+ * This class contains the fields and methods for representing a protein/fragment structure
+ * @author Oron
+ *
+ */
 public class Structure 
 {
-	int index;
+	/***
+	 * Index of the atom in the protein
+	 */
+	int atomIndex;
+	/***
+	 * amino acid's type
+	 */
 	String type ; 
+	/***
+	 * String representation of the amino acid
+	 */
 	String AminoAcid;
-	Point p ;  // representation of x,y,z as point
-	double[] coordinates = new double[3];
+	/***
+	 * Coordinates of the atom (x,y,z)
+	 */
+	Point p ; 
+	
 	
 	/***
 	 * Copy constructor
@@ -16,17 +32,18 @@ public class Structure
 	 */
 	public Structure(Structure temp) {
 		this.setAminoAcid(temp.getAminoAcid());
-		this.setCoordinates(temp.getCoordinates());
 		this.setType(temp.getType());
 		this.setIndex(temp.getIndex());
 	}
-	
+	/***
+	 * General Constructor
+	 */
 	public Structure() {}
 	public int getIndex() {
-		return index;
+		return atomIndex;
 	}
 	public void setIndex(int index) {
-		this.index = index;
+		this.atomIndex = index;
 	}
 	public String getType() {
 		return type;
@@ -39,16 +56,6 @@ public class Structure
 	}
 	public void setAminoAcid(String aminoAcid) {
 		AminoAcid = aminoAcid;
-	}
-	public double[] getCoordinates() {
-		return coordinates;
-	}
-	public void setCoordinates(double[] coordinates) {
-		
-		this.coordinates = coordinates;
-		
-		if(this.coordinates.length == 3)
-			p = new Point(this.coordinates);
 	}
 
 	public Point getP() {

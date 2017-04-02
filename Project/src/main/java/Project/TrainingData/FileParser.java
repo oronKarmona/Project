@@ -10,10 +10,22 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import ProGAL.geom3d.Point;
 import ProGAL.geom3d.superposition.RMSD;
-
+/***
+ * This class contains 2 static methods which will be used to parse the ASTRAL database files
+ * one method is used for the properties file 
+ * second method is used for the structural file
+ * @author Oron
+ *
+ */
 public class FileParser {
 	
+	/***
+	 * This enum will be used as term of simplicity in the file's parser
+	 * @author Oron
+	 *
+	 */
 	 enum ProteinEnum {
 			astralId , Classification , type , matched , name , TaxId , aminoAcids
 		}
@@ -30,7 +42,7 @@ public class FileParser {
 		 ArrayList<Structure> structure = new ArrayList<Structure>();
 		
 		 Structure temp  = new Structure();
-		 double[] t = temp.getCoordinates();
+		 double[] t = new double[3];
 		 int ctr = -1 ;
 		 
 		    try {
@@ -72,21 +84,18 @@ public class FileParser {
 		            	case 6: // coordinate x
 		 
 		            		t[0] = Double.parseDouble(s);
-		            		temp.setCoordinates(t);
 		            		ctr++;
 		            		break;
 		            		
 		            	case 7: // coordinate y
-		            		t = temp.getCoordinates();
+		            		
 		            		t[1] = Double.parseDouble(s);
-		            		temp.setCoordinates(t);
 		            		ctr++;
 		            		break;
 		            		
 		            	case 8: // coordinate z
-		            		t = temp.getCoordinates();
+		            		
 		            		t[2] = Double.parseDouble(s);
-		            		temp.setCoordinates(t);
 		            		ctr++;
 		            		break;	
 		            		
@@ -104,8 +113,10 @@ public class FileParser {
 		            if(s.equals("ATOM") || s.equals("TER"))
             		{
 		            	if(ctr == 13) // if whole line has been read than we have the necessary data
+		            	{
+		            		temp.setP(new Point(t));
 			            	structure.add(new Structure(temp));
-		            	
+		            	}
             			ctr = 0 ;
             			ctr++;
             		}
@@ -124,6 +135,8 @@ public class FileParser {
 	
 	/***
 	 * Reads the Astral Data from the file
+	 * By reading the data base it will compose an arrayList of proteins
+	 * @return proteins from the database as ArrayList
 	 * @throws IOException 
 	 */
 	public static Protein ReadAstralDB() throws IOException
