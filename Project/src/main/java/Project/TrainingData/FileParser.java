@@ -1,4 +1,4 @@
-package Project.TrainingData;
+ package Project.TrainingData;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,14 +32,14 @@ public class FileParser {
 	
 	/***
 	 * Reading specified file with data of the protein structure
-	 * @return structure details in ArrayList<Structure> type
+	 * @return structure details in ArrayList<Structure> type, returns null if the structure is not valid according to SPACI
 	 */
 	@SuppressWarnings("resource")
 	public static ArrayList<Structure> ReadStructureDateFile(String ProteinPath)
 	{
 		 Scanner sc2 = null;
 		 ArrayList<Structure> structure = new ArrayList<Structure>();
-		
+		 String line = "";
 		 Structure temp  = new Structure();
 		 double[] t = new double[3];
 		 int ctr = -1 ;
@@ -52,8 +52,16 @@ public class FileParser {
 		    //reading line
 		    while (sc2.hasNextLine()) {
 		            Scanner s2 = new Scanner(sc2.nextLine());
+		            line =  s2.findInLine("(not valid)");
+		            
+		            if(line!=null&&line.equals("not valid"))
+		            {
+		            	System.out.println("This protein given structure is NOT VALID");
+		            	return null;
+		            }
 		            //reading word in line
 		        while (s2.hasNext()) {
+		        	
 		            String s = s2.next();
 		            System.out.println(s);
 		            

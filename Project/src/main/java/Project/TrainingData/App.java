@@ -44,8 +44,9 @@ public class App
     	
     	System.out.println(p.getfolderIndex());
     	
-    	p.setStructure(FileParser.ReadStructureDateFile(p.getfolderIndex()+"\\"+p.getFileName()) );
-    	
+    //	p.setStructure(FileParser.ReadStructureDateFile(p.getfolderIndex()+"\\"+p.getFileName()) );
+    	p.setStructure(FileParser.ReadStructureDateFile("1g\\d11gsa1.ent") );
+
     	p.DivisionToFragments();
     	
     	
