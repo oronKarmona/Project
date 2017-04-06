@@ -83,6 +83,7 @@ public class App
     	}
     	
     	
+    	
     	RMSD r = new RMSD();
     	List<Point> temp = r.optimalSuperposition(struct, pr.get(1).getCoordinatesOnly()).transform(struct);
     	try {
@@ -91,7 +92,8 @@ public class App
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
+    	System.out.println(pr.get(0).getAstralID());
+    	System.out.println(pr.get(1).getAstralID());
     	
     }
     
