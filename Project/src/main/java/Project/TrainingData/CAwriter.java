@@ -26,15 +26,51 @@ public class CAwriter {
 		String[] arr = null;
 		 BufferedWriter out = new BufferedWriter(new FileWriter("test.txt"));
 		 DecimalFormat df = new DecimalFormat("##.###");
-		for(String s : lines)
+		 char[] ch;
+		for(String line : lines)
 		{
 			
-			if(s.contains("CA"))
+			if(line.contains("CA"))
 			{
+				 ch = line.toCharArray();
+				 if(temp.size() == 0 )
+					 break;
+				 p = temp.remove(0);
+				for(int i = 0 ; i < 7 ; i ++)
+					ch[31+i] = ' ';
 				
-					
+				for(int i = 0 ; i < 7 ; i ++)
+					ch[39+i] = ' ';
+				
+				for(int i = 0 ; i < 7 ; i ++)
+					ch[47+i] = ' ';
+				
+				String x = df.format(p.x());
+				String y = df.format(p.y());
+				String z = df.format(p.z());
+				
+				for(int i = 0 ; i < x.length() ; i++)
+				{
+					ch[37-i] = x.toCharArray()[x.length() - 1 - i];
+				
+				}
+				
+				for(int i = 0 ; i < y.length() ; i++)
+				{
+					ch[45-i] = y.toCharArray()[y.length() - 1 - i];
+				
+				}
+				
+				for(int i = 0 ; i < z.length() ; i++)
+				{
+					ch[53-i] = z.toCharArray()[z.length() - 1 - i];
+				
+				}
+				out.write(new String(ch)+"\n");
+				//System.out.println(new String(ch));	
 			}
 		}
+			out.write("END");
 		   out.close();
 		System.out.println(lines.get(lines.size()-1));
 		
