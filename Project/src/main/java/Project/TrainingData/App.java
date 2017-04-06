@@ -53,12 +53,12 @@ public class App
     	{
     		i++;
 	    	System.out.println(p.getfolderIndex());
-	    	try {
+	 /*   	try {
 				CAwriter.write(p.getfolderIndex()+"\\"+p.getFileName());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 	    	
 	    	p.setStructure(FileParser.ReadStructureDateFile(p.getfolderIndex()+"\\"+p.getFileName()) );
 	   
@@ -85,7 +85,12 @@ public class App
     	
     	RMSD r = new RMSD();
     	List<Point> temp = r.optimalSuperposition(struct, pr.get(1).getCoordinatesOnly()).transform(struct);
-    	System.out.println(r.getRMSD(pr.get(0).fragments.get(20).getCoordinatesOnly(), pr.get(2).fragments.get(50).getCoordinatesOnly()));
+    	try {
+			CAwriter.write(pr.get(0).getfolderIndex()+"\\"+pr.get(0).getFileName(),temp);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
     	
     }
