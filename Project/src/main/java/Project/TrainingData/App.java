@@ -3,14 +3,19 @@ package Project.TrainingData;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import ProGAL.geom3d.Point;
+import ProGAL.geom3d.superposition.RMSD;
 
 public class App 
 {
 	public static HashMap<Character,String> map ; 
 	
-    public static void main( String[] args )
+    @SuppressWarnings("static-access")
+	public static void main( String[] args )
     {
-    	Protein p = null;
+    	List<Protein> pr = null;
     	
     	map = new HashMap<Character,String>();
     	map.put('a', "ALA");
@@ -33,21 +38,54 @@ public class App
     	map.put('w',"TRP");
     	map.put('y',"TYR");
     	map.put('v',"VAL");
-    	
+
     	try {
-			 p = FileParser.ReadAstralDB();
+			 pr = FileParser.ReadAstralDB();
 			} 
     	catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 							  }
+    	List<Point> struct = null ;
+    	int i = 0 ;
     	
-    	System.out.println(p.getfolderIndex());
+    	for(Protein p : pr)
+    	{
+    		i++;
+	    	System.out.println(p.getfolderIndex());
+	    	try {
+				CAwriter.write(p.getfolderIndex()+"\\"+p.getFileName());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	
+	    	p.setStructure(FileParser.ReadStructureDateFile(p.getfolderIndex()+"\\"+p.getFileName()) );
+	   
+	
+	    	p.DivisionToFragments();
+	    	
+	    	try {
+	    		if(i == 1)
+	    		{
+	    			struct = p.getCoordinatesOnly();
+	    			struct.remove(128);
+	    			struct.remove(127);
+	    			Writer.write(struct,"p"+i);
+	    		}	
+	    		else
+	    			Writer.write(p.getCoordinatesOnly(),"p"+i);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	
-    //	p.setStructure(FileParser.ReadStructureDateFile(p.getfolderIndex()+"\\"+p.getFileName()) );
-    	p.setStructure(FileParser.ReadStructureDateFile("1g\\d11gsa1.ent") );
-
-    	p.DivisionToFragments();
+    	}
+    	
+    	
+    	RMSD r = new RMSD();
+    	List<Point> temp = r.optimalSuperposition(struct, pr.get(1).getCoordinatesOnly()).transform(struct);
+    	System.out.println(r.getRMSD(pr.get(0).fragments.get(20).getCoordinatesOnly(), pr.get(2).fragments.get(50).getCoordinatesOnly()));
     	
     	
     }

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import ProGAL.geom3d.Point;
@@ -36,7 +37,7 @@ public class FileParser {
 	 */
 	@SuppressWarnings("resource")
 	public static ArrayList<Structure> ReadStructureDateFile(String ProteinPath)
-	{
+	{	String str = null;
 		 Scanner sc2 = null;
 		 ArrayList<Structure> structure = new ArrayList<Structure>();
 		 String line = "";
@@ -53,12 +54,13 @@ public class FileParser {
 		    while (sc2.hasNextLine()) {
 		            Scanner s2 = new Scanner(sc2.nextLine());
 		            line =  s2.findInLine("(not valid)");
-		            
+		   
 		            if(line!=null&&line.equals("not valid"))
 		            {
 		            	System.out.println("This protein given structure is NOT VALID");
 		            	return null;
 		            }
+		       
 		            //reading word in line
 		        while (s2.hasNext()) {
 		        	
@@ -146,9 +148,10 @@ public class FileParser {
 	 * @return proteins from the database as ArrayList
 	 * @throws IOException 
 	 */
-	public static Protein ReadAstralDB() throws IOException
+	public static List<Protein> ReadAstralDB() throws IOException
 	{
 			Protein p = null;
+			List<Protein> pr = new ArrayList<Protein>();
 			ProteinEnum state = null;
 			@SuppressWarnings("resource")
 			BufferedReader reader = new BufferedReader( new InputStreamReader(new FileInputStream("Astral.txt"),Charset.forName("UTF-8")));
@@ -166,9 +169,10 @@ public class FileParser {
 					  p.setAminoAcids(buffer.substring(0,buffer.length()-1));
 					  buffer = "";
 					  
-					  //add to arrayList
 					  
-					  return p ; // return for check purpose
+					  pr.add(p);
+					  if(pr.size() == 3 )
+						  return pr ; // return for check purpose
 				  }
 					  
 				  p = new Protein();

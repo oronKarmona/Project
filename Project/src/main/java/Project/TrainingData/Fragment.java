@@ -1,8 +1,12 @@
 package Project.TrainingData;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Fragment 
+import ProGAL.geom3d.Point;
+
+public class Fragment implements Serializable
 {
 	String aminoAcid;
 	ArrayList<Structure> structure = new ArrayList<Structure>();
@@ -40,7 +44,21 @@ public class Fragment
 	public void setFragmentIndex(int fragmentIndex) {
 		this.fragmentIndex = fragmentIndex;
 	}
-	
+	/***
+	 * Retrieving only the points of the structures
+	 * @return list of points
+	 */
+	public List<Point> getCoordinatesOnly()
+	{
+		
+		List<Point> l = new ArrayList<Point>();
+		
+		for(Structure s : structure)
+			l.add(s.getP());
+		
+		return l ;
+		
+	}
 	
 	
 	

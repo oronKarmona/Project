@@ -1,12 +1,14 @@
 package Project.TrainingData;
 
+import java.io.Serializable;
+
 import ProGAL.geom3d.Point;
 /***
  * This class contains the fields and methods for representing a protein/fragment structure
  * @author Oron
  *
  */
-public class Structure 
+public class Structure implements Serializable
 {
 	/***
 	 * Index of the atom in the protein
@@ -34,6 +36,7 @@ public class Structure
 		this.setAminoAcid(temp.getAminoAcid());
 		this.setType(temp.getType());
 		this.setIndex(temp.getIndex());
+		this.setP(new Point(temp.p));
 	}
 	/***
 	 * General Constructor

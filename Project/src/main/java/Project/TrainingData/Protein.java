@@ -1,6 +1,7 @@
 package Project.TrainingData;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import ProGAL.geom3d.Point;
  * @author Oron
  *
  */
-public class Protein {
+public class Protein implements Serializable{
 	
 	/***
 	 * Protein's asrtral ID
