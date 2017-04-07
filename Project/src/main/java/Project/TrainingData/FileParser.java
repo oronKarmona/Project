@@ -3,13 +3,13 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+
 
 import org.apache.commons.io.FileUtils;
 
@@ -143,6 +143,7 @@ public class FileParser {
 //		    
 //		    return structure;
 //	}
+		@SuppressWarnings("unchecked")
 		public static ArrayList<Structure> ReadStructureDateFile(String ProteinPath)
 		{	
 			 ArrayList<Structure> structure = new ArrayList<Structure>();
@@ -161,19 +162,20 @@ public class FileParser {
 			 } catch (IOException e) {
 				return null;
 			 }
-			    //reading line
-		   if(lines.contains("not valid"))
-			   return null;
+			
 		    for (String line : lines) {
+		        //reading line
+				   if(line.contains("not valid"))
+					   return null;
 		    	if(line.contains("ATOM")){
 		    		
 		    		if(line.substring(13,17).contains("CA"))
 		    		{
-		    		temp.setIndex(Integer.parseInt(line.substring(7,12).replaceAll(" ","")));
-		    		temp.setAminoAcid(line.substring(17,21).replaceAll(" "," "));
-		    		temp.setP(new Point(Double.parseDouble(line.substring(31,39).replaceAll(" ","")),
-			    						Double.parseDouble(line.substring(39,47).replaceAll(" ","")),
-			    						Double.parseDouble(line.substring(47,54).replaceAll(" ",""))));
+		    		temp.setIndex(Integer.parseInt(line.substring(6,11).replaceAll(" ","")));
+		    		temp.setAminoAcid(line.substring(17,20).replaceAll(" "," "));
+		    		temp.setP(new Point(Double.parseDouble(line.substring(30,38).replaceAll(" ","")),
+			    						Double.parseDouble(line.substring(38,46).replaceAll(" ","")),
+			    						Double.parseDouble(line.substring(46,54).replaceAll(" ",""))));
 		    		 structure.add(new Structure(temp));
 		    		}
 		    	}

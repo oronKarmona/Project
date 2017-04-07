@@ -1,18 +1,18 @@
 package Project.TrainingData;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import ProGAL.geom3d.Point;
+
+
 
 public class App 
 {
 	public static HashMap<Character,String> map ; 
-	
 	public static void main( String[] args )
     {
     	List<Protein> proteinsDB = null;
-
     	try {
     		proteinsDB = FileParser.ReadAstralDB();
     	}
@@ -20,23 +20,34 @@ public class App
     	{
 			e.printStackTrace();
     	}
+    	int ctr = 0 ;
     	System.out.println(proteinsDB.size());
     	List<Integer> toRemove = new ArrayList<Integer>();
     	ArrayList<Structure> structure;
     	//d4f4oj_
     	
+    	double currentPosition = 0 ; 
+    	System.out.println("Reading structure data...");
     	for(Protein protein : proteinsDB)
     	{
+    		
+    		App.animate(currentPosition++,proteinsDB.size());
+   
     		try{
     			/***
-    			 *לדוגמא, תוריד את ההערות ותוכל לרוץ על הפרסר ולראות מתי זה קורה d4f4oj_ זה קורה בקובץ 
+    			 *הקובץ שמופיע בבדיקה כאן הוא קובץ מאוד מסריח . הוא המקרה הכי קיצוני שכל הקואורדינטות צמודות אחת לשנייה
     			 */		
-//    			if(protein.getAstralID().equals("d4f4oj_"))
-//        			structure = FileParser.ReadStructureDateFile(protein.getfolderIndex()+"\\"+protein.getFileName());
-    			structure = FileParser.ReadStructureDateFile(protein.getfolderIndex()+"\\"+protein.getFileName());
+    			if(protein.getAstralID().equals("d1uf2i1"))
+    			{
+        			structure = FileParser.ReadStructureDateFile(protein.getfolderIndex()+"\\"+protein.getFileName());
+        			
+    			}
+    			else
+    				structure = FileParser.ReadStructureDateFile(protein.getfolderIndex()+"\\"+protein.getFileName());
 
 			}
 			catch(Exception e){
+				ctr ++;
 				structure = null;
 				System.out.println(protein.astralID);
    			}
@@ -51,12 +62,27 @@ public class App
     		//protein.DivisionToFragments();
     		}
     	}
-    	for (Integer remove : toRemove) {
+    	//if there is any problem
+    	System.out.println("Number of problematic Proteins:"+ctr);
+    	System.out.println("Number of Proteins to be removed (not valid): "+toRemove.size());
+    	
+    	for (Integer remove : toRemove) 
+    	{
     		proteinsDB.remove(remove);
 		}
     	System.out.println(proteinsDB.size());
     }
     
+	public static void animate(double currentPosition,int totalNumber )
+	{
+			
+			DecimalFormat df = new DecimalFormat("###.#");
+			double percent = (currentPosition/totalNumber)*100;
+			if(currentPosition % (totalNumber/100) == 0 || currentPosition == totalNumber)
+				System.out.println("Processing: " + df.format(percent) + "% ");
+
+		   
+	}
     public static boolean check(String s , ArrayList<Structure> struct)
     {
     	map = new HashMap<Character,String>();
