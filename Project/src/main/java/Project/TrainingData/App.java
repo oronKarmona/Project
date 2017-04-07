@@ -13,6 +13,7 @@ public class App
 	public static void main( String[] args )
     {
     	List<Protein> proteinsDB = null;
+    	System.out.println("Initialising ProteinDB...");
     	try {
     		proteinsDB = FileParser.ReadAstralDB();
     	}
@@ -21,7 +22,7 @@ public class App
 			e.printStackTrace();
     	}
     	int ctr = 0 ;
-    	System.out.println(proteinsDB.size());
+    	System.out.println("Initial ProteinDB size: "+proteinsDB.size());
     	List<Integer> toRemove = new ArrayList<Integer>();
     	ArrayList<Structure> structure;
     	//d4f4oj_
@@ -30,8 +31,8 @@ public class App
     	System.out.println("Reading structure data...");
     	for(Protein protein : proteinsDB)
     	{
-    		
-    		App.animate(currentPosition++,proteinsDB.size());
+    		//status for console
+    		App.animate("Reading proteins structure data : ",currentPosition++,proteinsDB.size());
    
     		try{
     			/***
@@ -52,7 +53,7 @@ public class App
 				System.out.println(protein.astralID);
    			}
     		if(structure == null){
-    			toRemove.add(proteinsDB.indexOf(protein));
+    			toRemove.add(proteinsDB.get(proteinsDB.indexOf(protein)).ProteinIndex);
     			//proteinsDB.remove(proteinsDB.indexOf(protein));
     		}
     		else{
@@ -63,23 +64,34 @@ public class App
     		}
     	}
     	//if there is any problem
-    	System.out.println("Number of problematic Proteins:"+ctr);
-    	System.out.println("Number of Proteins to be removed (not valid): "+toRemove.size());
+    	System.out.println("Number of Proteins to be removed : "+toRemove.size());
     	
+    	int indexToBeRemoved = 0; // the index of the protein that needs to be removed
+    	currentPosition = 0 ;
     	for (Integer remove : toRemove) 
     	{
-    		proteinsDB.remove(remove);
+    		//status for console
+    		App.animate("Removing problematic proteins : ",currentPosition++,toRemove.size());
+    		
+    		//finding the protein by its index in the ArrayList
+    		//after finding the index of the marked protein its index in the arrayList is saved
+    		for(int i = 0 ; i < proteinsDB.size();i++)
+    			if(proteinsDB.get(i).ProteinIndex == remove)
+    				indexToBeRemoved = i ; 
+    		//Removing the protein from the ArrayList by the found index from the 'for' loop
+    		proteinsDB.remove(indexToBeRemoved);
 		}
-    	System.out.println(proteinsDB.size());
+    	
+    	System.out.println("Proteins DB size after removing: "+proteinsDB.size());
     }
     
-	public static void animate(double currentPosition,int totalNumber )
+	public static void animate(String status,double currentPosition,int totalNumber )
 	{
 			
 			DecimalFormat df = new DecimalFormat("###.#");
 			double percent = (currentPosition/totalNumber)*100;
 			if(currentPosition % (totalNumber/100) == 0 || currentPosition == totalNumber)
-				System.out.println("Processing: " + df.format(percent) + "% ");
+				System.out.println(status + df.format(percent) + "% ");
 
 		   
 	}
