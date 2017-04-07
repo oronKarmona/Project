@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.commons.io.FileUtils;
+
 import ProGAL.geom3d.Point;
 
 /***
@@ -27,6 +29,7 @@ public class FileParser {
 	 * @author Oron
 	 *
 	 */
+	public static int proteinCount = 1;
 	 enum ProteinEnum {
 			astralId , Classification , type , matched , name , TaxId , aminoAcids
 		}
@@ -35,112 +38,150 @@ public class FileParser {
 	 * Reading specified file with data of the protein structure
 	 * @return structure details in ArrayList<Structure> type, returns null if the structure is not valid according to SPACI
 	 */
-	@SuppressWarnings("resource")
-	public static ArrayList<Structure> ReadStructureDateFile(String ProteinPath)
-	{	String str = null;
-		 Scanner sc2 = null;
-		 ArrayList<Structure> structure = new ArrayList<Structure>();
-		 String line = "";
-		 Structure temp  = new Structure();
-		 double[] t = new double[3];
-		 int ctr = -1 ;
-		 
-		    try {
-		        sc2 = new Scanner(new File("C:\\pdbstyle-2.06\\"+ProteinPath));
-		    } catch (FileNotFoundException e) {
-		        e.printStackTrace();  
-		    }
-		    //reading line
-		    while (sc2.hasNextLine()) {
-		            Scanner s2 = new Scanner(sc2.nextLine());
-		            line =  s2.findInLine("(not valid)");
+//	@SuppressWarnings("resource")
+//	public static ArrayList<Structure> ReadStructureDateFile(String ProteinPath)
+//	{	String str = null;
+//		 Scanner sc2 = null;
+//		 ArrayList<Structure> structure = new ArrayList<Structure>();
+//		 String line = "";
+//		 Structure temp  = new Structure();
+//		 double[] t = new double[3];
+//		 int ctr = -1 ;
+//		 
+//		    try {
+//		        sc2 = new Scanner(new File("C:\\pdbstyle-2.06\\"+ProteinPath));
+//		    } catch (FileNotFoundException e) {
+//		    	
+//		        //e.printStackTrace();
+//		        return null;
+//		    }
+//		    //reading line
+//		    while (sc2.hasNextLine()) {
+//		            Scanner s2 = new Scanner(sc2.nextLine());
+//		            line =  s2.findInLine("(not valid)");
+//		   
+//		            if(line!=null&&line.equals("not valid"))
+//		            {
+//		            	//System.out.println("This protein given structure is NOT VALID");
+//		            	return null;
+//		            }
+//		       
+//		            //reading word in line
+//		        while (s2.hasNext()) {
+//		        	
+//		            String s = s2.next();		            
+//		            switch(ctr)
+//		            {
+//		            	
+//		            	case 1: // atom index 
+//		            		temp.setIndex(Integer.parseInt(s));
+//		            		ctr++;
+//		            		break;
+//		            	
+//		            	case 2:  // atom type
+//		            		if(!s.equals("CA"))
+//		            		{
+//		            			ctr = -1;
+//		            			break;
+//		            		}
+//		            		temp.setType(s);
+//		            		ctr++;
+//		            		break;
+//		            		
+//		            	case 3: // Amino acid related to
+//		            		temp.setAminoAcid(s);
+//		            		ctr++;
+//		            		break;
+//		            		
+//		            	case 6: // coordinate x
+//		 
+//		            		t[0] = Double.parseDouble(s);
+//		            		ctr++;
+//		            		break;
+//		            		
+//		            	case 7: // coordinate y
+//		            		
+//		            		t[1] = Double.parseDouble(s);
+//		            		ctr++;
+//		            		break;
+//		            		
+//		            	case 8: // coordinate z
+//		            		
+//		            		t[2] = Double.parseDouble(s);
+//		            		ctr++;
+//		            		break;	
+//		            		
+//		            	case -1: // nothing to use
+//		            		break;
+//		            		
+//		            	default: // not necessary 
+//		            		ctr++;
+//		            		break;
+//		            	
+//		            	
+//		            }
+//		         
+//		            // if the start of the line is ATOM or TER
+//		            if(s.equals("ATOM") || s.equals("TER"))
+//            		{
+//		            	if(ctr == 13) // if whole line has been read than we have the necessary data
+//		            	{
+//		            		temp.setP(new Point(t));
+//			            	structure.add(new Structure(temp));
+//		            	}
+//            			ctr = 0 ;
+//            			ctr++;
+//            		}
+//		            
+//		            
+//		            if(ctr == -1) // if its nothing to use than skip line
+//		            	break;
+//    	
+//		        }
+//		      
+//		    }
+//		    
+//		    return structure;
+//	}
+		public static ArrayList<Structure> ReadStructureDateFile(String ProteinPath)
+		{	
+			 ArrayList<Structure> structure = new ArrayList<Structure>();
+			 Structure temp  = new Structure();
+			 List<String> lines = null;
+
+			 File file = new File("C:\\pdbstyle-2.06\\"+ProteinPath);
+	    	
+			 if(!file.exists()){
+	    		//file not found
+	    		return null;
+			 }
+	    	
+			 try {
+				lines = FileUtils.readLines(file);
+			 } catch (IOException e) {
+				return null;
+			 }
+			    //reading line
+		   if(lines.contains("not valid"))
+			   return null;
+		    for (String line : lines) {
+		    	if(line.contains("ATOM")){
+		    		
+		    		if(line.substring(13,17).contains("CA"))
+		    		{
+		    		temp.setIndex(Integer.parseInt(line.substring(7,12).replaceAll(" ","")));
+		    		temp.setAminoAcid(line.substring(17,21).replaceAll(" "," "));
+		    		temp.setP(new Point(Double.parseDouble(line.substring(31,39).replaceAll(" ","")),
+			    						Double.parseDouble(line.substring(39,47).replaceAll(" ","")),
+			    						Double.parseDouble(line.substring(47,54).replaceAll(" ",""))));
+		    		 structure.add(new Structure(temp));
+		    		}
+		    	}
+		    	
+			}
 		   
-		            if(line!=null&&line.equals("not valid"))
-		            {
-		            	System.out.println("This protein given structure is NOT VALID");
-		            	return null;
-		            }
-		       
-		            //reading word in line
-		        while (s2.hasNext()) {
-		        	
-		            String s = s2.next();
-		            System.out.println(s);
-		            
-		            switch(ctr)
-		            {
-		            	
-		            	case 1: // atom index 
-		            		temp.setIndex(Integer.parseInt(s));
-		            		ctr++;
-		            		break;
-		            	
-		            	case 2:  // atom type
-		            		if(!s.equals("CA"))
-		            		{
-		            			ctr = -1;
-		            			break;
-		            		}
-		            		temp.setType(s);
-		            		ctr++;
-		            		break;
-		            		
-		            	case 3: // Amino acid related to
-		            		temp.setAminoAcid(s);
-		            		ctr++;
-		            		break;
-		            		
-		            	case 6: // coordinate x
-		 
-		            		t[0] = Double.parseDouble(s);
-		            		ctr++;
-		            		break;
-		            		
-		            	case 7: // coordinate y
-		            		
-		            		t[1] = Double.parseDouble(s);
-		            		ctr++;
-		            		break;
-		            		
-		            	case 8: // coordinate z
-		            		
-		            		t[2] = Double.parseDouble(s);
-		            		ctr++;
-		            		break;	
-		            		
-		            	case -1: // nothing to use
-		            		break;
-		            		
-		            	default: // not necessary 
-		            		ctr++;
-		            		break;
-		            	
-		            	
-		            }
-		         
-		            // if the start of the line is ATOM or TER
-		            if(s.equals("ATOM") || s.equals("TER"))
-            		{
-		            	if(ctr == 13) // if whole line has been read than we have the necessary data
-		            	{
-		            		temp.setP(new Point(t));
-			            	structure.add(new Structure(temp));
-		            	}
-            			ctr = 0 ;
-            			ctr++;
-            		}
-		            
-		            
-		            if(ctr == -1) // if its nothing to use than skip line
-		            	break;
-    	
-		        }
-		      
-		    }
-		    
 		    return structure;
-	}
-	
+		}
 	
 	/***
 	 * Reads the Astral Data from the file
@@ -150,106 +191,103 @@ public class FileParser {
 	 */
 	public static List<Protein> ReadAstralDB() throws IOException
 	{
-			Protein p = null;
-			List<Protein> pr = new ArrayList<Protein>();
-			ProteinEnum state = null;
-			@SuppressWarnings("resource")
-			BufferedReader reader = new BufferedReader( new InputStreamReader(new FileInputStream("Astral.txt"),Charset.forName("UTF-8")));
-			int c;
-			String buffer = "" ; 
-			while((c = reader.read()) != -1) 
-			{
-			  char character = (char) c;
-			  System.out.println(buffer);
-			  if(character == '>')
-			  {
-				  // if this is the end of the amino acids and start of new protein
-				  if(state == ProteinEnum.valueOf("aminoAcids"))
-				  {
-					  p.setAminoAcids(buffer.substring(0,buffer.length()-1));
-					  buffer = "";
-					  
-					  
-					  pr.add(p);
-					  if(pr.size() == 3 )
-						  return pr ; // return for check purpose
-				  }
-					  
-				  p = new Protein();
-				  state = ProteinEnum.valueOf("astralId");
-			  }
-			  else 
-			  {
-				  buffer += character;
-				  switch(state)
-				  {
-				  		case astralId:
-				  			if(character == ' ')
-				  			{
-				  				p.setAstralID(buffer.substring(0,buffer.length()-1));
-				  				buffer = "";
-				  				state = ProteinEnum.valueOf("Classification");
-				  			}
-				  			break;
-				  		
-				  		case Classification:
-				  			if(character == ' ')
-				  			{
-				  				p.setClassification(buffer.substring(0,buffer.length()-1));
-				  				buffer = "";
-				  				state = ProteinEnum.valueOf("type");
-				  			}
-				  			break;
-				  		
-				  		case type:
-				  			if(character == ' ')
-				  			{
-				  				p.setType(buffer.substring(0,buffer.length()-1));
-				  				buffer = "";
-				  				state = ProteinEnum.valueOf("matched");
-				  			}
-				  			break;
-				  		
-				  		case matched:
-				  			if(character == '{')
-				  			{
-				  				p.setMatched(buffer.substring(0,buffer.length()-2));
-				  				buffer = "";
-				  				state = ProteinEnum.valueOf("name");
-				  			}
-				  			break;
-				  			
-				  		case name:
-				  			if(character == '[')
-				  			{
-				  				p.setName(buffer.substring(0,buffer.length()-2));
-				  				buffer = "";
-				  				state = ProteinEnum.valueOf("TaxId");
-				  			}
-				  			break;
-				  			
-				  		case TaxId:
-				  			if(character == ' ')
-				  				buffer = "";
-				  			else if(character == '}')
-				  			{
-				  				p.setTaxId(buffer.substring(0,buffer.length()-2));
-				  				buffer = "";
-				  				state = ProteinEnum.valueOf("aminoAcids");
-				  			}
-				  		
-				  			
-						default:
-							break;
-				  }
-				 
-			  }
+	Protein protein = null;
+	List<Protein> pr = new ArrayList<Protein>();
+	ProteinEnum state = null;
+	@SuppressWarnings("resource")
+	BufferedReader reader = new BufferedReader( new InputStreamReader(new FileInputStream("Astral.txt"),Charset.forName("UTF-8")));
+	int c;
+	String buffer = "" ; 
+	while((c = reader.read()) != -1) 
+	{
+	  char character = (char) c;
+	  if(character == '>')
+	  {
+		  // if this is the end of the amino acids and start of new protein
+		  if(state == ProteinEnum.valueOf("aminoAcids"))
+		  {
+			  protein.setAminoAcids(buffer.substring(0,buffer.length()-1));
+			  buffer = "";
+			  pr.add(protein);
+		  }
 			  
-			}
-			
-			
-			return null;
-			
+		  protein = new Protein();
+		  state = ProteinEnum.astralId;
+		  protein.setProteinIndex(proteinCount);
+		  proteinCount++;
+	  }
+	  else 
+	  {
+		  buffer += character;
+		  switch(state)
+		  {
+		  		case astralId:
+		  			if(character == ' ')
+		  			{
+		  				protein.setAstralID(buffer.substring(0,buffer.length()-1));
+		  				buffer = "";
+		  				state = ProteinEnum.Classification;
+		  			}
+		  			break;
+		  		
+		  		case Classification:
+		  			if(character == ' ')
+		  			{
+		  				protein.setClassification(buffer.substring(0,buffer.length()-1));
+		  				buffer = "";
+		  				state = ProteinEnum.type;
+		  			}
+		  			break;
+		  		
+		  		case type:
+		  			if(character == ' ')
+		  			{
+		  				protein.setType(buffer.substring(0,buffer.length()-1));
+		  				buffer = "";
+		  				state = ProteinEnum.matched;
+		  			}
+		  			break;
+		  		
+		  		case matched:
+		  			if(character == '{')
+		  			{
+		  				protein.setMatched(buffer.substring(0,buffer.length()-2));
+		  				buffer = "";
+		  				state = ProteinEnum.name;
+		  			}
+		  			break;
+		  			
+		  		case name:
+		  			if(character == '[')
+		  			{
+		  				protein.setName(buffer.substring(0,buffer.length()-2));
+		  				buffer = "";
+		  				state = ProteinEnum.TaxId;
+		  			}
+		  			break;
+		  			
+		  		case TaxId:
+		  			if(character == ' ')
+		  				buffer = "";
+		  			else if(character == '}')
+		  			{
+		  				protein.setTaxId(buffer.substring(0,buffer.length()-2));
+		  				buffer = "";
+		  				state = ProteinEnum.aminoAcids;
+		  			}
+		  		
+		  			
+				default:
+					break;
+		  }
+		 
+	  }
+	  
+	}
+	
+	
+	return pr;
+	
 	
 	}
 

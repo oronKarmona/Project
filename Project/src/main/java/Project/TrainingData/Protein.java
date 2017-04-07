@@ -14,6 +14,10 @@ import ProGAL.geom3d.Point;
 public class Protein implements Serializable{
 	
 	/***
+	 * Proteins Index in the DB (serial)
+	 */
+	int ProteinIndex;
+	/***
 	 * Protein's asrtral ID
 	 */
 	String astralID;
@@ -50,6 +54,12 @@ public class Protein implements Serializable{
 	 */
 	ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 	
+	public int getProteinIndex() {
+		return ProteinIndex;
+	}
+	public void setProteinIndex(int proteinIndex) {
+		ProteinIndex = proteinIndex;
+	}
 	public String getAstralID() {
 		return astralID;
 	}
@@ -141,6 +151,12 @@ public class Protein implements Serializable{
 		this.fragments = fragments;
 	}
 
+	public String GetFragments(int index)
+	{
+		if(index < aminoAcids.length()-20)
+			return aminoAcids.substring(index,index+20);
+		return null;
+	}
 	/***
 	 * This method will create a 20 amino acid long fragments for the protein represented in this class
 	 */

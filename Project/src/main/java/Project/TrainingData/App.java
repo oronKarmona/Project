@@ -1,22 +1,64 @@
 package Project.TrainingData;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import ProGAL.geom3d.Point;
-import ProGAL.geom3d.superposition.RMSD;
 
 public class App 
 {
 	public static HashMap<Character,String> map ; 
 	
-    @SuppressWarnings("static-access")
 	public static void main( String[] args )
     {
-    	List<Protein> pr = null;
+    	List<Protein> proteinsDB = null;
+
+    	try {
+    		proteinsDB = FileParser.ReadAstralDB();
+    	}
+    	catch (IOException e)
+    	{
+			e.printStackTrace();
+    	}
+    	System.out.println(proteinsDB.size());
+    	List<Integer> toRemove = new ArrayList<Integer>();
+    	ArrayList<Structure> structure;
+    	//d4f4oj_
     	
+    	for(Protein protein : proteinsDB)
+    	{
+    		try{
+    			/***
+    			 *לדוגמא, תוריד את ההערות ותוכל לרוץ על הפרסר ולראות מתי זה קורה d4f4oj_ זה קורה בקובץ 
+    			 */		
+//    			if(protein.getAstralID().equals("d4f4oj_"))
+//        			structure = FileParser.ReadStructureDateFile(protein.getfolderIndex()+"\\"+protein.getFileName());
+    			structure = FileParser.ReadStructureDateFile(protein.getfolderIndex()+"\\"+protein.getFileName());
+
+			}
+			catch(Exception e){
+				structure = null;
+				System.out.println(protein.astralID);
+   			}
+    		if(structure == null){
+    			toRemove.add(proteinsDB.indexOf(protein));
+    			//proteinsDB.remove(proteinsDB.indexOf(protein));
+    		}
+    		else{
+    			//initiate protein structure
+    			protein.setStructure(structure);
+
+    		//protein.DivisionToFragments();
+    		}
+    	}
+    	for (Integer remove : toRemove) {
+    		proteinsDB.remove(remove);
+		}
+    	System.out.println(proteinsDB.size());
+    }
+    
+    public static boolean check(String s , ArrayList<Structure> struct)
+    {
     	map = new HashMap<Character,String>();
     	map.put('a', "ALA");
     	map.put('r', "ARG");
@@ -38,67 +80,7 @@ public class App
     	map.put('w',"TRP");
     	map.put('y',"TYR");
     	map.put('v',"VAL");
-
-    	try {
-			 pr = FileParser.ReadAstralDB();
-			} 
-    	catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-							  }
-    	List<Point> struct = null ;
-    	int i = 0 ;
     	
-    	for(Protein p : pr)
-    	{
-    		i++;
-	    	System.out.println(p.getfolderIndex());
-	 /*   	try {
-				CAwriter.write(p.getfolderIndex()+"\\"+p.getFileName());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-	    	
-	    	p.setStructure(FileParser.ReadStructureDateFile(p.getfolderIndex()+"\\"+p.getFileName()) );
-	   
-	
-	    	p.DivisionToFragments();
-	    	
-	    	try {
-	    		if(i == 1)
-	    		{
-	    			struct = p.getCoordinatesOnly();
-	    			struct.remove(128);
-	    			struct.remove(127);
-	    			Writer.write(struct,"p"+i);
-	    		}	
-	    		else
-	    			Writer.write(p.getCoordinatesOnly(),"p"+i);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	
-    	}
-    	
-    	
-    	
-    	RMSD r = new RMSD();
-    	List<Point> temp = r.optimalSuperposition(struct, pr.get(1).getCoordinatesOnly()).transform(struct);
-    	try {
-			CAwriter.write(pr.get(0).getfolderIndex()+"\\"+pr.get(0).getFileName(),temp);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	System.out.println(pr.get(0).getAstralID());
-    	System.out.println(pr.get(1).getAstralID());
-    	
-    }
-    
-    public static boolean check(String s , ArrayList<Structure> struct)
-    {
     	for(Character c : s.toCharArray())
     	{
     		if(!map.get(c).equals(struct.get(0).getAminoAcid()))
