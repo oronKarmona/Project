@@ -23,7 +23,9 @@ public class App
     	}
     	int ctr = 0 ;
     	System.out.println("Initial ProteinDB size: "+proteinsDB.size());
-    	List<Integer> toRemove = new ArrayList<Integer>();
+    	//List<Integer> toRemove = new ArrayList<Integer>();
+    	List<Protein> proteinToRemove = new ArrayList<Protein>();
+
     	ArrayList<Structure> structure;
     	//d4f4oj_
     	
@@ -53,8 +55,8 @@ public class App
 				System.out.println(protein.astralID);
    			}
     		if(structure == null){
-    			toRemove.add(proteinsDB.get(proteinsDB.indexOf(protein)).ProteinIndex);
-    			//proteinsDB.remove(proteinsDB.indexOf(protein));
+    			//toRemove.add(proteinsDB.get(proteinsDB.indexOf(protein)).ProteinIndex);
+    			proteinToRemove.add(protein);
     		}
     		else{
     			//initiate protein structure
@@ -64,25 +66,32 @@ public class App
     		}
     	}
     	//if there is any problem
-    	System.out.println("Number of Proteins to be removed : "+toRemove.size());
-    	
+    	//System.out.println("Number of Proteins to be removed : "+toRemove.size());
+    	System.out.println("Number of Proteins to be removed : "+proteinToRemove.size());
+
     	int indexToBeRemoved = 0; // the index of the protein that needs to be removed
     	currentPosition = 0 ;
-    	for (Integer remove : toRemove) 
-    	{
-    		//status for console
-    		App.animate("Removing problematic proteins : ",currentPosition++,toRemove.size());
-    		
-    		//finding the protein by its index in the ArrayList
-    		//after finding the index of the marked protein its index in the arrayList is saved
-    		for(int i = 0 ; i < proteinsDB.size();i++)
-    			if(proteinsDB.get(i).ProteinIndex == remove)
-    				indexToBeRemoved = i ; 
-    		//Removing the protein from the ArrayList by the found index from the 'for' loop
-    		proteinsDB.remove(indexToBeRemoved);
-		}
+//    	for (Integer remove : toRemove) 
+//    	{
+//    		//status for console
+//    		App.animate("Removing problematic proteins : ",currentPosition++,toRemove.size());
+//    		
+//    		//finding the protein by its index in the ArrayList
+//    		//after finding the index of the marked protein its index in the arrayList is saved
+//    		for(int i = 0 ; i < proteinsDB.size();i++)
+//    			if(proteinsDB.get(i).ProteinIndex == remove)
+//    				indexToBeRemoved = i ;
+//    		
+//    		//Removing the protein from the ArrayList by the found index from the 'for' loop
+//    		proteinsDB.remove(indexToBeRemoved);
+//		}
     	
+    	for (Protein p : proteinToRemove) {
+			
+    		proteinsDB.remove(p);
+		}
     	System.out.println("Proteins DB size after removing: "+proteinsDB.size());
+
     }
     
 	public static void animate(String status,double currentPosition,int totalNumber )
