@@ -34,10 +34,7 @@ public class FileParser {
 			astralId , Classification , type , matched , name , TaxId , aminoAcids
 		}
 	
-	/***
-	 * Reading specified file with data of the protein structure
-	 * @return structure details in ArrayList<Structure> type, returns null if the structure is not valid according to SPACI
-	 */
+
 //	@SuppressWarnings("resource")
 //	public static ArrayList<Structure> ReadStructureDateFile(String ProteinPath)
 //	{	String str = null;
@@ -144,6 +141,10 @@ public class FileParser {
 //		    return structure;
 //	}
 		@SuppressWarnings("unchecked")
+		/***
+		 * Reading specified file with data of the protein structure
+		 * @return structure details in ArrayList<Structure> type, returns null if the structure is not valid or not found
+		 */
 		public static ArrayList<Structure> ReadStructureDateFile(String ProteinPath)
 		{	
 			 ArrayList<Structure> structure = new ArrayList<Structure>();

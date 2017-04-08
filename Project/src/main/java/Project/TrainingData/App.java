@@ -21,7 +21,6 @@ public class App
     	{
 			e.printStackTrace();
     	}
-    	int ctr = 0 ;
     	System.out.println("Initial ProteinDB size: "+proteinsDB.size());
     	//List<Integer> toRemove = new ArrayList<Integer>();
     	List<Protein> proteinToRemove = new ArrayList<Protein>();
@@ -50,7 +49,6 @@ public class App
 
 			}
 			catch(Exception e){
-				ctr ++;
 				structure = null;
 				System.out.println(protein.astralID);
    			}
@@ -66,34 +64,23 @@ public class App
     		}
     	}
     	//if there is any problem
-    	//System.out.println("Number of Proteins to be removed : "+toRemove.size());
     	System.out.println("Number of Proteins to be removed : "+proteinToRemove.size());
 
-    	int indexToBeRemoved = 0; // the index of the protein that needs to be removed
     	currentPosition = 0 ;
-//    	for (Integer remove : toRemove) 
-//    	{
-//    		//status for console
-//    		App.animate("Removing problematic proteins : ",currentPosition++,toRemove.size());
-//    		
-//    		//finding the protein by its index in the ArrayList
-//    		//after finding the index of the marked protein its index in the arrayList is saved
-//    		for(int i = 0 ; i < proteinsDB.size();i++)
-//    			if(proteinsDB.get(i).ProteinIndex == remove)
-//    				indexToBeRemoved = i ;
-//    		
-//    		//Removing the protein from the ArrayList by the found index from the 'for' loop
-//    		proteinsDB.remove(indexToBeRemoved);
-//		}
-    	
     	for (Protein p : proteinToRemove) {
-			
+    		//status for console
+    		App.animate("Removing problematic proteins : ",currentPosition++,proteinToRemove.size());
     		proteinsDB.remove(p);
 		}
     	System.out.println("Proteins DB size after removing: "+proteinsDB.size());
 
     }
-    
+    /***
+     * Showing percentage animation through the console
+     * @param status - message to be shown 
+     * @param currentPosition - current position from 0 to total 
+     * @param totalNumber - the amount of data to be processed
+     */
 	public static void animate(String status,double currentPosition,int totalNumber )
 	{
 			
@@ -104,7 +91,13 @@ public class App
 
 		   
 	}
-    public static boolean check(String s , ArrayList<Structure> struct)
+	/***
+	 * This method confirms that the amino acids String is identical to the structural list
+	 * @param aminoAcids - String of amino acids
+	 * @param struct - ArrayList of the structural data 
+	 * @return true for identical and false otherwise
+	 */
+    public static boolean check(String aminoAcids , ArrayList<Structure> struct)
     {
     	map = new HashMap<Character,String>();
     	map.put('a', "ALA");
@@ -128,7 +121,7 @@ public class App
     	map.put('y',"TYR");
     	map.put('v',"VAL");
     	
-    	for(Character c : s.toCharArray())
+    	for(Character c : aminoAcids.toCharArray())
     	{
     		if(!map.get(c).equals(struct.get(0).getAminoAcid()))
     			return false;
