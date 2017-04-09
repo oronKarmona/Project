@@ -100,7 +100,7 @@ public class Protein implements Serializable{
 		return aminoAcids;
 	}
 	public void setAminoAcids(String aminoAcids) {
-		this.aminoAcids = aminoAcids;
+		this.aminoAcids =  aminoAcids.replace("\n", "").replace("\r", "");;
 	}
 	
 	/***

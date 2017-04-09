@@ -3,12 +3,12 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 import org.apache.commons.io.FileUtils;
@@ -150,7 +150,7 @@ public class FileParser {
 			 ArrayList<Structure> structure = new ArrayList<Structure>();
 			 Structure temp  = new Structure();
 			 List<String> lines = null;
-
+			 int residueNumber = -1 ;
 			 File file = new File("C:\\pdbstyle-2.06\\"+ProteinPath);
 	    	
 			 if(!file.exists()){
@@ -177,7 +177,14 @@ public class FileParser {
 		    		temp.setP(new Point(Double.parseDouble(line.substring(30,38).replaceAll(" ","")),
 			    						Double.parseDouble(line.substring(38,46).replaceAll(" ","")),
 			    						Double.parseDouble(line.substring(46,54).replaceAll(" ",""))));
-		    		 structure.add(new Structure(temp));
+		    		temp.setResidueSequenceNumber(Integer.parseInt(line.substring(22, 26).replaceAll(" ", "")));
+		    		
+		    //		if(residueNumber != temp.getResidueSequenceNumber()) // if there is no representation of this chain
+		    //		{
+		    //			residueNumber = temp.getResidueSequenceNumber();
+		    			structure.add(new Structure(temp));
+		    //		}
+			    		
 		    		}
 		    	}
 		    	
@@ -292,6 +299,79 @@ public class FileParser {
 	return pr;
 	
 	
+	}
+	/***
+	 * This methods reads the whole PDB file and attaches to each protein its structure
+	 * @return PDB in form of ArrayList<Protein>
+	 */
+	public static List<Protein> ReadWholePDB()
+	{
+		List<Protein> proteinsDB = null;
+    	System.out.println("Initialising ProteinDB...");
+    	try {
+    		proteinsDB = FileParser.ReadAstralDB();
+    	}
+    	catch (IOException e)
+    	{
+			e.printStackTrace();
+    	}
+    	System.out.println("Initial ProteinDB size: "+proteinsDB.size());
+    	//List<Integer> toRemove = new ArrayList<Integer>();
+    	List<Protein> proteinToRemove = new ArrayList<Protein>();
+
+    	ArrayList<Structure> structure;
+    	//d4f4oj_
+    	
+    	double currentPosition = 0 ; 
+    	System.out.println("Reading structure data...");
+    
+    	for(Protein protein : proteinsDB)
+    	{
+    		//status for console
+    		App.animate("Reading proteins structure data : ",currentPosition++,proteinsDB.size());
+   
+    		try{
+    			/***
+    			 *הקובץ שמופיע בבדיקה כאן הוא קובץ מאוד מסריח . הוא המקרה הכי קיצוני שכל הקואורדינטות צמודות אחת לשנייה
+    			 */		
+    			if(protein.getAstralID().equals("d2wtga_"))
+    			{
+        			structure = FileParser.ReadStructureDateFile(protein.getfolderIndex()+"\\"+protein.getFileName());
+        			
+    			}
+    			else
+    				structure = FileParser.ReadStructureDateFile(protein.getfolderIndex()+"\\"+protein.getFileName());
+
+			}
+			catch(Exception e){
+				structure = null;
+				System.out.println(protein.astralID);
+   			}
+    		if(structure == null){
+    			
+    			proteinToRemove.add(protein);
+    		}
+    		else{
+    			//initiate protein structure
+    			protein.setStructure(structure);
+
+    		//protein.DivisionToFragments();
+    		}
+    	}
+    	//if there is any problem
+    	System.out.println("Number of Proteins to be removed : "+proteinToRemove.size());
+    	
+    	currentPosition = 0 ;
+    	for (Protein p : proteinToRemove) {
+    		//status for console
+    		App.animate("Removing problematic proteins : ",currentPosition++,proteinToRemove.size());
+    		proteinsDB.remove(p);
+		}
+
+    	System.out.println("Proteins DB size after removing: "+proteinsDB.size());
+    	
+    	
+    	return proteinsDB;
 	}
 
 }

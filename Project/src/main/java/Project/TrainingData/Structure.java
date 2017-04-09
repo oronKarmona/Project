@@ -26,8 +26,10 @@ public class Structure implements Serializable
 	 * Coordinates of the atom (x,y,z)
 	 */
 	Point p ; 
-	
-	
+	/***
+	 * Residue sequence number 
+	 */
+
 	/***
 	 * Copy constructor
 	 * @param temp
@@ -37,6 +39,7 @@ public class Structure implements Serializable
 		this.setType(temp.getType());
 		this.setIndex(temp.getIndex());
 		this.setP(new Point(temp.p));
+		this.setResidueSequenceNumber(temp.getResidueSequenceNumber());
 	}
 	/***
 	 * General Constructor
@@ -60,7 +63,13 @@ public class Structure implements Serializable
 	public void setAminoAcid(String aminoAcid) {
 		AminoAcid = aminoAcid;
 	}
-
+	int residueSequenceNumber;
+	public int getResidueSequenceNumber() {
+		return residueSequenceNumber;
+	}
+	public void setResidueSequenceNumber(int residueSequenceNumber) {
+		this.residueSequenceNumber = residueSequenceNumber;
+	}
 	public Point getP() {
 		return p;
 	}

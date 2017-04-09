@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 
 
 public class App 
@@ -12,69 +14,63 @@ public class App
 	public static HashMap<Character,String> map ; 
 	public static void main( String[] args )
     {
-    	List<Protein> proteinsDB = null;
-    	System.out.println("Initialising ProteinDB...");
-    	try {
-    		proteinsDB = FileParser.ReadAstralDB();
-    	}
-    	catch (IOException e)
-    	{
-			e.printStackTrace();
-    	}
-    	System.out.println("Initial ProteinDB size: "+proteinsDB.size());
-    	//List<Integer> toRemove = new ArrayList<Integer>();
-    	List<Protein> proteinToRemove = new ArrayList<Protein>();
-
-    	ArrayList<Structure> structure;
-    	//d4f4oj_
+		ArrayList<Protein> proteinsDB;
+		long startTime = System.currentTimeMillis();
+		proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
     	
-    	double currentPosition = 0 ; 
-    	System.out.println("Reading structure data...");
-    	for(Protein protein : proteinsDB)
+    	  //JSONhelper.WriteObject(proteinsDB); // writing the pdb as json file
+	      //proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
+		
+	      System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
+	      
+	      //checking the match between aminoacid string to its structure properties
+    	int diff = 0 , notEqual = 0 ;
+    	for(Protein p  : proteinsDB)
     	{
-    		//status for console
-    		App.animate("Reading proteins structure data : ",currentPosition++,proteinsDB.size());
-   
-    		try{
-    			/***
-    			 *הקובץ שמופיע בבדיקה כאן הוא קובץ מאוד מסריח . הוא המקרה הכי קיצוני שכל הקואורדינטות צמודות אחת לשנייה
-    			 */		
-    			if(protein.getAstralID().equals("d1uf2i1"))
-    			{
-        			structure = FileParser.ReadStructureDateFile(protein.getfolderIndex()+"\\"+protein.getFileName());
-        			
-    			}
-    			else
-    				structure = FileParser.ReadStructureDateFile(protein.getfolderIndex()+"\\"+protein.getFileName());
-
-			}
-			catch(Exception e){
-				structure = null;
-				System.out.println(protein.astralID);
-   			}
-    		if(structure == null){
-    			//toRemove.add(proteinsDB.get(proteinsDB.indexOf(protein)).ProteinIndex);
-    			proteinToRemove.add(protein);
+    		try
+    		{
+    		if(p.getAstralID().equals("d1ux8a_"))
+    			System.out.print("dsg");
+    		if(!App.check(p.getAminoAcids(), new ArrayList<Structure>(p.structure)))
+    			System.out.println(p.getAstralID());   // if an aminoacid is different than the structural data
+    			diff++;
     		}
-    		else{
-    			//initiate protein structure
-    			protein.setStructure(structure);
-
-    		//protein.DivisionToFragments();
+    			catch(Exception e ) // if the aminoacid string is mismatch to the structural data
+    		{
+    				System.out.println(p.getAstralID());
+    				System.out.println(p.getAminoAcids().length());
+    				System.out.println(p.getStructure().size());
+    				System.out.println();
+    				notEqual++;
     		}
+    		
     	}
-    	//if there is any problem
-    	System.out.println("Number of Proteins to be removed : "+proteinToRemove.size());
-
-    	currentPosition = 0 ;
-    	for (Protein p : proteinToRemove) {
-    		//status for console
-    		App.animate("Removing problematic proteins : ",currentPosition++,proteinToRemove.size());
-    		proteinsDB.remove(p);
-		}
-    	System.out.println("Proteins DB size after removing: "+proteinsDB.size());
-
+    	System.out.println("Differenct in an amino acid: " +diff);
+		System.out.println("Mismatch in size " +notEqual);
     }
+	
+	/***
+	 * This method checks the number of classifications there are among the proteins data
+	 * @param proteins - arrayList of proteins
+	 * @return number of classifications available 
+	 */
+	public static int CheckNumberOfClassifications(ArrayList<Protein> proteins)
+	{
+		ArrayList<String> classes = new ArrayList<String>();
+    	
+    	for(Protein p : proteins)
+    	{
+    		if(!classes.contains(p.getClassification()))
+    			classes.add(p.getClassification());
+    	}
+    	
+    	return classes.size();
+    /*	System.out.println(classes.size()+" classes:");
+    	for(String s : classes)
+    	{
+    		System.out.println(s);
+    	} */
+	}
     /***
      * Showing percentage animation through the console
      * @param status - message to be shown 
