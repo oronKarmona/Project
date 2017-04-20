@@ -7,6 +7,8 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+import Table.TrainingData;
+
 
 
 public class App 
@@ -14,39 +16,33 @@ public class App
 	public static HashMap<Character,String> map ; 
 	public static void main( String[] args )
     {
-		ArrayList<Protein> proteinsDB = new ArrayList<Protein>();
+		ArrayList<Protein> proteinsDB;
 		long startTime = System.currentTimeMillis();
-		proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
-    	
-    	  JSONhelper.WriteObject(proteinsDB); // writing the pdb as json file
-	      proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
+
+		//***************  init DB *****************************//
+		 
+//		proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
+//    	
+		//***************  save DB ******************************//
 		
-	      System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
+    	//JSONhelper.WriteObject(proteinsDB); // writing the pdb as json file
+    	
+		//***************  read DB ******************************//
+
+	    proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
+		
+	    System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
 	      
 	      //checking the match between aminoacid string to its structure properties
-    	int diff = 0 , notEqual = 0 ;
-    	for(Protein p  : proteinsDB)
-    	{
-    		try
-    		{
-    		if(p.getAstralID().equals("d1ux8a_"))
-    			System.out.print("dsg");
-    		if(!App.check(p.getAminoAcids(), new ArrayList<Structure>(p.structure)))
-    			System.out.println(p.getAstralID());   // if an aminoacid is different than the structural data
-    			diff++;
-    		}
-    			catch(Exception e ) // if the aminoacid string is mismatch to the structural data
-    		{
-    				System.out.println(p.getAstralID());
-    				System.out.println(p.getAminoAcids().length());
-    				System.out.println(p.getStructure().size());
-    				System.out.println();
-    				notEqual++;
-    		}
-    		
-    	}
-    	System.out.println("Differenct in an amino acid: " +diff);
-		System.out.println("Mismatch in size " +notEqual);
+	      //checkAmino(proteinsDB);
+	    
+		//***************  training ******************************//
+
+	    TrainingData trainingData = new TrainingData(proteinsDB);
+	    
+		//***************  Hamming ******************************//
+	    	
+
     }
 	
 	/***
@@ -126,6 +122,32 @@ public class App
     	}
 		return true;
     	
+    }
+    public static void checkAmino(ArrayList<Protein> proteinsDB)
+    {
+    	int diff = 0 , notEqual = 0 ;
+    	for(Protein p  : proteinsDB)
+    	{
+    		try
+    		{
+    		if(p.getAstralID().equals("d1ux8a_"))
+    			System.out.print("dsg");
+    		if(!App.check(p.getAminoAcids(), new ArrayList<Structure>(p.structure)))
+    			System.out.println(p.getAstralID());   // if an aminoacid is different than the structural data
+    			diff++;
+    		}
+    			catch(Exception e ) // if the aminoacid string is mismatch to the structural data
+    		{
+    				System.out.println(p.getAstralID());
+    				System.out.println(p.getAminoAcids().length());
+    				System.out.println(p.getStructure().size());
+    				System.out.println();
+    				notEqual++;
+    		}
+    		
+    	}
+    	System.out.println("Differenct in an amino acid: " +diff);
+		System.out.println("Mismatch in size " +notEqual);
     }
 }
 

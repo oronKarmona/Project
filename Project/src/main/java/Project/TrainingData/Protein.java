@@ -54,6 +54,7 @@ public class Protein implements Serializable{
 	 */
 	ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 	
+	
 	public int getProteinIndex() {
 		return ProteinIndex;
 	}
@@ -137,6 +138,22 @@ public class Protein implements Serializable{
 		
 	}
 	
+	/***
+	 * Retrieving only the points of the structures from a specific fragment
+	 * @return list of points
+	 */
+	public List<Point> getFragmentCoordinates(int i)
+	{	
+		List<Point> l = new ArrayList<Point>();
+		try{
+		for(Structure s : GetFragmentStructure(i))
+			l.add(s.getP());
+		}catch(NullPointerException e){
+			System.out.println(this.astralID);
+		}
+		return l ;
+		
+	}
 	
 	public ArrayList<Structure> getStructure() {
 		return structure;
@@ -155,6 +172,12 @@ public class Protein implements Serializable{
 	{
 		if(index < aminoAcids.length()-20)
 			return aminoAcids.substring(index,index+20);
+		return null;
+	}
+	public List<Structure> GetFragmentStructure(int index)
+	{
+		if(index <= structure.size()-20)
+			return structure.subList(index, index+20);
 		return null;
 	}
 	/***
