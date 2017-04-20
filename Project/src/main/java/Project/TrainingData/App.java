@@ -14,12 +14,12 @@ public class App
 	public static HashMap<Character,String> map ; 
 	public static void main( String[] args )
     {
-		ArrayList<Protein> proteinsDB;
+		ArrayList<Protein> proteinsDB = new ArrayList<Protein>();
 		long startTime = System.currentTimeMillis();
 		proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
     	
-    	  //JSONhelper.WriteObject(proteinsDB); // writing the pdb as json file
-	      //proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
+    	  JSONhelper.WriteObject(proteinsDB); // writing the pdb as json file
+	      proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
 		
 	      System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
 	      
