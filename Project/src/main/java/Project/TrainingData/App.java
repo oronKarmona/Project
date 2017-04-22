@@ -10,7 +10,11 @@ import com.google.gson.Gson;
 import Table.TrainingData;
 
 
-
+/***
+ * Main class
+ * @author oron
+ *
+ */
 public class App 
 {
 	public static HashMap<Character,String> map ; 
