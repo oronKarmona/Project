@@ -35,111 +35,7 @@ public class FileParser {
 		}
 	
 
-//	@SuppressWarnings("resource")
-//	public static ArrayList<Structure> ReadStructureDateFile(String ProteinPath)
-//	{	String str = null;
-//		 Scanner sc2 = null;
-//		 ArrayList<Structure> structure = new ArrayList<Structure>();
-//		 String line = "";
-//		 Structure temp  = new Structure();
-//		 double[] t = new double[3];
-//		 int ctr = -1 ;
-//		 
-//		    try {
-//		        sc2 = new Scanner(new File("C:\\pdbstyle-2.06\\"+ProteinPath));
-//		    } catch (FileNotFoundException e) {
-//		    	
-//		        //e.printStackTrace();
-//		        return null;
-//		    }
-//		    //reading line
-//		    while (sc2.hasNextLine()) {
-//		            Scanner s2 = new Scanner(sc2.nextLine());
-//		            line =  s2.findInLine("(not valid)");
-//		   
-//		            if(line!=null&&line.equals("not valid"))
-//		            {
-//		            	//System.out.println("This protein given structure is NOT VALID");
-//		            	return null;
-//		            }
-//		       
-//		            //reading word in line
-//		        while (s2.hasNext()) {
-//		        	
-//		            String s = s2.next();		            
-//		            switch(ctr)
-//		            {
-//		            	
-//		            	case 1: // atom index 
-//		            		temp.setIndex(Integer.parseInt(s));
-//		            		ctr++;
-//		            		break;
-//		            	
-//		            	case 2:  // atom type
-//		            		if(!s.equals("CA"))
-//		            		{
-//		            			ctr = -1;
-//		            			break;
-//		            		}
-//		            		temp.setType(s);
-//		            		ctr++;
-//		            		break;
-//		            		
-//		            	case 3: // Amino acid related to
-//		            		temp.setAminoAcid(s);
-//		            		ctr++;
-//		            		break;
-//		            		
-//		            	case 6: // coordinate x
-//		 
-//		            		t[0] = Double.parseDouble(s);
-//		            		ctr++;
-//		            		break;
-//		            		
-//		            	case 7: // coordinate y
-//		            		
-//		            		t[1] = Double.parseDouble(s);
-//		            		ctr++;
-//		            		break;
-//		            		
-//		            	case 8: // coordinate z
-//		            		
-//		            		t[2] = Double.parseDouble(s);
-//		            		ctr++;
-//		            		break;	
-//		            		
-//		            	case -1: // nothing to use
-//		            		break;
-//		            		
-//		            	default: // not necessary 
-//		            		ctr++;
-//		            		break;
-//		            	
-//		            	
-//		            }
-//		         
-//		            // if the start of the line is ATOM or TER
-//		            if(s.equals("ATOM") || s.equals("TER"))
-//            		{
-//		            	if(ctr == 13) // if whole line has been read than we have the necessary data
-//		            	{
-//		            		temp.setP(new Point(t));
-//			            	structure.add(new Structure(temp));
-//		            	}
-//            			ctr = 0 ;
-//            			ctr++;
-//            		}
-//		            
-//		            
-//		            if(ctr == -1) // if its nothing to use than skip line
-//		            	break;
-//    	
-//		        }
-//		      
-//		    }
-//		    
-//		    return structure;
-//	}
+
 		@SuppressWarnings("unchecked")
 		/***
 		 * Reading specified file with data of the protein structure
@@ -178,17 +74,41 @@ public class FileParser {
 			    						Double.parseDouble(line.substring(38,46).replaceAll(" ","")),
 			    						Double.parseDouble(line.substring(46,54).replaceAll(" ",""))));
 		    		temp.setResidueSequenceNumber(Integer.parseInt(line.substring(22, 26).replaceAll(" ", "")));
-		    		
-		    //		if(residueNumber != temp.getResidueSequenceNumber()) // if there is no representation of this chain
-		    //		{
-		    //			residueNumber = temp.getResidueSequenceNumber();
-		    			structure.add(new Structure(temp));
-		    //		}
+					    		
+				    		if(residueNumber!= -1 && residueNumber + 1 < temp.getResidueSequenceNumber()) // if there is a missing link between the two residues
+					   		{
+					   			Structure missing = new Structure();
+					   			missing.setAminoAcid("XXX");
+					   			missing.setIndex(-1);
+					   			missing.setP(new Point(0,0,0));
+					   			missing.setResidueSequenceNumber(-1);
+					   			structure.add(new Structure(missing));
+					   		}
+				    		
+					   		if(residueNumber != temp.getResidueSequenceNumber()) // if there is no representation of this chain
+					   		{
+					    			residueNumber = temp.getResidueSequenceNumber();
+					    			structure.add(new Structure(temp));
+					    	}
+					   		
+					   		
 			    		
 		    		}
 		    	}
 		    	
 			}
+		    
+		    //fill the missing coordinates of the missing links as average of the neighbors 
+		    for(int i = 0 ; i < structure.size() ; i ++)
+		    {
+		    	if(structure.get(i).getAminoAcid().equals("XXX"))
+		    	{
+		    		structure.get(i).setP( new Point( 
+		    											(structure.get(i-1).getP().x() + structure.get(i+1).getP().x() )/ 2, 
+		    											(structure.get(i-1).getP().y() + structure.get(i+1).getP().y() )/ 2,
+		    											(structure.get(i-1).getP().z() + structure.get(i+1).getP().z() )/ 2 ));
+		    	}
+		    }
 		   
 		    return structure;
 		}
@@ -331,19 +251,36 @@ public class FileParser {
     		App.animate("Reading proteins structure data : ",currentPosition++,proteinsDB.size());
    
     		try{
-    			/***
-    			 *הקובץ שמופיע בבדיקה כאן הוא קובץ מאוד מסריח . הוא המקרה הכי קיצוני שכל הקואורדינטות צמודות אחת לשנייה
-    			 */		
-    			if(protein.getAstralID().equals("d2wtga_"))
-    			{
-        			structure = FileParser.ReadStructureDateFile(protein.getfolderIndex()+"\\"+protein.getFileName());
-        			
-    			}
-    			else
+    				
     				structure = FileParser.ReadStructureDateFile(protein.getfolderIndex()+"\\"+protein.getFileName());
-
+    				String aa = "";
+    				if(structure != null)
+    				{
+    						
+		    				//create the amino acid chain from the PDB file
+    						String t = "";
+    						try{
+		    				for(Structure s : structure)
+		    				{
+		    					t = s.getAminoAcid();
+		    					aa += App.aaStringToChar(t);
+		    				}
+    						}catch(Exception e )
+    						{
+    							System.out.println(protein.astralID);
+    							System.out.println(t);
+    						}
+		    				
+//		    				System.out.println(aa.equals(protein.getAminoAcids()));
+		    				protein.setAminoAcids(aa);
+//		    				if(!App.check(protein.getAminoAcids(), new ArrayList<Structure>(structure)))
+//		    					System.out.println(protein.getAstralID());
+		    				
+		    				protein.setAminoAcids(aa);
+    				}
 			}
 			catch(Exception e){
+				e.printStackTrace();
 				structure = null;
 				System.out.println(protein.astralID);
    			}

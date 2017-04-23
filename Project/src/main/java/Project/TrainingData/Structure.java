@@ -38,7 +38,7 @@ public class Structure implements Serializable
 		this.setAminoAcid(temp.getAminoAcid());
 		this.setType(temp.getType());
 		this.setIndex(temp.getIndex());
-		this.setP(new Point(temp.p));
+		this.setP(new Point(temp.getP()));
 		this.setResidueSequenceNumber(temp.getResidueSequenceNumber());
 	}
 	/***

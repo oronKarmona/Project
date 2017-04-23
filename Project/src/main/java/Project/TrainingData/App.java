@@ -17,7 +17,6 @@ import Table.TrainingData;
  */
 public class App 
 {
-	public static HashMap<Character,String> map ; 
 	public static void main( String[] args )
     {
 		ArrayList<Protein> proteinsDB;
@@ -95,31 +94,11 @@ public class App
 	 */
     public static boolean check(String aminoAcids , ArrayList<Structure> struct)
     {
-    	map = new HashMap<Character,String>();
-    	map.put('a', "ALA");
-    	map.put('r', "ARG");
-    	map.put('n', "ASN");
-    	map.put('d', "ASP");
-    	map.put('c', "CYS");
-    	map.put('e', "GLU");
-    	map.put('q', "GLN");
-    	map.put('g', "GLY");
-    	map.put('h', "HIS");
-    	map.put('i',"ILE");
-    	map.put('l',"LEU");
-    	map.put('k',"LYS");
-    	map.put('m',"MET");
-    	map.put('f',"PHE");
-    	map.put('p',"PRO");
-    	map.put('s',"SER");
-    	map.put('t',"THR");
-    	map.put('w',"TRP");
-    	map.put('y',"TYR");
-    	map.put('v',"VAL");
+    	
     	
     	for(Character c : aminoAcids.toCharArray())
     	{
-    		if(!map.get(c).equals(struct.get(0).getAminoAcid()))
+    		if(!c.equals(aaStringToChar(struct.get(0).getAminoAcid())))
     			return false;
     		
     		struct.remove(0);
@@ -127,6 +106,49 @@ public class App
 		return true;
     	
     }
+    
+    /**
+     * Convert 3 char amino acid representation to 1 char representation
+     * @param AminoAcid - 3 char amino acid
+     * @return - 1 char amino acid representation
+     */
+    public static char aaStringToChar(String AminoAcid)
+    {
+    	HashMap<String,Character> map = new HashMap<String,Character>();
+    	map.put("ALA",'a');
+    	map.put("ASX",'b');
+    	map.put("CYS",'c');
+    	map.put("ASP",'d');
+    	map.put("GLU",'e');
+    	map.put("PHE",'f');
+    	map.put("GLY",'g');
+    	map.put("HIS",'h');
+    	map.put("ILE",'i');
+    	map.put("XLE",'j');
+    	map.put("LYS",'k');
+    	map.put("LEU",'l');
+    	map.put("MET",'m');
+    	map.put("ASN",'n');
+    	map.put("PYL",'o');
+    	map.put("PRO",'p');
+    	map.put("GLN",'q');
+    	map.put("ARG",'r');
+    	map.put("SER",'s');
+    	map.put("THR",'t');
+    	map.put("SEC",'u');
+    	map.put("VAL",'v');
+    	map.put("TRP",'w');
+    	map.put("XAA",'x');
+    	map.put("TYR",'y');
+    	map.put("GLX",'z');
+    	map.put("UNK",'?'); // for unknown amino acid
+    	map.put("XXX",'_'); // for broken links in the protein
+    	
+    	return map.get(AminoAcid);
+    }
+    
+    
+    
     public static void checkAmino(ArrayList<Protein> proteinsDB)
     {
     	int diff = 0 , notEqual = 0 ;

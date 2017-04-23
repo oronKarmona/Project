@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Calculation.HammingCalculation;
 import Calculation.RMSDCalculation;
+import Table.TrainingData;
 import Table.TrainingDataEntry;
 
 public class BuildTrainningDataTheard extends Thread{
@@ -14,8 +15,9 @@ public class BuildTrainningDataTheard extends Thread{
 	private static final double threshold = 60;
 	private int m_startIndex;
 	private int m_endIndex;
-
-	public BuildTrainningDataTheard(ArrayList<Protein> proteinsDB, int startIndex,  int endIndex){
+	private int m_Threadindex; // to be used for progress bar
+	
+	public BuildTrainningDataTheard(ArrayList<Protein> proteinsDB, int startIndex,  int endIndex, int Threadindex){
 		try{
 			m_hammingCalculation = new HammingCalculation(100-threshold);
 		}
@@ -26,7 +28,7 @@ public class BuildTrainningDataTheard extends Thread{
 		m_endIndex= endIndex;
 		m_trainingData = new ArrayList<>();
 		m_proteinsDB = proteinsDB;
-		
+		m_Threadindex = Threadindex;
 		//init();
 		
 	}
@@ -46,8 +48,11 @@ public class BuildTrainningDataTheard extends Thread{
 		for(int i=m_startIndex ; i < m_endIndex ;i++)
 		{
 			initTable(m_proteinsDB.get(i));
+			
+			 TrainingData.UpdateProgress(i, this.m_Threadindex); // update progressbar
 		}
 	};
+	
 	private void initTable(Protein proteinToCompareTo)
 	{
 		int index = m_proteinsDB.indexOf(proteinToCompareTo);
@@ -58,6 +63,8 @@ public class BuildTrainningDataTheard extends Thread{
 		{
 	    protein= m_proteinsDB.get(p);
 		
+	   
+	    
 	    if(protein.getAminoAcids().length() > proteinToCompareTo.getAminoAcids().length()){
 	    	big = protein;
 	    	small = proteinToCompareTo;
