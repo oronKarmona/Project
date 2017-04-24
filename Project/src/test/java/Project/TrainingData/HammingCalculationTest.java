@@ -10,7 +10,7 @@ import Calculation.HammingCalculation;
  * @author Oron
  *
  */
-public class HammingDistanceTest {
+public class HammingCalculationTest {
 
 	HammingCalculation hd = null;
 	
