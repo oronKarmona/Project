@@ -41,7 +41,7 @@ public class TrainingData {
 				end = m_proteinsDB.size() ;
 			}
 			
-			pb.addThreadData(start, end - 1, i);
+			pb.addThreadData(start, end - 2, i);
 			
 			TheardList.add(new BuildTrainningDataTheard(m_proteinsDB,start,end,i));	
 		}
@@ -57,7 +57,10 @@ public class TrainingData {
 		catch(InterruptedException e){
 			e.printStackTrace();
 		}
-		System.out.println(TheardList.get(2).isAlive());
+		System.out.println("0 "+TheardList.get(0).isAlive());
+		System.out.println("1 "+TheardList.get(1).isAlive());
+		System.out.println("2 "+TheardList.get(2).isAlive());
+		System.out.println("2 "+TheardList.get(3).isAlive());
 		for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
 			TrainingData.addAll(buildTrainningDataTheard.GetTrainingData());			
 		}

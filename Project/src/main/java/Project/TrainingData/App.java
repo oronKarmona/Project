@@ -23,12 +23,12 @@ public class App
 		long startTime = System.currentTimeMillis();
 
 		//***************  init DB *****************************//
-		 
-		proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
-    	
-		//***************  save DB ******************************//
-		
-    	JSONhelper.WriteObject(proteinsDB); // writing the pdb as json file
+//		 
+//		proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
+//    	
+//		//***************  save DB ******************************//
+//		
+//    	JSONhelper.WriteObject(proteinsDB); // writing the pdb as json file
     	
 		//***************  read DB ******************************//
 
