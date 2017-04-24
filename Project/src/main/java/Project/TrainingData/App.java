@@ -31,7 +31,7 @@ public class App
     	JSONhelper.WriteObject(proteinsDB); // writing the pdb as json file
     	
 		//***************  read DB ******************************//
-
+    	
 	    proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
 		
 	    System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
@@ -76,7 +76,7 @@ public class App
      * @param currentPosition - current position from 0 to total 
      * @param totalNumber - the amount of data to be processed
      */
-	public synchronized static void animate(String status,double currentPosition,int totalNumber )
+	public  static void animate(String status,double currentPosition,int totalNumber )
 	{
 			
 			DecimalFormat df = new DecimalFormat("###.#");
