@@ -39,7 +39,10 @@ public class JSONhelper
 			try (Writer writer = new FileWriter("Output"+i+".json")) 
 			{
 			    Gson gson = new GsonBuilder().create();
+			    App.animate("Writing JSON files",i, division);
 			    gson.toJson(proteinsDB.subList(fromIndex,toIndex ), writer);
+			    
+			  
 			} catch (IOException e)
 			{
 				e.printStackTrace();

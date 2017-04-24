@@ -23,12 +23,12 @@ public class App
 		long startTime = System.currentTimeMillis();
 
 		//***************  init DB *****************************//
-//		 
-//		proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
-//    	
-//		//***************  save DB ******************************//
-//		
-//    	JSONhelper.WriteObject(proteinsDB); // writing the pdb as json file
+		 
+		proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
+    	
+		//***************  save DB ******************************//
+		
+    	JSONhelper.WriteObject(proteinsDB); // writing the pdb as json file
     	
 		//***************  read DB ******************************//
 
@@ -76,7 +76,7 @@ public class App
      * @param currentPosition - current position from 0 to total 
      * @param totalNumber - the amount of data to be processed
      */
-	public static void animate(String status,double currentPosition,int totalNumber )
+	public synchronized static void animate(String status,double currentPosition,int totalNumber )
 	{
 			
 			DecimalFormat df = new DecimalFormat("###.#");
@@ -148,7 +148,10 @@ public class App
     }
     
     
-    
+    /***
+     * Verifying the amino acid to its structure
+     * @param proteinsDB
+     */
     public static void checkAmino(ArrayList<Protein> proteinsDB)
     {
     	int diff = 0 , notEqual = 0 ;

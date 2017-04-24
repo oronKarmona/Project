@@ -12,9 +12,20 @@ package Calculation;
 public class HammingCalculation implements Cloneable
 {
 
+	/***
+	 * Threshold for the Hamming calculation 
+	 */
 	private double m_threshold;
-	private static int m_error;
+	/***
+	 * The error value for the calculation
+	 */
+	private static int m_error; // (1 - threshold) in percent representation 
 
+	/***
+	 * constructor
+	 * @param threshold - defined by user
+	 * @throws Exception
+	 */
 	public HammingCalculation(double threshold) throws Exception{
 		
 		if(threshold<0)
@@ -25,6 +36,12 @@ public class HammingCalculation implements Cloneable
 	    m_error = (int) Math.round((m_threshold/100)*20);
 
 	}
+	/***
+	 * Calculating the hamming distance between 2 different protein strings
+	 * @param protein1 - String 1  
+	 * @param protein2 - String 2 
+	 * @return - if the hamming distance is below threshold return false, true otherwise
+	 */
 	public boolean Calculate(String protein1 ,String protein2){
 		
 	    validateInputs(protein1, protein2);
@@ -40,11 +57,21 @@ public class HammingCalculation implements Cloneable
 	    return checkThreshold(hammingDistance);
 	}
 	
+	/***
+	 * Checking the length of the Strings
+	 * @param s1 - String 1 
+	 * @param s2 - String 2 
+	 */
 	private void validateInputs(String s1, String s2) {
 	    if (s1.length() != s2.length()) {
 	      throw new IllegalArgumentException();
 	    }
 	}
+	/***
+	 * Checking the validation of the threshold
+	 * @param hammingDistance - threshold defined
+	 * @return - true if legal and false otherwise
+	 */
 	private boolean checkThreshold(int hammingDistance) {
 		if(hammingDistance > m_error){
 			return false;
@@ -52,6 +79,9 @@ public class HammingCalculation implements Cloneable
 		return true;
 	}
 	
+	/***
+	 * Cloning the object
+	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}

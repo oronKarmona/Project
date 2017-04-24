@@ -6,12 +6,32 @@ import GUI.ProgressBar;
 import Project.TrainingData.BuildTrainningDataTheard;
 import Project.TrainingData.Protein;
 
+/***
+ * This class purpose is to manage the training data calculation
+ * @author Oron
+ *
+ */
 public class TrainingData {
-	
+	/***
+	 * Protein DB after the filtering 
+	 */
 	public static ArrayList<Protein> m_proteinsDB;
+	/***
+	 * Training data details
+	 */
 	public static ArrayList<TrainingDataEntry> TrainingData;
+	/***
+	 * progress bar for visualising the progress of each thread
+	 */
 	private static ProgressBar pb ;
+	/***
+	 * Number of threads assigned to the calculation
+	 */
 	private final int theardNum = 4;
+	/***
+	 * Constructor
+	 * @param proteinsDB - protein DB after filtering
+	 */
 	public TrainingData(ArrayList<Protein> proteinsDB){
 		
 		TrainingData = new ArrayList<>();
@@ -19,7 +39,9 @@ public class TrainingData {
 		initTraningData();
 	}
 
-	
+	/***
+	 * This method will initiate the Threads to calculate the training data
+	 */
 	private void initTraningData() {
 		long startTime = System.currentTimeMillis();
 		long endTime ; 
