@@ -69,7 +69,7 @@ public class HammingCalculation implements Cloneable
 	}
 	/***
 	 * Checking the validation of the threshold
-	 * @param hammingDistance - threshold defined
+	 * @param hammingDistance - result of the calculation
 	 * @return - true if legal and false otherwise
 	 */
 	private boolean checkThreshold(int hammingDistance) {
