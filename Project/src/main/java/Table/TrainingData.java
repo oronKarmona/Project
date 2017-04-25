@@ -27,7 +27,7 @@ public class TrainingData {
 	/***
 	 * Number of threads assigned to the calculation
 	 */
-	private final int theardNum = 4;
+	private final int theardNum = 16;
 	/***
 	 * Constructor
 	 * @param proteinsDB - protein DB after filtering
