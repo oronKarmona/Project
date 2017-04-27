@@ -1,8 +1,15 @@
 package Table;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import GUI.ProgressBar;
+import Project.TrainingData.App;
 import Project.TrainingData.BuildTrainningDataTheard;
 import Project.TrainingData.Protein;
 
@@ -27,7 +34,7 @@ public class TrainingData {
 	/***
 	 * Number of threads assigned to the calculation
 	 */
-	private final int theardNum = 16;
+	private int threadNum;
 	/***
 	 * Constructor
 	 * @param proteinsDB - protein DB after filtering
@@ -36,6 +43,7 @@ public class TrainingData {
 		
 		TrainingData = new ArrayList<>();
 		m_proteinsDB = proteinsDB;
+		threadNum = Runtime.getRuntime().availableProcessors();
 		initTraningData();
 	}
 
@@ -46,19 +54,19 @@ public class TrainingData {
 		long startTime = System.currentTimeMillis();
 		long endTime ; 
 		pb = new ProgressBar("Training Data Calculation");
-		
+
 		ArrayList<BuildTrainningDataTheard> TheardList = new ArrayList<>();
 		
-		int threadDiv = Math.round(m_proteinsDB.size()/theardNum);
+		int threadDiv = Math.round(m_proteinsDB.size()/threadNum);
 		int start, end;
 		
-		for(int i = 0; i< theardNum; i++)
+		for(int i = 0; i< threadNum; i++)
 		{
 			
 			start= i*threadDiv;
 			end =  threadDiv + start;
 			
-			if(i == theardNum -1) // last thread takes the reminder 
+			if(i == threadNum -1) // last thread takes the reminder 
 			{
 				end = m_proteinsDB.size() ;
 			}
@@ -92,6 +100,18 @@ public class TrainingData {
 		endTime = System.currentTimeMillis();
 		long totalTime = (endTime  - startTime ) /(1000 * 60);
 		System.out.println("Total calculation time: " + totalTime + " minutes");
+		
+		try (Writer writer = new FileWriter("TrainingData.json")) 
+		{
+		    Gson gson = new GsonBuilder().create();
+		    
+		    gson.toJson(TrainingData, writer);
+		    
+		  
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 		
 	}
 	/***
