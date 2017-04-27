@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+import Calculation.NeighborsHelper;
 import Table.TrainingData;
 
 
@@ -17,6 +18,7 @@ import Table.TrainingData;
  */
 public class App 
 {
+	
 	public static void main( String[] args )
     {
 		ArrayList<Protein> proteinsDB;

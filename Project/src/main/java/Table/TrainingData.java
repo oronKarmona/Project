@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import Calculation.NeighborsHelper;
 import GUI.ProgressBar;
 import Project.TrainingData.App;
 import Project.TrainingData.BuildTrainningDataTheard;
@@ -35,13 +36,15 @@ public class TrainingData {
 	 * Number of threads assigned to the calculation
 	 */
 	private int threadNum;
+		
 	/***
 	 * Constructor
 	 * @param proteinsDB - protein DB after filtering
 	 */
+	
 	public TrainingData(ArrayList<Protein> proteinsDB){
 		
-		TrainingData = new ArrayList<>();
+		TrainingData = new ArrayList<>();		
 		m_proteinsDB = proteinsDB;
 		threadNum = Runtime.getRuntime().availableProcessors();
 		initTraningData();

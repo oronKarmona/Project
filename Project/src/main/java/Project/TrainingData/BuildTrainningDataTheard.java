@@ -86,8 +86,6 @@ public class BuildTrainningDataTheard extends Thread{
 																j);
 			
 			dataEntry.setRMSDResult(RMSDCalculation.Calculate(big.getFragmentCoordinates(i),small.getFragmentCoordinates(j)));
-			//System.out.println(dataEntry.getRMSDResult());
-			//dataEntry.setWeightFunctionResult = WeightFunctionCalculation.Calculate();
 			
 			m_trainingData.add(dataEntry);
 			}
