@@ -101,17 +101,17 @@ public class TrainingData {
 		long totalTime = (endTime  - startTime ) /(1000 * 60);
 		System.out.println("Total calculation time: " + totalTime + " minutes");
 		
-		try (Writer writer = new FileWriter("TrainingData.json")) 
-		{
-		    Gson gson = new GsonBuilder().create();
-		    
-		    gson.toJson(TrainingData, writer);
-		    
-		  
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+//		try (Writer writer = new FileWriter("TrainingData.json")) 
+//		{
+//		    Gson gson = new GsonBuilder().create();
+//		    
+//		    gson.toJson(TrainingData, writer);
+//		    
+//		  
+//		} catch (IOException e)
+//		{
+//			e.printStackTrace();
+//		}
 		
 	}
 	/***

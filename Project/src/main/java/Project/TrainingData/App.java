@@ -24,11 +24,11 @@ public class App
 
 		//***************  init DB *****************************//
 		 
-	//	proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
+		//proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
     	
 		//***************  save DB ******************************//
 		
-    //	JSONhelper.WriteObject(proteinsDB); // writing the pdb as json file
+    	//JSONhelper.WriteObject(proteinsDB); // writing the pdb as json file
     	
 		//***************  read DB ******************************//
     	
