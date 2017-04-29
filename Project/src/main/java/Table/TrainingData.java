@@ -35,6 +35,9 @@ public class TrainingData {
 	 * Number of threads assigned to the calculation
 	 */
 	private int threadNum;
+	
+	private static int LastRead = 0 ;
+	private static boolean firstTime = true;
 	/***
 	 * Constructor
 	 * @param proteinsDB - protein DB after filtering
@@ -58,22 +61,28 @@ public class TrainingData {
 		ArrayList<BuildTrainningDataTheard> TheardList = new ArrayList<>();
 		
 		int threadDiv = Math.round(m_proteinsDB.size()/threadNum);
-		int start, end;
+		int start = 0 , end = 0 ;
 		
-		for(int i = 0; i< threadNum; i++)
+//		for(int i = 0; i< threadNum; i++)
+//		{
+//			
+//			start= i*threadDiv;
+//			end =  threadDiv + start;
+//			
+//			if(i == threadNum -1) // last thread takes the reminder 
+//			{
+//				end = m_proteinsDB.size() ;
+//			}
+//			
+//			pb.addThreadData(start, end - 2, i);
+//			
+//			TheardList.add(new BuildTrainningDataTheard(m_proteinsDB,start,end,i));	
+//		}
+		pb.addThreadData(0,m_proteinsDB.size(),-1);
+		for(int i = 0 ; i < threadNum ; i++)
 		{
-			
-			start= i*threadDiv;
-			end =  threadDiv + start;
-			
-			if(i == threadNum -1) // last thread takes the reminder 
-			{
-				end = m_proteinsDB.size() ;
-			}
-			
-			pb.addThreadData(start, end - 2, i);
-			
 			TheardList.add(new BuildTrainningDataTheard(m_proteinsDB,start,end,i));	
+			pb.addThreadData(0,m_proteinsDB.size() - 2 , i);
 		}
 		System.out.println("Starting Training data calculation");
 		for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
@@ -87,31 +96,27 @@ public class TrainingData {
 		catch(InterruptedException e){
 			e.printStackTrace();
 		}
-		System.out.println("0 "+TheardList.get(0).isAlive());
-		System.out.println("1 "+TheardList.get(1).isAlive());
-		System.out.println("2 "+TheardList.get(2).isAlive());
-		System.out.println("2 "+TheardList.get(3).isAlive());
+	
 		for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
 			TrainingData.addAll(buildTrainningDataTheard.GetTrainingData());			
 		}
 		
 		System.out.println(TrainingData.size());
-		
 		endTime = System.currentTimeMillis();
 		long totalTime = (endTime  - startTime ) /(1000 * 60);
 		System.out.println("Total calculation time: " + totalTime + " minutes");
 		
-//		try (Writer writer = new FileWriter("TrainingData.json")) 
-//		{
-//		    Gson gson = new GsonBuilder().create();
-//		    
-//		    gson.toJson(TrainingData, writer);
-//		    
-//		  
-//		} catch (IOException e)
-//		{
-//			e.printStackTrace();
-//		}
+		try (Writer writer = new FileWriter("TrainingData.json")) 
+		{
+		    Gson gson = new GsonBuilder().create();
+		    
+		    gson.toJson(TrainingData, writer);
+		    
+		  
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 		
 	}
 	/***
@@ -122,5 +127,33 @@ public class TrainingData {
 	public  static synchronized void UpdateProgress(int progress , int Threadindex)	
 	{
 		pb.setData(progress , Threadindex);
+	}
+	
+	public static synchronized void ResetProgress(int ThreadIndex)
+	{
+		pb.resetData(ThreadIndex);
+	}
+	
+	
+	public static synchronized int IndexForThread()
+	{
+		
+		if(LastRead == m_proteinsDB.size() - 1)
+			return - 1 ;
+		
+		if(!firstTime)
+			LastRead++;
+		
+		if(LastRead  == 0 )
+			firstTime = false;
+		
+	
+		System.out.println(LastRead);
+		pb.setNumericProgress(LastRead + 1);
+		pb.setData(LastRead + 1,-1); // total progress bar
+		
+		
+		return LastRead; 
+		
 	}
 }

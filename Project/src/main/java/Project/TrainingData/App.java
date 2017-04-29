@@ -33,7 +33,6 @@ public class App
     	//JSONhelper.WriteObject(proteinsDB); // writing the pdb as json file
     	
 		//***************  read DB ******************************//
-    	
 	    proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
 		
 	    System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
@@ -46,7 +45,7 @@ public class App
 	    TrainingData trainingData = new TrainingData(proteinsDB);
 	    
 		//***************  Hamming ******************************//
-	    	
+	    System.exit(0);
 
     }
 	

@@ -38,6 +38,7 @@ public class BuildTrainningDataTheard extends Thread{
 		for(int i=m_startIndex ; i < m_endIndex ;i++)
 		{
 			initTable(m_proteinsDB.get(i));
+			
 		}
 		
 	}
@@ -45,13 +46,20 @@ public class BuildTrainningDataTheard extends Thread{
 	@Override 
 	public void run() {
 		
-		for(int i=m_startIndex ; i < m_endIndex ;i++)
+//		for(int i=m_startIndex ; i < m_endIndex ;i++)
+//		{
+//			initTable(m_proteinsDB.get(i));
+//			
+//			 TrainingData.UpdateProgress(i, this.m_Threadindex); // update progressbar
+//		}
+		int i ; 
+		while( ( i = TrainingData.IndexForThread() ) != -1)
 		{
+			TrainingData.ResetProgress(m_Threadindex);
 			initTable(m_proteinsDB.get(i));
-			
-			 TrainingData.UpdateProgress(i, this.m_Threadindex); // update progressbar
 		}
-	};
+		
+	}
 	
 	private void initTable(Protein proteinToCompareTo)
 	{
@@ -96,6 +104,7 @@ public class BuildTrainningDataTheard extends Thread{
 			
 		}
 		}
+	    TrainingData.UpdateProgress(p, m_Threadindex);
 		}
 		
 		
