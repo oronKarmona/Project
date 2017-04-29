@@ -3,7 +3,10 @@ package Table;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -137,7 +140,9 @@ public class TrainingData {
 	
 	public static synchronized int IndexForThread()
 	{
-		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
 		if(LastRead == m_proteinsDB.size() - 1)
 			return - 1 ;
 		
