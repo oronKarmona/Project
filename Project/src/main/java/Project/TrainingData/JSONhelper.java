@@ -26,9 +26,9 @@ public class JSONhelper
 	 * Writing the input Object to Json file\files
 	 * @param proteinsDB - object to be written
 	 */
-	public static void WriteObject(ArrayList<Protein> proteinsDB)
+	public static void WriteObject(ArrayList<Object> proteinsDB,int division,String name)
 	{
-		int division = 20 ; 
+		
 		for(int i = 0 ; i < division ; i ++ )
 		{
 			int fromIndex = (proteinsDB.size()/division)*i;
@@ -36,7 +36,7 @@ public class JSONhelper
 			if(i == division - 1 ) // write to the end of the list in the last iteration
 				toIndex = proteinsDB.size();
 			
-			try (Writer writer = new FileWriter("Output"+i+".json")) 
+			try (Writer writer = new FileWriter(name+i+".json")) 
 			{
 			    Gson gson = new GsonBuilder().create();
 			    App.animate("Writing JSON files",i, division);
@@ -58,15 +58,17 @@ public class JSONhelper
 	public static ArrayList<Protein> ReadJsonFile()
 	{
 		 JSONParser parser = new JSONParser();
-		 
+		 ArrayList<Protein> proteinsDB  = new ArrayList<Protein>();
 	        try {
 	        	
-	        	
-	            Object obj = parser.parse(new FileReader("Output0.json"));
-	 
-	            JSONArray jsonArray = (JSONArray) obj;
-	            
-	            ArrayList<Protein> proteinsDB =  new Gson().fromJson(jsonArray.toJSONString(),new TypeToken<ArrayList<Protein>>(){}.getType());
+	        	for(int i = 0 ; i < 20 ; i ++)
+	        	{
+		            Object obj = parser.parse(new FileReader("Output"+i+".json"));
+		 
+		            JSONArray jsonArray = (JSONArray) obj;
+		            
+		             proteinsDB.addAll((ArrayList<Protein> )new Gson().fromJson(jsonArray.toJSONString(),new TypeToken<ArrayList<Protein>>(){}.getType()))  ;
+	        	}
 	            return proteinsDB;
 	        } catch (Exception e) {
 	            e.printStackTrace();
