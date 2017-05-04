@@ -57,7 +57,7 @@ public class TrainingData {
 		m_proteinsDB = proteinsDB;
 		threadNum = Runtime.getRuntime().availableProcessors();
 		
-		//initDB();
+		initDB();
 		initTraningData();
 	}
 
@@ -79,7 +79,7 @@ public class TrainingData {
 		pb.addThreadData(0,m_proteinsDB.size(),-1);
 		for(int i = 0 ; i < threadNum ; i++)
 		{
-			TheardList.add(new BuildTrainningDataTheard(m_proteinsDB, i));
+			TheardList.add(new BuildTrainningDataTheard(m_proteinsDB, i,elasticSearchService));
 			pb.addThreadData(0,m_proteinsDB.size() - 2 , i);
 		}
 		System.out.println("Starting Training data calculation");
@@ -134,7 +134,7 @@ public class TrainingData {
 		
 		if(LastRead  == 0 )
 			firstTime = false;
-		
+
 	
 		System.out.println(LastRead);
 		pb.setNumericProgress(LastRead + 1);

@@ -3,48 +3,67 @@ package DB;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.NoNodeAvailableException;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+
+import Table.TrainingDataEntry;
+
+import static org.elasticsearch.common.xcontent.XContentFactory.*;
 public class ElasticSearchService
 {
-//
-//	private static Long index = (long) 0;
-//	private Client client = null;
-//	
-//	public ElasticSearchService(){
-//	
-//
-//		try {
-//			client = TransportClient.builder().build()
-//					   .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
-//		} catch (UnknownHostException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			throw new NoNodeAvailableException("[ElasticSearchServiceImpl]: Error occurred while creating DB");
-//		}
-//		
-//	
-//	}
-//	public Client getClient() {
-//		return client;
-//	}
-//	
-//	/**
-//	 * Method to add document
-//	 *
-//	 * @param cardId
-//	 *            - unique identifier
-//	 * @param shopperData
-//	 *            - JSON of {@link ShopperCard}
-//	 */
-//	public synchronized void add(String TrainingData) {
-//	     try 
-//	     {	 
-//			getClient().prepareIndex("search.index.name","search. index type",index.toString()).	
-//					setSource(TrainingData).setRefresh(true).execute().actionGet();
-//		 }catch (Exception e) {
-//	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");
-//	     }
-//	     index++;
-//	}
+
+	private static Long index = (long) 1;
+	private TransportClient client = null;
+	private Gson gson = null;
+
+	
+	@SuppressWarnings("resource")
+	public ElasticSearchService(){
+
+		try {
+			client = new PreBuiltTransportClient(Settings.EMPTY)
+			        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new NoNodeAvailableException("[ElasticSearchServiceImpl]: Error occurred while creating DB");
+		}
+		gson = new Gson();
+	
+	}
+	public TransportClient getClient() {
+		return client;
+	}
+	
+	
+	
+	/**
+	 * Method to add document
+	 *
+	 * @param cardId
+	 *            - unique identifier
+	 * @param shopperData
+	 *            - JSON of {@link ShopperCard}
+	 */
+	@SuppressWarnings("deprecation")
+	public synchronized void add(TrainingDataEntry trainingDataEntry) {
+	     try 
+	     {	 
+	    	 IndexResponse response = client.prepareIndex("proteins", "trainingdata", index+"")
+	    			 .setSource(gson.toJson(trainingDataEntry)).get();
+		 }catch (Exception e) {
+	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");
+	     }
+	     index++;
+	}
 //	
 //	/**
 //	* Method to update document
