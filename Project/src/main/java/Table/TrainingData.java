@@ -3,6 +3,8 @@ package Table;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.Date;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import DB.ElasticSearchService;
 import GUI.ProgressBar;
 import Project.TrainingData.App;
 import Project.TrainingData.BuildTrainningDataTheard;
@@ -45,12 +48,22 @@ public class TrainingData {
 	 * Constructor
 	 * @param proteinsDB - protein DB after filtering
 	 */
+	
+	public static ElasticSearchService elasticSearchService;
+	
 	public TrainingData(ArrayList<Protein> proteinsDB){
 		
 		TrainingData = new ArrayList<>();
 		m_proteinsDB = proteinsDB;
 		threadNum = Runtime.getRuntime().availableProcessors();
+		
+		//initDB();
 		initTraningData();
+	}
+
+	private void initDB() {
+
+		elasticSearchService = new ElasticSearchService();
 	}
 
 	/***
@@ -62,29 +75,11 @@ public class TrainingData {
 		pb = new ProgressBar("Training Data Calculation");
 
 		ArrayList<BuildTrainningDataTheard> TheardList = new ArrayList<>();
-		
-		int threadDiv = Math.round(m_proteinsDB.size()/threadNum);
-		int start = 0 , end = 0 ;
-		
-//		for(int i = 0; i< threadNum; i++)
-//		{
-//			
-//			start= i*threadDiv;
-//			end =  threadDiv + start;
-//			
-//			if(i == threadNum -1) // last thread takes the reminder 
-//			{
-//				end = m_proteinsDB.size() ;
-//			}
-//			
-//			pb.addThreadData(start, end - 2, i);
-//			
-//			TheardList.add(new BuildTrainningDataTheard(m_proteinsDB,start,end,i));	
-//		}
+				
 		pb.addThreadData(0,m_proteinsDB.size(),-1);
 		for(int i = 0 ; i < threadNum ; i++)
 		{
-			TheardList.add(new BuildTrainningDataTheard(m_proteinsDB,start,end,i));	
+			TheardList.add(new BuildTrainningDataTheard(m_proteinsDB, i));
 			pb.addThreadData(0,m_proteinsDB.size() - 2 , i);
 		}
 		System.out.println("Starting Training data calculation");
@@ -100,27 +95,15 @@ public class TrainingData {
 			e.printStackTrace();
 		}
 	
-		for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
-			TrainingData.addAll(buildTrainningDataTheard.GetTrainingData());			
-		}
+//		for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
+//			TrainingData.addAll(buildTrainningDataTheard.GetTrainingData());			
+//		}
 		
 		System.out.println(TrainingData.size());
 		endTime = System.currentTimeMillis();
 		long totalTime = (endTime  - startTime ) /(1000 * 60);
 		System.out.println("Total calculation time: " + totalTime + " minutes");
-		
-		try (Writer writer = new FileWriter("TrainingData.json")) 
-		{
-		    Gson gson = new GsonBuilder().create();
-		    
-		    gson.toJson(TrainingData, writer);
-		    
-		  
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		
+
 	}
 	/***
 	 * Updating the progress bar for specific thread

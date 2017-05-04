@@ -13,45 +13,28 @@ public class BuildTrainningDataTheard extends Thread{
 	private ArrayList<TrainingDataEntry> m_trainingData;
 	private HammingCalculation m_hammingCalculation;
 	private static final double threshold = 60;
-	private int m_startIndex;
-	private int m_endIndex;
+
 	private int m_Threadindex; // to be used for progress bar
 	
-	public BuildTrainningDataTheard(ArrayList<Protein> proteinsDB, int startIndex,  int endIndex, int Threadindex){
+	public BuildTrainningDataTheard(ArrayList<Protein> proteinsDB, int Threadindex)
+	{
 		try{
 			m_hammingCalculation = new HammingCalculation(100-threshold);
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		m_startIndex = startIndex;
-		m_endIndex= endIndex;
+
 		m_trainingData = new ArrayList<>();
 		m_proteinsDB = proteinsDB;
 		m_Threadindex = Threadindex;
-		//init();
 		
 	}
-	public void init() {
-		
-		
-		for(int i=m_startIndex ; i < m_endIndex ;i++)
-		{
-			initTable(m_proteinsDB.get(i));
-			
-		}
-		
-	}
+
 
 	@Override 
 	public void run() {
 		
-//		for(int i=m_startIndex ; i < m_endIndex ;i++)
-//		{
-//			initTable(m_proteinsDB.get(i));
-//			
-//			 TrainingData.UpdateProgress(i, this.m_Threadindex); // update progressbar
-//		}
 		int i ; 
 		while( ( i = TrainingData.IndexForThread() ) != -1)
 		{
