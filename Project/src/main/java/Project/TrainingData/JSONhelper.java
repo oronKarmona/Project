@@ -26,7 +26,7 @@ public class JSONhelper
 	 * Writing the input Object to Json file\files
 	 * @param proteinsDB - object to be written
 	 */
-	public static void WriteObject(ArrayList<Object> proteinsDB,int division,String name)
+	public static void WriteObject(ArrayList<Protein> proteinsDB,int division,String name)
 	{
 		
 		for(int i = 0 ; i < division ; i ++ )
