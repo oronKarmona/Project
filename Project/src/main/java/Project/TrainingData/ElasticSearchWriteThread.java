@@ -26,7 +26,8 @@ public class ElasticSearchWriteThread extends Thread
 		while( (p = TrainingData.getEntry()) != null )
 		{
 			es.add(p); 
-			System.out.println(String.format("Saved to db %d / %d",ctr,TrainingData.TrainingData.size()));
+			if(ctr%100 == 0)
+				System.out.println(String.format("Saved to db %d / %d",ctr,TrainingData.TrainingData.size()));
 			ctr++;
 		}
 	}
