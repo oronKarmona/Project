@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.client.node.NodeClient;
 import org.elasticsearch.client.transport.NoNodeAvailableException;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
@@ -29,8 +30,14 @@ public class ElasticSearchService
 	public ElasticSearchService(){
 
 		try {
-			client = new PreBuiltTransportClient(Settings.EMPTY)
+			Settings settings = Settings.builder()
+			        .put("cluster.name", "elasticsearch")
+			        .put("client.transport.sniff", true)
+			        .build();
+		
+			client = new PreBuiltTransportClient(settings)
 			        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -39,9 +46,9 @@ public class ElasticSearchService
 		gson = new Gson();
 	
 	}
-	public TransportClient getClient() {
-		return client;
-	}
+//	public TransportClient getClient() {
+//		return client;
+//	}
 	
 	
 	
@@ -57,7 +64,7 @@ public class ElasticSearchService
 	public synchronized void add(TrainingDataEntry trainingDataEntry) {
 	     try 
 	     {	 
-	    	 IndexResponse response = client.prepareIndex("proteins", "trainingdata", index+"")
+	    	IndexResponse response = client.prepareIndex("proteins", "trainingdata", index+"")
 	    			 .setSource(gson.toJson(trainingDataEntry)).get();
 		 }catch (Exception e) {
 	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");

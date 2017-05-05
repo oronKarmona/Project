@@ -1,4 +1,7 @@
 package Table;
+
+import java.io.Serializable;
+
 /***
  * 
  * @author ליטף
@@ -6,7 +9,7 @@ package Table;
  * abstract class representing an entry in all tables
  * 
  */
-public abstract class TableEntry {
+public abstract class TableEntry implements Serializable{
 	
 	public int getFirstProteinIndex() {
 		return firstProteinIndex;
