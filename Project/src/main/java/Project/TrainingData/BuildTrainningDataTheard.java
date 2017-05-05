@@ -43,6 +43,7 @@ public class BuildTrainningDataTheard extends Thread{
 			TrainingData.ResetProgress(m_Threadindex);
 			initTable(m_proteinsDB.get(i));
 		}
+		TrainingData.updateBarrier();
 		
 	}
 	
@@ -79,8 +80,8 @@ public class BuildTrainningDataTheard extends Thread{
 																j);
 			
 			dataEntry.setRMSDResult(RMSDCalculation.Calculate(big.getFragmentCoordinates(i),small.getFragmentCoordinates(j)));
-			
-			m_elasticSearchService.add(dataEntry);
+			TrainingData.addToWriteQue(dataEntry);
+			//m_elasticSearchService.add(dataEntry);
 			//m_trainingData.add(dataEntry);
 			}
 //			else{

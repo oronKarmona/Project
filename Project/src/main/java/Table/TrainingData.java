@@ -17,6 +17,7 @@ import DB.ElasticSearchService;
 import GUI.ProgressBar;
 import Project.TrainingData.App;
 import Project.TrainingData.BuildTrainningDataTheard;
+import Project.TrainingData.ElasticSearchWriteThread;
 import Project.TrainingData.Protein;
 
 /***
@@ -41,8 +42,10 @@ public class TrainingData {
 	 * Number of threads assigned to the calculation
 	 */
 	private int threadNum;
-	
+	ElasticSearchWriteThread btt = null;
+	private static boolean firstT = true;
 	private static int LastRead = 0 ;
+	private static int barrier = 0 ;
 	private static boolean firstTime = true;
 	/***
 	 * Constructor
@@ -55,9 +58,10 @@ public class TrainingData {
 		
 		TrainingData = new ArrayList<>();
 		m_proteinsDB = proteinsDB;
-		threadNum = Runtime.getRuntime().availableProcessors();
+		threadNum = Runtime.getRuntime().availableProcessors() - 1;
 		
 		initDB();
+		btt = new ElasticSearchWriteThread(elasticSearchService);
 		initTraningData();
 	}
 
@@ -86,10 +90,12 @@ public class TrainingData {
 		for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
 			buildTrainningDataTheard.start();			
 			}
+		btt.start();
 		try{
 			for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
 				buildTrainningDataTheard.join();
 				}
+			btt.join();
 		}
 		catch(InterruptedException e){
 			e.printStackTrace();
@@ -143,5 +149,45 @@ public class TrainingData {
 		
 		return LastRead; 
 		
+	}
+	
+	
+	public static synchronized void addToWriteQue(TrainingDataEntry d )
+	{
+		synchronized(TrainingData)
+		{
+			
+				TrainingData.notify();
+		
+		}
+			
+		TrainingData.add(d);
+	}
+	
+	public static TrainingDataEntry getEntry()
+	{
+		if(TrainingData.isEmpty() &&  (Runtime.getRuntime().availableProcessors() - 1 != barrier))
+		{
+			synchronized(TrainingData)
+			{
+				try {
+					TrainingData.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		else if(Runtime.getRuntime().availableProcessors() - 1 == barrier && TrainingData.isEmpty())
+			return null;
+			
+		
+		return TrainingData.remove(0);
+		
+	}
+	
+	public static synchronized  void updateBarrier()
+	{
+		barrier++;
 	}
 }
