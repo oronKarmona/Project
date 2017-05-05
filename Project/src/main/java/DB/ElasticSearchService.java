@@ -1,5 +1,5 @@
 package DB;
-
+//https://medium.com/@adnanxteam/how-to-install-elasticsearch-5-and-kibana-on-homestead-vagrant-60ea757ff8c7
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -20,7 +20,7 @@ import Table.TrainingDataEntry;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
 public class ElasticSearchService
 {
-
+	
 	private static Long index = (long) 1;
 	private TransportClient client = null;
 	private Gson gson = null;
