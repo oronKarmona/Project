@@ -25,14 +25,14 @@ public class App
 		long startTime = System.currentTimeMillis();
 
 		//***************  init DB *****************************//
-		 
-		//proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
-    	
-		//***************  save DB ******************************//
-		
-    	//JSONhelper.WriteObject(proteinsDB); // writing the pdb as json file
-    	
-		//***************  read DB ******************************//
+//		 
+//		proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
+//    	
+//		//***************  save DB ******************************//
+//		
+//    	JSONhelper.WriteObject(proteinsDB,20,"Output"); // writing the pdb as json file
+//    	
+//		//***************  read DB ******************************//
 	    proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
 		
 	    System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
@@ -162,7 +162,7 @@ public class App
     		{
     		if(p.getAstralID().equals("d1ux8a_"))
     			System.out.print("dsg");
-    		if(!App.check(p.getAminoAcids(), new ArrayList<Structure>(p.structure)))
+    		if(!App.check(p.getAminoAcids(), new ArrayList<Structure>(p.getStructure())))
     			System.out.println(p.getAstralID());   // if an aminoacid is different than the structural data
     			diff++;
     		}

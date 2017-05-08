@@ -106,15 +106,15 @@ public class ProgressBar extends JFrame{
 	 */
 	public  void  setData(int data,int index)
 	{
-		if(pbThreads.size() < index || pbThreads.isEmpty())
-		{
-			System.out.println("Index value cannot exceed the size of the Progress bar ArrayList size");
-			return ;
-		}
+//		if(pbThreads.size() < index || pbThreads.isEmpty())
+//		{
+//			System.out.println("Index value cannot exceed the size of the Progress bar ArrayList size");
+//			return ;
+//		}
 		if(index == -1 )
 			TotalProgress.setValue(data);
-		else
-			pbThreads.get(index).setValue(data);
+//		else
+//			pbThreads.get(index).setValue(data);
 	}
 	
 	/***

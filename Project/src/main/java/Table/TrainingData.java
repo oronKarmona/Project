@@ -58,7 +58,7 @@ public class TrainingData {
 		
 		TrainingData = new ArrayList<>();
 		m_proteinsDB = proteinsDB;
-		threadNum = Runtime.getRuntime().availableProcessors() - 1;
+		threadNum = Runtime.getRuntime().availableProcessors();
 		
 		initDB();
 		btt = new ElasticSearchWriteThread(elasticSearchService);
@@ -84,26 +84,26 @@ public class TrainingData {
 		for(int i = 0 ; i < threadNum ; i++)
 		{
 			TheardList.add(new BuildTrainningDataTheard(m_proteinsDB, i,elasticSearchService));
-			pb.addThreadData(0,m_proteinsDB.size() - 2 , i);
+		//	pb.addThreadData(0,m_proteinsDB.size() - 2 , i);
 		}
 		System.out.println("Starting Training data calculation");
 		for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
 			buildTrainningDataTheard.start();			
 			}
-		btt.start();
+		//btt.start();
 		try{
 			for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
 				buildTrainningDataTheard.join();
 				}
-			btt.join();
+		//	btt.join();
 		}
 		catch(InterruptedException e){
 			e.printStackTrace();
 		}
 	
-//		for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
-//			TrainingData.addAll(buildTrainningDataTheard.GetTrainingData());			
-//		}
+		for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
+			TrainingData.addAll(buildTrainningDataTheard.GetTrainingData());			
+		}
 		
 		System.out.println(TrainingData.size());
 		endTime = System.currentTimeMillis();
@@ -116,15 +116,15 @@ public class TrainingData {
 	 * @param progress - the progress that updated
 	 * @param Threadindex - index of the thread to be updated
 	 */
-	public  static synchronized void UpdateProgress(int progress , int Threadindex)	
-	{
-		pb.setData(progress , Threadindex);
-	}
-	
-	public static synchronized void ResetProgress(int ThreadIndex)
-	{
-		pb.resetData(ThreadIndex);
-	}
+//	public  static synchronized void UpdateProgress(int progress , int Threadindex)	
+//	{
+//		pb.setData(progress , Threadindex);
+//	}
+//	
+//	public static synchronized void ResetProgress(int ThreadIndex)
+//	{
+//		pb.resetData(ThreadIndex);
+//	}
 	
 	
 	public static synchronized int IndexForThread()
@@ -132,10 +132,12 @@ public class TrainingData {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
 		System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
-		if(LastRead == m_proteinsDB.size() - 1)
+		
+		
+		if(LastRead == m_proteinsDB.size() - 1) // if the last proteins has been calculated
 			return - 1 ;
 		
-		if(!firstTime)
+		if(!firstTime) 
 			LastRead++;
 		
 		if(LastRead  == 0 )
@@ -143,6 +145,7 @@ public class TrainingData {
 
 	
 		System.out.println(LastRead);
+		
 		pb.setNumericProgress(LastRead + 1);
 		pb.setData(LastRead + 1,-1); // total progress bar
 		
@@ -150,6 +153,8 @@ public class TrainingData {
 		return LastRead; 
 		
 	}
+	
+
 	
 	
 	public static synchronized void addToWriteQue(TrainingDataEntry d )

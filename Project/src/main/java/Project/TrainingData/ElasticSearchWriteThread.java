@@ -12,7 +12,7 @@ import DB.ElasticSearchService;
 public class ElasticSearchWriteThread extends Thread 
 {
 	private ElasticSearchService es = null;
-	private int ctr = 0 ;
+	private long ctr = 0 ;
 	public  ElasticSearchWriteThread(ElasticSearchService es)
 	{
 		

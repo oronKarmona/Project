@@ -14,14 +14,14 @@ public class BuildTrainningDataTheard extends Thread{
 	private ArrayList<TrainingDataEntry> m_trainingData;
 	private HammingCalculation m_hammingCalculation;
 	private static final double threshold = 60;
-
+	private long current_time ;
 	private ElasticSearchService m_elasticSearchService;
 	private int m_Threadindex; // to be used for progress bar
 	
 	public BuildTrainningDataTheard(ArrayList<Protein> proteinsDB, int Threadindex, ElasticSearchService elasticSearchService)
 	{
 		try{
-			m_hammingCalculation = new HammingCalculation(100-threshold);
+			m_hammingCalculation = new HammingCalculation(threshold);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -38,9 +38,10 @@ public class BuildTrainningDataTheard extends Thread{
 	public void run() {
 		
 		int i ; 
+		current_time = System.currentTimeMillis(); 
 		while( ( i = TrainingData.IndexForThread() ) != -1)
 		{
-			TrainingData.ResetProgress(m_Threadindex);
+//			TrainingData.ResetProgress(m_Threadindex);
 			initTable(m_proteinsDB.get(i));
 		}
 		TrainingData.updateBarrier();
@@ -48,55 +49,47 @@ public class BuildTrainningDataTheard extends Thread{
 	}
 	
 	private void initTable(Protein proteinToCompareTo)
-	{
-		int index = m_proteinsDB.indexOf(proteinToCompareTo);
-		Protein protein, big, small;
-		
+	{//1
+		int index = m_proteinsDB.indexOf(proteinToCompareTo) , 
+				 p1_fragment_count = proteinToCompareTo.getFragment_count();
+		Protein protein;
 		
 		for(int p = index; p< m_proteinsDB.size(); p++)
 		{
-	    protein= m_proteinsDB.get(p);
-		
-	   
-	    
-	    if(protein.getAminoAcids().length() > proteinToCompareTo.getAminoAcids().length()){
-	    	big = protein;
-	    	small = proteinToCompareTo;
-	    }
-	    else{
-	    	big = proteinToCompareTo;
-	    	small = protein;
-	    }
-	    
-	    for(int i=0	;	i<big.getAminoAcids().length()-20	;	i++)
-		{			
-			for(int j=0	;j<small.getAminoAcids().length()-20	;	j++)
-			{	
-			if(m_hammingCalculation.Calculate(big.GetFragments(i), small.GetFragments(j)))
-			{
-			TrainingDataEntry dataEntry = new TrainingDataEntry(big.getProteinIndex(), 
-																small.getProteinIndex(),
-																i,
-																j);
-			
-			dataEntry.setRMSDResult(RMSDCalculation.Calculate(big.getFragmentCoordinates(i),small.getFragmentCoordinates(j)));
-			TrainingData.addToWriteQue(dataEntry);
-			//m_elasticSearchService.add(dataEntry);
-			//m_trainingData.add(dataEntry);
+		    protein= m_proteinsDB.get(p);
+		    int p2_fragment_count = protein.getFragment_count();
+		    
+		    for(int i=0	;	i< p1_fragment_count	;	i++)
+			{			
+				for(int j=0	; j<p2_fragment_count	;	j++)
+				{	
+					if(index == p && i == j ) // don't check the same fragment of the same protein
+						break;
+					if(m_hammingCalculation.Calculate(proteinToCompareTo.GetFragments(i), protein.GetFragments(j)))
+					{
+						TrainingDataEntry dataEntry = new TrainingDataEntry(proteinToCompareTo.getProteinIndex(), 
+								protein.getProteinIndex(),i,j);
+						
+						dataEntry.setRMSDResult(RMSDCalculation.Calculate(proteinToCompareTo.getFragmentCoordinates(i),protein.getFragmentCoordinates(j)));
+						//TrainingData.addToWriteQue(dataEntry);
+						//m_elasticSearchService.add(dataEntry);
+						//m_elasticSearchService.add(dataEntry);
+						m_trainingData.add(dataEntry);
+					}
+
+				}//j
 			}
-//			else{
-//				System.out.println(String.format("protein: %s, protein: %s match is below the threshold", 
-//						 protein.GetFragments(i),proteinToCompareTo.GetFragments(j)));
-//			}
-			
-		}
-		}
-	    TrainingData.UpdateProgress(p, m_Threadindex);
-		}
+		    //i
+//		    if((System.currentTimeMillis() - current_time)/(1000*60) > 0.5 ) // if the time interval is at least half minute
+//		    {
+//		    	current_time = System.currentTimeMillis();
+//		    	TrainingData.UpdateProgress(p, m_Threadindex);
+//		    }
+		}//p
 		
 		
 		
-	}
+	}//1
 	
 	public ArrayList<TrainingDataEntry> GetTrainingData() {
 		return m_trainingData;

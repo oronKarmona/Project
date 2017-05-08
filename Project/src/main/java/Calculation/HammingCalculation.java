@@ -33,7 +33,7 @@ public class HammingCalculation implements Cloneable
 			throw new Exception(String.format("Unable to proceed, threshold is incorrect: %f",threshold));
 		}
 		m_threshold = threshold;
-	    m_error = (int) Math.round((m_threshold/100)*20);
+	    m_error = (int) Math.round(((100 - m_threshold)/100)*20); // top error 
 
 	}
 	/***
@@ -73,7 +73,7 @@ public class HammingCalculation implements Cloneable
 	 * @return - true if legal and false otherwise
 	 */
 	private boolean checkThreshold(int hammingDistance) {
-		if(hammingDistance > m_error){
+		if(hammingDistance >= m_error){
 			return false;
 		}
 		return true;

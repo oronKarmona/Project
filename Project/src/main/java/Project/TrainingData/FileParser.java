@@ -267,7 +267,7 @@ public class FileParser {
 		    				}
     						}catch(Exception e )
     						{
-    							System.out.println(protein.astralID);
+    							System.out.println(protein.getAstralID());
     							System.out.println(t);
     						}
 		    				
@@ -276,13 +276,13 @@ public class FileParser {
 //		    				if(!App.check(protein.getAminoAcids(), new ArrayList<Structure>(structure)))
 //		    					System.out.println(protein.getAstralID());
 		    				
-		    				protein.setAminoAcids(aa);
+		    				
     				}
 			}
 			catch(Exception e){
 				e.printStackTrace();
 				structure = null;
-				System.out.println(protein.astralID);
+				System.out.println(protein.getAstralID());
    			}
     		if(structure == null){
     			

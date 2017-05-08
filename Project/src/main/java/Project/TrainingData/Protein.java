@@ -16,49 +16,53 @@ public class Protein implements Serializable{
 	/***
 	 * Proteins Index in the DB (serial)
 	 */
-	int ProteinIndex;
+	private int ProteinIndex;
 	/***
 	 * Protein's asrtral ID
 	 */
-	String astralID;
+	private String astralID;
 	/***
 	 * Protein's classification
 	 */
-	String classification;
+	private String classification;
 	/***
 	 * Protein's type
 	 */
-	String type;
+	private String type;
 	/***
 	 * Protein's matched type
 	 */
-	String matched;
+	private String matched;
 	/***
 	 * Protein's name
 	 */
-	String name;
+	private String name;
 	/***
 	 * Protein's TaxId
 	 */
-	String TaxId;
+	private String TaxId;
 	/***
 	 * Protein's amino acid chain
 	 */
-	String aminoAcids;
+	private String aminoAcids;
 	/***
 	 * Protein's structure
 	 */
-	ArrayList<Structure> structure = new ArrayList<Structure>();
+	private ArrayList<Structure> structure = new ArrayList<Structure>();
 
-	
-	
+	/***
+	 * Number of Fragments in this protein
+	 */
+	private int fragment_count;
 	
 	/***
 	 * Setting the amino acid String without spaces
 	 * @param aminoAcids - amino acid String as saved in Astral DB
 	 */
 	public void setAminoAcids(String aminoAcids) {
-		this.aminoAcids =  aminoAcids.replace("\n", "").replace("\r", "");;
+		this.aminoAcids =  aminoAcids.replace("\n", "").replace("\r", "");
+		
+		this.fragment_count = this.aminoAcids.length() - 19 ; 
 	}
 	
 	/***
@@ -121,7 +125,7 @@ public class Protein implements Serializable{
 	 */
 	public String GetFragments(int index)
 	{
-		if(index < aminoAcids.length()-20)
+		if(index < this.fragment_count)
 			return aminoAcids.substring(index,index+20);
 		return null;
 	}
@@ -132,11 +136,19 @@ public class Protein implements Serializable{
 	 */
 	public List<Structure> GetFragmentStructure(int index)
 	{
-		if(index <= structure.size()-20)
+		if(index <=  this.fragment_count)
 			return structure.subList(index, index+20);
 		return null;
 	}
 	
+	public int getFragment_count() {
+		return fragment_count;
+	}
+
+	public void setFragment_count(int fragment_count) {
+		this.fragment_count = fragment_count;
+	}
+
 	public int getProteinIndex() {
 		return ProteinIndex;
 	}

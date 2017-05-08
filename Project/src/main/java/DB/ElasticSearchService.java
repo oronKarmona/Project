@@ -61,7 +61,7 @@ public class ElasticSearchService
 	 *            - JSON of {@link ShopperCard}
 	 */
 	@SuppressWarnings("deprecation")
-	public synchronized void add(TrainingDataEntry trainingDataEntry) {
+	public  void add(TrainingDataEntry trainingDataEntry) {
 	     try 
 	     {	 
 	    	IndexResponse response = client.prepareIndex("proteins", "trainingdata", index+"")
