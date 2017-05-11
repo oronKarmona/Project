@@ -21,7 +21,7 @@ public class BuildTrainningDataTheard extends Thread{
 	private int p1_fragment_count,p2_fragment_count;
 	private Protein protein;
 	private int index , p;
-	private TrainingDataEntry dataEntry;
+	private TrainingDataEntry dataEntry  = new TrainingDataEntry();
 	private RMSDCalculation rmsd;
 	
 	public BuildTrainningDataTheard(ArrayList<Protein> proteinsDB, int Threadindex, ElasticSearchService elasticSearchService)
@@ -43,14 +43,13 @@ public class BuildTrainningDataTheard extends Thread{
 	@Override 
 	public void run() {
 		
-		int i ; 
+		int protein_get ; 
 		current_time = System.currentTimeMillis(); 
-		while( ( i = TrainingData.IndexForThread() ) != -1)
+		while( ( protein_get = TrainingData.IndexForThread() ) != -1)
 		{
 //			TrainingData.ResetProgress(m_Threadindex);
-			initTable(m_proteinsDB.get(i));
+			initTable(m_proteinsDB.get(protein_get));
 		}
-		TrainingData.updateBarrier();
 		
 	}
 	
@@ -73,7 +72,7 @@ public class BuildTrainningDataTheard extends Thread{
 						break;
 					if(m_hammingCalculation.Calculate(proteinToCompareTo.GetFragments(i), protein.GetFragments(j)))
 					{
-						 dataEntry = new TrainingDataEntry(proteinToCompareTo.getProteinIndex(), 
+						 dataEntry.Set(proteinToCompareTo.getProteinIndex(), 
 								protein.getProteinIndex(),i,j);
 						
 						dataEntry.setRMSDResult(rmsd.Calculate(proteinToCompareTo.getFragmentCoordinates(i),protein.getFragmentCoordinates(j)));
@@ -99,5 +98,5 @@ public class BuildTrainningDataTheard extends Thread{
 	public ArrayList<TrainingDataEntry> GetTrainingData() {
 		return m_trainingData;
 	}
-
+  
 }
