@@ -17,6 +17,12 @@ public class BuildTrainningDataTheard extends Thread{
 	private long current_time ;
 	private ElasticSearchService m_elasticSearchService;
 	private int m_Threadindex; // to be used for progress bar
+	private int i=0	,j = 0;
+	private int p1_fragment_count,p2_fragment_count;
+	private Protein protein;
+	private int index , p;
+	private TrainingDataEntry dataEntry;
+	private RMSDCalculation rmsd;
 	
 	public BuildTrainningDataTheard(ArrayList<Protein> proteinsDB, int Threadindex, ElasticSearchService elasticSearchService)
 	{
@@ -30,7 +36,7 @@ public class BuildTrainningDataTheard extends Thread{
 		m_trainingData = new ArrayList<>();
 		m_proteinsDB = proteinsDB;
 		m_Threadindex = Threadindex;
-		
+		rmsd = new RMSDCalculation();
 	}
 
 
@@ -50,31 +56,30 @@ public class BuildTrainningDataTheard extends Thread{
 	
 	private void initTable(Protein proteinToCompareTo)
 	{//1
-		int index = m_proteinsDB.indexOf(proteinToCompareTo) , 
+		 index = m_proteinsDB.indexOf(proteinToCompareTo); 
 				 p1_fragment_count = proteinToCompareTo.getFragment_count();
-		Protein protein;
 		
-		for(int p = index; p< m_proteinsDB.size(); p++)
+		
+		for( p = index; p< m_proteinsDB.size(); p++)
 		{
 		    protein= m_proteinsDB.get(p);
-		    int p2_fragment_count = protein.getFragment_count();
+		    p2_fragment_count = protein.getFragment_count();
 		    
-		    for(int i=0	;	i< p1_fragment_count	;	i++)
+		    for( i=0	;	i< p1_fragment_count	;	i++)
 			{			
-				for(int j=0	; j<p2_fragment_count	;	j++)
+				for( j=0	; j<p2_fragment_count	;	j++)
 				{	
 					if(index == p && i == j ) // don't check the same fragment of the same protein
 						break;
 					if(m_hammingCalculation.Calculate(proteinToCompareTo.GetFragments(i), protein.GetFragments(j)))
 					{
-						TrainingDataEntry dataEntry = new TrainingDataEntry(proteinToCompareTo.getProteinIndex(), 
+						 dataEntry = new TrainingDataEntry(proteinToCompareTo.getProteinIndex(), 
 								protein.getProteinIndex(),i,j);
 						
-						dataEntry.setRMSDResult(RMSDCalculation.Calculate(proteinToCompareTo.getFragmentCoordinates(i),protein.getFragmentCoordinates(j)));
+						dataEntry.setRMSDResult(rmsd.Calculate(proteinToCompareTo.getFragmentCoordinates(i),protein.getFragmentCoordinates(j)));
 						//TrainingData.addToWriteQue(dataEntry);
-						//m_elasticSearchService.add(dataEntry);
-						//m_elasticSearchService.add(dataEntry);
-						m_trainingData.add(dataEntry);
+						m_elasticSearchService.add(dataEntry);
+						//m_trainingData.add(dataEntry);
 					}
 
 				}//j

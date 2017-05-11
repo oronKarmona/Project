@@ -17,7 +17,7 @@ public class RMSDCalculation {
 	 * @param protein2 - List<Point> of protein 2
 	 * @return the RMSD value 
 	 */
-	public static double Calculate(List<Point> protein1 ,List<Point> protein2){
+	public  double Calculate(List<Point> protein1 ,List<Point> protein2){
 		
 		return RMSD.getRMSD(protein1, protein2);		
 	}

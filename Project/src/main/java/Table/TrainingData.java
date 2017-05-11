@@ -83,42 +83,42 @@ public class TrainingData {
 		for(int i = 0 ; i < threadNum ; i++)
 		{
 			TheardList.add(new BuildTrainningDataTheard(m_proteinsDB, i,elasticSearchService));
-		//	pb.addThreadData(0,m_proteinsDB.size() - 2 , i);
+		
 		}
 		System.out.println("Starting Training data calculation");
 		for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
 			buildTrainningDataTheard.start();			
 			}
-		//btt.start();
+		
 		try{
 			for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
 				buildTrainningDataTheard.join();
 				}
-		//	btt.join();
+		
 		}
 		catch(InterruptedException e){
 			e.printStackTrace();
 		}
 	
-		for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
-			TrainingData.addAll(buildTrainningDataTheard.GetTrainingData());			
-		}
-		System.out.println(TrainingData.size());
+//		for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
+//			TrainingData.addAll(buildTrainningDataTheard.GetTrainingData());			
+//		}
+//		System.out.println(TrainingData.size());
 		endTime = System.currentTimeMillis();
 		long totalTime = (endTime  - startTime ) /(1000 * 60);
 		System.out.println("Total calculation time: " + totalTime + " minutes");
-		startTime = System.currentTimeMillis();
-		System.out.println("Writing to elastic db");
-		
-		for(TrainingDataEntry t : TrainingData)
-		{
-			elasticSearchService.add(t);
-		}
-		
-		
-		endTime = System.currentTimeMillis();
-		 totalTime = (endTime  - startTime ) /(1000 * 60);
-		System.out.println("Total calculation time: " + totalTime + " minutes");
+//		startTime = System.currentTimeMillis();
+//		System.out.println("Writing to elastic db");
+//		
+//		for(TrainingDataEntry t : TrainingData)
+//		{
+//			elasticSearchService.add(t);
+//		}
+//		
+//		
+//		endTime = System.currentTimeMillis();
+//		 totalTime = (endTime  - startTime ) /(1000 * 60);
+//		System.out.println("Total calculation time: " + totalTime + " minutes");
 
 	}
 	/***

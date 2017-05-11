@@ -24,13 +24,13 @@ public class ElasticSearchService
 	private static Long index = (long) 1;
 	private TransportClient client = null;
 	private Gson gson = null;
-
+	private IndexResponse response;
+	private Settings settings;
 	
-	@SuppressWarnings("resource")
 	public ElasticSearchService(){
 
 		try {
-			Settings settings = Settings.builder()
+			 settings = Settings.builder()
 			        .put("cluster.name", "elasticsearch")
 			        .put("client.transport.sniff", true)
 			        .build();
@@ -50,6 +50,11 @@ public class ElasticSearchService
 //		return client;
 //	}
 	
+	public void clientClose()
+	{
+		this.client.close();
+	}
+	
 	
 	
 	/**
@@ -64,7 +69,7 @@ public class ElasticSearchService
 	public  void add(TrainingDataEntry trainingDataEntry) {
 	     try 
 	     {	 
-	    	IndexResponse response = client.prepareIndex("proteins", "trainingdata", index+"")
+	    	 response = client.prepareIndex("proteins", "trainingdata", index+"")
 	    			 .setSource(gson.toJson(trainingDataEntry)).get();
 		 }catch (Exception e) {
 	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");
