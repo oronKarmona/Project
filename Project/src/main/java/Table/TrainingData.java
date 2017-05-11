@@ -7,6 +7,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -75,11 +77,11 @@ public class TrainingData {
 	private void initTraningData() {
 		long startTime = System.currentTimeMillis();
 		long endTime ; 
-		pb = new ProgressBar("Training Data Calculation");
+//		pb = new ProgressBar("Training Data Calculation");
 
 		ArrayList<BuildTrainningDataTheard> TheardList = new ArrayList<>();
 				
-		pb.addThreadData(0,m_proteinsDB.size(),-1);
+	//	pb.addThreadData(0,m_proteinsDB.size(),-1);
 		for(int i = 0 ; i < threadNum ; i++)
 		{
 			TheardList.add(new BuildTrainningDataTheard(m_proteinsDB, i,elasticSearchService));
@@ -136,13 +138,14 @@ public class TrainingData {
 //		pb.resetData(ThreadIndex);
 //	}
 	
-	
+	static DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	//static Date date = new Date();
+	static LocalDateTime now = LocalDateTime.now();
+	static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+
 	public static synchronized int IndexForThread()
 	{
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		Date date = new Date();
-		System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
-		
+
 		
 		if(LastRead == m_proteinsDB.size() - 1) // if the last proteins has been calculated
 			return - 1 ;
@@ -154,10 +157,16 @@ public class TrainingData {
 			firstTime = false;
 
 	
-		System.out.println(LastRead);
+		if(LastRead % 100 == 0)
+		{
+			now = LocalDateTime.now();
+			System.out.println(dtf.format(now)); //2016/11/16 12:08:43
+			System.out.println(LastRead);
+		}
+			
 		
-		pb.setNumericProgress(LastRead + 1);
-		pb.setData(LastRead + 1,-1); // total progress bar
+		//pb.setNumericProgress(LastRead + 1);
+		//pb.setData(LastRead + 1,-1); // total progress bar
 		
 		
 		return LastRead; 
