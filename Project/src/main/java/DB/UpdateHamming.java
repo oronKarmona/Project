@@ -21,6 +21,7 @@ public class UpdateHamming
 		
 		this.proteinsdb = proteinsdb;
 		int firstP , secondP , firstF, secondF , hamming;
+		String  fragmentA = "", fragmentB = "";
 		for(int i= 1 ; i <= 128188; i++ )
 		{
 			map = es.get(i);
@@ -30,14 +31,25 @@ public class UpdateHamming
 			secondP = (Integer)map.get("secondProteinIndex");
 			secondF = (Integer)map.get("secondFragmentIndex");
 			
-			hamming = this.hamming(proteinsdb.get(firstP).
-					GetFragments(firstF), 
-			proteinsdb.get(secondP).
-			GetFragments(secondF));
+			for(Protein p : proteinsdb)
+			{
+				if(p.getProteinIndex() == firstP)
+				{
+					fragmentA = p.GetFragments(firstF);
+				}
+					
+				else if(p.getProteinIndex() == secondP)
+				{
+					fragmentB = p.GetFragments(secondF);
+				}
+			}
+		
+					
+			hamming = this.hamming(fragmentA , fragmentB);
 			
 			es.updateDocument(hamming , i );
 
-			
+				
 		}
 	}
 	
@@ -53,7 +65,7 @@ public class UpdateHamming
 		        hammingDistance++;
 		      }
 		    }
-		    
+		    System.out.println(hammingDistance);
 		    return hammingDistance;
 	}
 }
