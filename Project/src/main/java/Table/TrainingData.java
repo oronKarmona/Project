@@ -149,7 +149,7 @@ public class TrainingData {
 		
 		if(LastRead == m_proteinsDB.size() - 1) // if the last proteins has been calculated
 			return - 1 ;
-		
+
 		if(!firstTime) 
 			LastRead++;
 		

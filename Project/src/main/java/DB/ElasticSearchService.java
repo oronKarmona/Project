@@ -1,22 +1,28 @@
 package DB;
 //https://medium.com/@adnanxteam/how-to-install-elasticsearch-5-and-kibana-on-homestead-vagrant-60ea757ff8c7
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
+import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.node.NodeClient;
 import org.elasticsearch.client.transport.NoNodeAvailableException;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.get.GetField;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import Table.TrainingDataEntry;
-
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
 public class ElasticSearchService
 {
@@ -57,14 +63,7 @@ public class ElasticSearchService
 	
 	
 	
-	/**
-	 * Method to add document
-	 *
-	 * @param cardId
-	 *            - unique identifier
-	 * @param shopperData
-	 *            - JSON of {@link ShopperCard}
-	 */
+
 	@SuppressWarnings("deprecation")
 	public  void add(TrainingDataEntry trainingDataEntry) {
 	     try 
@@ -76,23 +75,24 @@ public class ElasticSearchService
 	     }
 	     index++;
 	}
-//	
-//	/**
-//	* Method to update document
-//	 *
-//	 * @param cardId
-//	 *            - unique identifier
-//	 * @param updatedRecord
-//	 */
-//	public void update(Long cardId, String updatedRecord) {
-//	     try {
-//			getClient().prepareUpdate("search.index.name", "search.index.type",index.toString()).
-//			setDoc(updatedRecord).setRefresh(true).execute().actionGet();
-//		}
-//	     catch (Exception e) {
-//		throw new NoNodeAvailableException("[update]: Error occurred while updating record", e);
-//		}
-//	}
+	
+		public void updateDocument(int hamming,int index) throws IOException, InterruptedException, ExecutionException
+		{
+	
+			UpdateRequest updateRequest = new UpdateRequest("proteins", "trainingdata",index + "")
+			        .doc(jsonBuilder()
+			            .startObject()
+			                .field("Hamming_Distance", hamming)
+			            .endObject());             
+			client.update(updateRequest).get();
+		}
+		
+		
+		public Map<String, GetField> get(int index)
+		{
+			GetResponse response = client.prepareGet("proteins", "trainingdata", index+"").get();
+			return response.getFields();
+		}
 //	
 //	/**
 //	 * Method to delete shopper Card   record
