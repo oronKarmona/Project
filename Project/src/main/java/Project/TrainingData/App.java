@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 
 import Calculation.NeighborsHelper;
 import Table.TrainingData;
+import testing.CreateSequenceFile;
 
 
 /***
@@ -42,9 +43,12 @@ public class App
 	    
 		//***************  training ******************************//
 
-	    TrainingData trainingData = new TrainingData(proteinsDB);
+	    //TrainingData trainingData = new TrainingData(proteinsDB);
 	    
-		//***************  Hamming ******************************//
+		//***************  CreateSequenceFile ******************************//
+	    //CreateSequenceFile file = new CreateSequenceFile(proteinsDB);
+	    
+	    
 	    System.exit(0);
 
     }
