@@ -38,7 +38,7 @@ public class UpdateHamming
 					fragmentA = p.GetFragments(firstF);
 				}
 					
-				else if(p.getProteinIndex() == secondP)
+				 if(p.getProteinIndex() == secondP)
 				{
 					fragmentB = p.GetFragments(secondF);
 				}
