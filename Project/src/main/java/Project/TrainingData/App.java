@@ -8,6 +8,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import Calculation.NeighborsHelper;
+import DB.UpdateHamming;
 import Table.TrainingData;
 import testing.CreateSequenceFile;
 
@@ -35,7 +36,13 @@ public class App
 //    	
 //		//***************  read DB ******************************//
 	    proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
-		
+	    try{
+			UpdateHamming uh = new UpdateHamming(proteinsDB);
+		    }catch(Exception e )
+		    {
+		    	e.printStackTrace();
+		    }
+		    System.exit(0);
 	    System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
 	      
 	      //checking the match between aminoacid string to its structure properties

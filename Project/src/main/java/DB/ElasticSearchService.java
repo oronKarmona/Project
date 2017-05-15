@@ -88,10 +88,11 @@ public class ElasticSearchService
 		}
 		
 		
-		public Map<String, GetField> get(int index)
+		public Map<String, Object> get(int index)
 		{
 			GetResponse response = client.prepareGet("proteins", "trainingdata", index+"").get();
-			return response.getFields();
+			
+		return response.getSource();
 		}
 //	
 //	/**
