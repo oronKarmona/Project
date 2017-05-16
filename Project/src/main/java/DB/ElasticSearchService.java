@@ -90,9 +90,15 @@ public class ElasticSearchService
 		
 		public Map<String, Object> get(int index)
 		{
+			Map<String, Object> map = null;
+			try{
 			GetResponse response = client.prepareGet("proteins", "trainingdata", index+"").get();
-			
-		return response.getSource();
+			map = response.getSource();
+			}catch(Exception e )
+			{
+				return null;
+			}
+			return map;
 		}
 //	
 //	/**

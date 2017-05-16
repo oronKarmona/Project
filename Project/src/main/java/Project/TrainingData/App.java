@@ -49,8 +49,8 @@ public class App
 	      //checkAmino(proteinsDB);
 	    
 		//***************  training ******************************//
-
-	    TrainingData trainingData = new TrainingData(proteinsDB);
+//
+//	    TrainingData trainingData = new TrainingData(proteinsDB);
 	    
 		//***************  CreateSequenceFile ******************************//
 	    //CreateSequenceFile file = new CreateSequenceFile(proteinsDB);
