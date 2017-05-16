@@ -14,11 +14,16 @@ public class UpdateHamming
 {
 	private ArrayList<Protein> proteinsdb ; 
 	private Map<String, Object> map ;  
-	ElasticSearchService es ;
+	private ElasticSearchService es ;
 	private Map<Integer , Integer> indexMap;
+	private static int indexToUpdate = 6560000 ;
+	private static int typeSize = 205933669;
+	private ArrayList<UpdateHammingThread> threads;
+	
 	public UpdateHamming(ArrayList<Protein> proteinsdb) throws IOException, InterruptedException, ExecutionException
 	{
 		es = new ElasticSearchService();
+		threads = new ArrayList<UpdateHammingThread>();
 		indexMap = new HashMap<Integer,Integer>();
 		int ctr = 0 ;
 		this.proteinsdb = proteinsdb;
@@ -27,70 +32,36 @@ public class UpdateHamming
 		{
 			indexMap.put(proteinsdb.get(i).getProteinIndex(), i);
 		}
-			
-		int firstP , secondP , firstF, secondF , hamming;
-		String  fragmentA = "", fragmentB = "";
-		for(int i= 1 ; i <= 205933669; i++ )
-		{
-			try{
-			map = es.get(i);
-					
-					if(map != null)
-					{
-							firstP = (Integer)map.get("firstProteinIndex");
-							firstF = (Integer)map.get("firstFragmentIndex");
-							
-							secondP = (Integer)map.get("secondProteinIndex");
-							secondF = (Integer)map.get("secondFragmentIndex");
-							
-							fragmentA = proteinsdb.get(indexMap.get(firstP)).GetFragments(firstF);
-							fragmentB = proteinsdb.get(indexMap.get(secondP)).GetFragments(secondF);
-//								for(Protein p : proteinsdb)
-//								{
-//										if(p.getProteinIndex() == firstP)
-//										{
-//											fragmentA = p.GetFragments(firstF);
-//										}
-//											
-//										 if(p.getProteinIndex() == secondP)
-//										{
-//											fragmentB = p.GetFragments(secondF);
-//										}
-//								}
-						
-							
-							hamming = this.hamming(fragmentA , fragmentB);
-							
-							es.updateDocument(hamming , i );
-							
-							if(i%100 == 0)
-								System.out.println(i);
-					}
-					
-					else
-						ctr ++ ;
-			}
-			catch(Exception e)
-			{
-				System.out.println(String.format("index: %d",i));
-			}
-		}
-		System.out.println(ctr);
-	}
-	
-	
-	private int hamming(String protein1 , String protein2)
-	{
-		
-		  int hammingDistance = 0;
-		    int stringLength = protein1.length();
+		int threadNum = Runtime.getRuntime().availableProcessors();
+		for(int i = 0 ; i <threadNum ; i++ )
+			threads.add(new UpdateHammingThread(proteinsdb, indexMap));
 
-		    for (int j = 0; j < stringLength; j++) {
-		      if (protein1.charAt(j) != protein2.charAt(j)) {
-		        hammingDistance++;
-		      }
-		    }
-		   // System.out.println(hammingDistance);
-		    return hammingDistance;
+	
+		
+		for(UpdateHammingThread t : threads)
+			t.start();
+		
+		for(UpdateHammingThread t : threads)
+			t.join();
+		
+		for(UpdateHammingThread t : threads)
+			ctr += t.getCtr();
+		
+		System.out.println("Final " + ctr);
+	
 	}
+	
+	public static synchronized int getNext()
+	{
+		if(indexToUpdate == typeSize )
+			return -1 ;
+		
+		indexToUpdate++;
+		
+		if(indexToUpdate % 100 == 0)
+			System.out.println(indexToUpdate);
+		
+		return indexToUpdate;
+	}
+	
 }
