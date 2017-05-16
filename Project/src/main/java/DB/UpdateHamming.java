@@ -18,15 +18,15 @@ public class UpdateHamming
 	public UpdateHamming(ArrayList<Protein> proteinsdb) throws IOException, InterruptedException, ExecutionException
 	{
 		es = new ElasticSearchService();
-		
+		int ctr = 0 ;
 		this.proteinsdb = proteinsdb;
 		int firstP , secondP , firstF, secondF , hamming;
 		String  fragmentA = "", fragmentB = "";
-		for(int i= 1 ; i <= 8154; i++ )
+		for(int i= 1 ; i <= 205933669; i++ )
 		{
 			try{
 			map = es.get(i);
-			
+					
 					if(map != null)
 					{
 							firstP = (Integer)map.get("firstProteinIndex");
@@ -54,12 +54,16 @@ public class UpdateHamming
 							
 							es.updateDocument(hamming , i );
 					}
+					
+					else
+						ctr ++ ;
 			}
 			catch(Exception e)
 			{
 				System.out.println(String.format("index: %d",i));
 			}
 		}
+		System.out.println(ctr);
 	}
 	
 	
