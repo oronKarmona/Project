@@ -16,8 +16,8 @@ public class UpdateHamming
 	private Map<String, Object> map ;  
 	private ElasticSearchService es ;
 	private Map<Integer , Integer> indexMap;
-	private static int indexToUpdate = 6560000 ;
-	private static int typeSize = 205933669;
+	private static int indexToUpdate = -1 ;
+	private static int typeSize = 1;
 	private ArrayList<UpdateHammingThread> threads;
 	
 	public UpdateHamming(ArrayList<Protein> proteinsdb) throws IOException, InterruptedException, ExecutionException

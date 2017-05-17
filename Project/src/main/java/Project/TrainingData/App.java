@@ -35,14 +35,14 @@ public class App
 //    	JSONhelper.WriteObject(proteinsDB,20,"Output"); // writing the pdb as json file
 //    	
 //		//***************  read DB ******************************//
-	    proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
-	    try{
-			UpdateHamming uh = new UpdateHamming(proteinsDB);
-		    }catch(Exception e )
-		    {
-		    	e.printStackTrace();
-		    }
-		    System.exit(0);
+    proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
+//	    try{
+//			UpdateHamming uh = new UpdateHamming(proteinsDB);
+//		    }catch(Exception e )
+//		    {
+//		    	e.printStackTrace();
+//		    }
+//		    System.exit(0);
 //	    System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
 	      
 	      //checking the match between aminoacid string to its structure properties
@@ -50,7 +50,7 @@ public class App
 	    
 		//***************  training ******************************//
 //
-//	    TrainingData trainingData = new TrainingData(proteinsDB);
+	    TrainingData trainingData = new TrainingData(proteinsDB);
 	    
 		//***************  CreateSequenceFile ******************************//
 	    //CreateSequenceFile file = new CreateSequenceFile(proteinsDB);

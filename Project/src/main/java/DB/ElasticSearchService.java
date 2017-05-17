@@ -27,7 +27,7 @@ import static org.elasticsearch.common.xcontent.XContentFactory.*;
 public class ElasticSearchService
 {
 	
-	private static Long index = (long) 1;
+	private static Long index = (long) 0;
 	private TransportClient client = null;
 	private Gson gson = null;
 	private IndexResponse response;
@@ -65,16 +65,18 @@ public class ElasticSearchService
 	
 
 	@SuppressWarnings("deprecation")
-	public  void add(TrainingDataEntry trainingDataEntry) {
+	public synchronized void add(TrainingDataEntry trainingDataEntry) {
 	     try 
 	     {	 
-	    	 response = client.prepareIndex("proteins", "trainingdata", index+"")
+	    	 response = client.prepareIndex("project", "trainingdata", index+"")
 	    			 .setSource(gson.toJson(trainingDataEntry)).get();
 		 }catch (Exception e) {
 	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");
 	     }
 	     index++;
 	}
+	
+
 	
 		public void updateDocument(int hamming,int index) throws IOException, InterruptedException, ExecutionException
 		{

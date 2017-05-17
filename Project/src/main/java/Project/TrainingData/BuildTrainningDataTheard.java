@@ -76,6 +76,7 @@ public class BuildTrainningDataTheard extends Thread{
 								protein.getProteinIndex(),i,j);
 						
 						dataEntry.setRMSDResult(rmsd.Calculate(proteinToCompareTo.getFragmentCoordinates(i),protein.getFragmentCoordinates(j)));
+						dataEntry.setHammingDistance(m_hammingCalculation.getHammingDistance());
 						//TrainingData.addToWriteQue(dataEntry);
 						m_elasticSearchService.add(dataEntry);
 						//m_trainingData.add(dataEntry);
@@ -94,6 +95,21 @@ public class BuildTrainningDataTheard extends Thread{
 		
 		
 	}//1
+	
+	private int hamming(String protein1 , String protein2)
+	{
+		
+		  int hammingDistance = 0;
+		    int stringLength = protein1.length();
+
+		    for (int j = 0; j < stringLength; j++) {
+		      if (protein1.charAt(j) != protein2.charAt(j)) {
+		        hammingDistance++;
+		      }
+		    }
+		 
+		    return hammingDistance;
+	}
 	
 	public ArrayList<TrainingDataEntry> GetTrainingData() {
 		return m_trainingData;

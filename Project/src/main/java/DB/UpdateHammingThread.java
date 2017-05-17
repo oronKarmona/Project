@@ -54,14 +54,18 @@ public class UpdateHammingThread extends Thread
 							
 							hamming = this.hamming(fragmentA , fragmentB);
 							
-							es.updateDocument(hamming , i );
+							es.updateDocument(hamming , index );
 					}
 					
 					else
+					{
 						ctr ++ ;
+						System.out.println("problem " + index);
+					}
 			}
 			catch(Exception e)
 			{
+				System.out.println("problem " + index);
 			}
 	
 	}

@@ -2,18 +2,12 @@ package Table;
 
 public class TrainingDataEntry extends TableEntry{
 
-	private double m_weightFunctionResult;
 	
+	private int HammingDistance;
 	public TrainingDataEntry(){
 		
 	}
-	public double getWeightFunctionResult() {
-		return m_weightFunctionResult;
-	}
 
-	public void setWeightFunctionResult(double m_weightFunctionResult) {
-		this.m_weightFunctionResult = m_weightFunctionResult;
-	}
 
 	public TrainingDataEntry(int firstProteinIndex, int secondProteinIndex, 
 							 int firstFragmentIndex,int secondFragmentIndex){
@@ -32,6 +26,16 @@ public class TrainingDataEntry extends TableEntry{
 			this.firstFragmentIndex = firstFragmentIndex;
 			this.secondFragmentIndex = secondFragmentIndex;
 			
+	}
+
+
+	public int getHammingDistance() {
+		return HammingDistance;
+	}
+
+
+	public void setHammingDistance(int hammingDistance) {
+		HammingDistance = hammingDistance;
 	}
 	
 }

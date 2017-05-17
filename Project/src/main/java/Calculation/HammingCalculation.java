@@ -21,6 +21,15 @@ public class HammingCalculation implements Cloneable
 	 */
 	private static int m_error; // (1 - threshold) in percent representation 
 
+	
+	private int hammingDistance = 0;
+	 
+	public int getHammingDistance() {
+		return hammingDistance;
+	}
+	public void setHammingDistance(int hammingDistance) {
+		this.hammingDistance = hammingDistance;
+	}
 	/***
 	 * constructor
 	 * @param threshold - defined by user
@@ -45,8 +54,9 @@ public class HammingCalculation implements Cloneable
 	public boolean Calculate(String protein1 ,String protein2){
 		
 	    validateInputs(protein1, protein2);
-
-	    int hammingDistance = 0;
+	    
+	    hammingDistance = 0;
+	   
 	    int stringLength = protein1.length();
 
 	    for (int i = 0; i < stringLength; i++) {
@@ -54,7 +64,7 @@ public class HammingCalculation implements Cloneable
 	        hammingDistance++;
 	      }
 	    }
-	    return checkThreshold(hammingDistance);
+	    return checkThreshold(this.hammingDistance);
 	}
 	
 	/***
