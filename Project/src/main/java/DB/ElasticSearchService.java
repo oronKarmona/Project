@@ -6,6 +6,9 @@ import java.net.UnknownHostException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import org.elasticsearch.action.bulk.BackoffPolicy;
+import org.elasticsearch.action.bulk.BulkProcessor;
+import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.get.GetResponse;
@@ -18,6 +21,9 @@ import org.elasticsearch.client.transport.NoNodeAvailableException;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.unit.ByteSizeUnit;
+import org.elasticsearch.common.unit.ByteSizeValue;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.get.GetField;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
@@ -29,14 +35,14 @@ import static org.elasticsearch.common.xcontent.XContentFactory.*;
 public class ElasticSearchService
 {
 	
-	private static Long id = (long) 0;
+	private  Long id = (long) -1;
 	private static TransportClient client = null;
 	private static Gson gson = null;
 	private static IndexResponse response;
 	private Settings settings;
 	private BulkRequestBuilder bulkRequest = null;  
 	private String index , type ; 
-	
+	private BulkProcessor bulkProcessor;
 	public ElasticSearchService(String index , String type){
 
 		this.index = index; 
@@ -52,6 +58,37 @@ public class ElasticSearchService
 			        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
 			
 			bulkRequest = client.prepareBulk() ; 
+			
+			 bulkProcessor = BulkProcessor.builder(
+			        client,  
+			        new BulkProcessor.Listener() {
+						@Override
+						public void beforeBulk(long executionId,
+								BulkRequest request) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void afterBulk(long executionId,
+								BulkRequest request, BulkResponse response) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void afterBulk(long executionId,
+								BulkRequest request, Throwable failure) {
+							// TODO Auto-generated method stub
+							
+						} 
+			        })
+			        .setBulkSize(new ByteSizeValue(20, ByteSizeUnit.MB)) 
+			        .setFlushInterval(TimeValue.timeValueSeconds(5))
+			        .setConcurrentRequests(1) 
+			        .setBackoffPolicy(
+			            BackoffPolicy.exponentialBackoff(TimeValue.timeValueMillis(100), 3)) 
+			        .build();
 			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -112,14 +149,34 @@ public class ElasticSearchService
 			return map;
 		}
 		
+		public synchronized void addToBulk(TrainingDataEntry trainingDataEntry)
+		{
+//			bulkRequest.add(client.prepareIndex(index, type, id+"")
+//	    			 .setSource(gson.toJson(trainingDataEntry)));
+//			id++ ; 
+//			
+//			if(bulkRequest.numberOfActions() > 100)
+//			{
+//			
+//				BulkWrite();	
+//			
+//			}
+			id++;
+			bulkProcessor.add(new IndexRequest(index, type, id+"")
+			 .source(gson.toJson(trainingDataEntry)));
+			
+			
+			
+			
+		}
 		
-		
-		public void BulkWrite()
+		private void BulkWrite()
 		{
 			BulkResponse bulkResponse = bulkRequest.get();
 			if (bulkResponse.hasFailures()) {
 			    // process failures by iterating through each bulk response item
 			}
+		
 		}
 //	
 //	/**

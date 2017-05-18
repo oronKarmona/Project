@@ -53,7 +53,7 @@ public class UpdateHamming
 	
 	public static synchronized int getNext()
 	{
-		if(indexToUpdate == typeSize )
+		if(indexToUpdate == 8779 )
 			return -1 ;
 		
 		indexToUpdate++;

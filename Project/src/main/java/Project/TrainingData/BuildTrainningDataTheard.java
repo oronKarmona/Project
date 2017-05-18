@@ -78,7 +78,8 @@ public class BuildTrainningDataTheard extends Thread{
 						dataEntry.setRMSDResult(rmsd.Calculate(proteinToCompareTo.getFragmentCoordinates(i),protein.getFragmentCoordinates(j)));
 						dataEntry.setHammingDistance(m_hammingCalculation.getHammingDistance());
 						//TrainingData.addToWriteQue(dataEntry);
-						m_elasticSearchService.add(dataEntry);
+						//m_elasticSearchService.add(dataEntry);
+						m_elasticSearchService.addToBulk(dataEntry);
 						//m_trainingData.add(dataEntry);
 					
 					}
