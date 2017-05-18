@@ -22,7 +22,7 @@ public class UpdateHamming
 	
 	public UpdateHamming(ArrayList<Protein> proteinsdb) throws IOException, InterruptedException, ExecutionException
 	{
-		es = new ElasticSearchService();
+		es = new ElasticSearchService("proteins" , "trainingdata");
 		threads = new ArrayList<UpdateHammingThread>();
 		indexMap = new HashMap<Integer,Integer>();
 		int ctr = 0 ;

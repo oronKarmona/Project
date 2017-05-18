@@ -20,7 +20,7 @@ public class UpdateHammingThread extends Thread
 		this.indexMap = indexMap;
 		this.proteinsdb = proteinsdb ; 
 		this.typeSize = typeSize;
-		es = new ElasticSearchService();
+		es = new ElasticSearchService("proteins","trainingdata");
 		
 	}
 	@Override

@@ -68,7 +68,7 @@ public class TrainingData {
 
 	private void initDB() {
 
-		elasticSearchService = new ElasticSearchService();
+		elasticSearchService = new ElasticSearchService("proteins" , "trainingdata");
 	}
 
 	/***
@@ -147,7 +147,7 @@ public class TrainingData {
 	{
 
 		
-		if(LastRead == m_proteinsDB.size() - 1) // if the last proteins has been calculated
+		if(LastRead == 10) // if the last proteins has been calculated
 			return - 1 ;
 
 		if(!firstTime) 

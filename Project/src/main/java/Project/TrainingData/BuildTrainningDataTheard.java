@@ -80,6 +80,7 @@ public class BuildTrainningDataTheard extends Thread{
 						//TrainingData.addToWriteQue(dataEntry);
 						m_elasticSearchService.add(dataEntry);
 						//m_trainingData.add(dataEntry);
+					
 					}
 
 				}//j

@@ -6,6 +6,8 @@ import java.net.UnknownHostException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
@@ -27,14 +29,19 @@ import static org.elasticsearch.common.xcontent.XContentFactory.*;
 public class ElasticSearchService
 {
 	
-	private static Long index = (long) 0;
-	private TransportClient client = null;
-	private Gson gson = null;
-	private IndexResponse response;
+	private static Long id = (long) 0;
+	private static TransportClient client = null;
+	private static Gson gson = null;
+	private static IndexResponse response;
 	private Settings settings;
+	private BulkRequestBuilder bulkRequest = null;  
+	private String index , type ; 
 	
-	public ElasticSearchService(){
+	public ElasticSearchService(String index , String type){
 
+		this.index = index; 
+		this.type = type;
+		
 		try {
 			 settings = Settings.builder()
 			        .put("cluster.name", "elasticsearch")
@@ -43,6 +50,8 @@ public class ElasticSearchService
 		
 			client = new PreBuiltTransportClient(settings)
 			        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+			
+			bulkRequest = client.prepareBulk() ; 
 			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -65,15 +74,15 @@ public class ElasticSearchService
 	
 
 	@SuppressWarnings("deprecation")
-	public synchronized void add(TrainingDataEntry trainingDataEntry) {
+	public  void add(TrainingDataEntry trainingDataEntry) {
 	     try 
 	     {	 
-	    	 response = client.prepareIndex("project", "trainingdata", index+"")
+	    	 response = client.prepareIndex(index, type, id+"")
 	    			 .setSource(gson.toJson(trainingDataEntry)).get();
 		 }catch (Exception e) {
 	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");
 	     }
-	     index++;
+	     id++;
 	}
 	
 
@@ -81,7 +90,7 @@ public class ElasticSearchService
 		public void updateDocument(int hamming,int index) throws IOException, InterruptedException, ExecutionException
 		{
 	
-			UpdateRequest updateRequest = new UpdateRequest("proteins", "trainingdata",index + "")
+			UpdateRequest updateRequest = new UpdateRequest(this.index, type,index + "")
 			        .doc(jsonBuilder()
 			            .startObject()
 			                .field("Hamming_Distance", hamming)
@@ -94,13 +103,23 @@ public class ElasticSearchService
 		{
 			Map<String, Object> map = null;
 			try{
-			GetResponse response = client.prepareGet("proteins", "trainingdata", index+"").get();
+			GetResponse response = client.prepareGet(this.index, type,index + "").get();
 			map = response.getSource();
 			}catch(Exception e )
 			{
 				return null;
 			}
 			return map;
+		}
+		
+		
+		
+		public void BulkWrite()
+		{
+			BulkResponse bulkResponse = bulkRequest.get();
+			if (bulkResponse.hasFailures()) {
+			    // process failures by iterating through each bulk response item
+			}
 		}
 //	
 //	/**
