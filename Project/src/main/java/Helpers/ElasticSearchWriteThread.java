@@ -1,4 +1,4 @@
-package Project.TrainingData;
+package Helpers;
 
 import Table.TrainingData;
 import Table.TrainingDataEntry;

@@ -1,4 +1,4 @@
-package Project.TrainingData;
+package Helpers;
 
 import java.io.File;
 import java.io.FileReader;
@@ -14,6 +14,9 @@ import org.json.simple.parser.JSONParser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
+import Project.TrainingData.App;
+import Project.TrainingData.Protein;
 
 /***
  * This class contains static methods for reading and writing JSON objects from/to file
