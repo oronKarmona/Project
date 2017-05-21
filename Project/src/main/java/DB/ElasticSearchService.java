@@ -14,6 +14,7 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.node.NodeClient;
@@ -25,6 +26,9 @@ import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.get.GetField;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 import com.google.gson.Gson;
@@ -164,7 +168,7 @@ public class ElasticSearchService
 			id++;
 			bulkProcessor.add(new IndexRequest(index, type, id+"")
 			 .source(gson.toJson(trainingDataEntry)));
-			
+		
 			
 			
 			
@@ -177,6 +181,26 @@ public class ElasticSearchService
 			    // process failures by iterating through each bulk response item
 			}
 		
+		}
+		
+		public SearchHit[] SearchDB(int firstProteinIndex , int  secondProteinIndex , int firstFragmentIndex , int secondFragmentIndex)
+		{
+			 QueryBuilder qb = QueryBuilders.boolQuery()
+		                .must(QueryBuilders.matchQuery("firstProteinIndex", firstProteinIndex))
+		                .must(QueryBuilders.matchQuery("secondProteinIndex", secondProteinIndex))
+		                		.must(QueryBuilders.matchQuery("firstFragmentIndex", firstFragmentIndex))
+				                .must(QueryBuilders.matchQuery("secondFragmentIndex", secondFragmentIndex));
+			 
+			 SearchResponse r = client.prepareSearch(this.index)
+					 				  .setTypes(this.type)
+					 				  .setQuery(qb)
+					 				  .execute().actionGet();
+			 
+			 
+			 SearchHit[]  results = r.getHits().getHits();
+			 
+			 return results;
+			 
 		}
 //	
 //	/**
