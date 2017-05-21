@@ -34,6 +34,7 @@ import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
+import PCN.Neighbors;
 import Table.TrainingDataEntry;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
 public class ElasticSearchService
@@ -120,6 +121,18 @@ public class ElasticSearchService
 	     {	 
 	    	 response = client.prepareIndex(index, type, id+"")
 	    			 .setSource(gson.toJson(trainingDataEntry)).get();
+		 }catch (Exception e) {
+	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");
+	     }
+	     id++;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public  void add(Neighbors pcnEntry) {
+	     try 
+	     {	 
+	    	 response = client.prepareIndex(index, type, id+"")
+	    			 .setSource(gson.toJson(pcnEntry)).get();
 		 }catch (Exception e) {
 	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");
 	     }

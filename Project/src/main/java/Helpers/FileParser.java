@@ -1,4 +1,4 @@
- package Project.TrainingData;
+ package Helpers;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,6 +14,9 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 
 import ProGAL.geom3d.Point;
+import Project.TrainingData.App;
+import Project.TrainingData.Protein;
+import Project.TrainingData.Structure;
 
 /***
  * This class contains 2 static methods which will be used to parse the ASTRAL database files

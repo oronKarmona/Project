@@ -1,4 +1,5 @@
 package Project.TrainingData;
+import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -9,6 +10,8 @@ import com.google.gson.Gson;
 
 import Calculation.NeighborsHelper;
 import DB.UpdateHamming;
+import Helpers.JSONhelper;
+import PCN.ReadPCNFile;
 import Table.TrainingData;
 import testing.CreateSequenceFile;
 
@@ -35,7 +38,7 @@ public class App
 //    	JSONhelper.WriteObject(proteinsDB,20,"Output"); // writing the pdb as json file
 //    	
 //		//***************  read DB ******************************//
-    proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
+//   proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
 //	    try{
 //			UpdateHamming uh = new UpdateHamming(proteinsDB);
 //		    }catch(Exception e )
@@ -50,11 +53,18 @@ public class App
 	    
 		//***************  training ******************************//
 //
-	    TrainingData trainingData = new TrainingData(proteinsDB);
+	   // TrainingData trainingData = new TrainingData(proteinsDB);
 	    
 		//***************  CreateSequenceFile ******************************//
 	    //CreateSequenceFile file = new CreateSequenceFile(proteinsDB);
 	    
+		//***************  Read PCN ******************************//
+
+	    String DBName = "pcn_db";
+	    File file = new File("DBfileTree1Thr~60");
+	    if(ReadPCNFile.Read(file,DBName)){
+	    	System.out.println("PCN was read and saved to "+DBName);
+	    }
 	    
 	    System.exit(0);
 
