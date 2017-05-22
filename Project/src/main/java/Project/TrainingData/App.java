@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+import BFS.BFS;
 import Calculation.NeighborsHelper;
 import DB.UpdateHamming;
 import Helpers.JSONhelper;
@@ -38,7 +39,12 @@ public class App
 //    	JSONhelper.WriteObject(proteinsDB,20,"Output"); // writing the pdb as json file
 //    	
 //		//***************  read DB ******************************//
-//   proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
+//  proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
+//  for(int i = 0 ; i < proteinsDB.size() ; i++)
+//  {
+//	  if(proteinsDB.get(i).getProteinIndex() == 39096  || 38557  == proteinsDB.get(i).getProteinIndex())
+//		  System.out.println(proteinsDB.get(i).getAstralID());
+//  }
 //	    try{
 //			UpdateHamming uh = new UpdateHamming(proteinsDB);
 //		    }catch(Exception e )
@@ -60,12 +66,15 @@ public class App
 	    
 		//***************  Read PCN ******************************//
 
-	    String DBName = "pcn_db";
-	    File file = new File("DBfileTree1Thr~60");
-	    if(ReadPCNFile.Read(file,DBName)){
-	    	System.out.println("PCN was read and saved to "+DBName);
-	    }
-	    
+//	    String DBName = "pcn_db";
+//	    File file = new File("DBfileTree1Thr~60");
+//	    if(ReadPCNFile.Read(file,DBName)){
+//	    	System.out.println("PCN was read and saved to "+DBName);
+//	    }
+//	    
+		
+		BFS bfs = new BFS(3);
+		bfs.run();
 	    System.exit(0);
 
     }

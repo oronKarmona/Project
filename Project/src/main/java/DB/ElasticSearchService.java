@@ -3,6 +3,7 @@ package DB;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -35,6 +36,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import PCN.Neighbors;
+import PCN.Node;
+import ProGAL.proteins.ProteinComplex;
 import Table.TrainingDataEntry;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
 public class ElasticSearchService
@@ -196,7 +199,7 @@ public class ElasticSearchService
 		
 		}
 		
-		public SearchHit[] SearchDB(int firstProteinIndex , int  secondProteinIndex , int firstFragmentIndex , int secondFragmentIndex)
+		public SearchHit[] SearchTrainingDataDB(int firstProteinIndex , int  secondProteinIndex , int firstFragmentIndex , int secondFragmentIndex)
 		{
 			 QueryBuilder qb = QueryBuilders.boolQuery()
 		                .must(QueryBuilders.matchQuery("firstProteinIndex", firstProteinIndex))
@@ -215,6 +218,59 @@ public class ElasticSearchService
 			 return results;
 			 
 		}
+		
+		public Neighbors SearchPCNDB(long ProteinIndex , int  fragmentIndex )
+		{
+			 QueryBuilder qb = QueryBuilders.boolQuery()
+		                .must(QueryBuilders.matchQuery("m_protein", ProteinIndex))
+		                .must(QueryBuilders.matchQuery("m_index", fragmentIndex));
+			 
+			 SearchResponse r = client.prepareSearch(this.index)
+					 				  .setTypes(this.type)
+					 				  .setQuery(qb)
+					 				  .execute().actionGet();
+			 
+			 
+			 SearchHit[]  results = r.getHits().getHits();
+			 
+			 try{
+			if( results[0].getSource() != null)
+				
+				return fromMaptoNeighbors(results[0].getSource());
+			
+			 }catch(ArrayIndexOutOfBoundsException e)
+			 {
+				 System.out.println(String.format("Protein Index: %d fragmentIndex: %d IS NOT FOUND!", ProteinIndex , fragmentIndex));
+			 }
+				
+			 return null;
+		}
+		
+		
+		@SuppressWarnings("unchecked")
+		public Neighbors getNeighbors(int index)
+		{ 
+			Map<String, Object> map = get(index);
+			Neighbors neighbors = fromMaptoNeighbors(map);
+			
+			Map<String, Object> nmap = (Map<String, Object>) neighbors.getNeighbors().get(0);
+			return neighbors;		 
+		}
+		
+		
+		private Neighbors fromMaptoNeighbors(Map<String, Object> map )
+		{
+			
+			 Neighbors neighbors = new Neighbors();
+			 
+			 neighbors.setProtein((Integer)map.get("m_protein"));
+			 neighbors.setIndex((Integer)map.get("m_index"));
+			 neighbors.setNeighbors((ArrayList<Node>)map.get("neighbors"));
+			 
+			 return neighbors;
+		}
+		
+		
 //	
 //	/**
 //	 * Method to delete shopper Card   record
