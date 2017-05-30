@@ -80,7 +80,7 @@ public class App
 //		
 //		BFS bfs = new BFS(3);
 //		bfs.run();
-	    System.exit(0);
+	    //System.exit(0);
 
     }
 	
