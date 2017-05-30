@@ -64,17 +64,36 @@ public class MeanRMSD
 	{
 		if(threads == null)
 			return null;
-		double[] array = new double[this.HammingDistanceFactor];
-		double[] temp = new double[this.HammingDistanceFactor];
+		
+		double[] MeanRMSDarray = new double[this.HammingDistanceFactor];
+		int[] Counterarray = new int[this.HammingDistanceFactor];
+		double[] RMSDarray = new double[this.HammingDistanceFactor];
+		
+		int[] tempCounters = new int[this.HammingDistanceFactor];
+		double[] tempRMSD = new double[this.HammingDistanceFactor];
+		
 		for(MeanRMSDThread t : threads)
 		{
-			temp  = t.getArrayOfHammingValues().clone();
+			tempCounters  = t.getCountArray().clone();
+			tempRMSD = t.getRmsdValuesArray().clone();
 			
 			for(int i = 0 ; i < HammingDistanceFactor ; i++)
-				array[i] += temp[i];
+			{
+				Counterarray[i] += tempCounters[i];
+				RMSDarray[i] += tempRMSD[i];
+			}
 		}
 		
-		return array;
+		for(int i = 0 ; i < HammingDistanceFactor ; i++)
+		{
+			if(Counterarray[i] != 0)
+			{
+				MeanRMSDarray[i] = RMSDarray[i] / Counterarray[i] ; 
+			}
+				
+		}
+		
+		return MeanRMSDarray;
 	}
 	public static synchronized int getNextIndex()
 	{
