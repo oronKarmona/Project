@@ -30,7 +30,7 @@ public class BFS {
 		 queue.add(new NodeBFS(this.getRoot(1),0));
 		 current = queue.peek();
 		 // Save cluster ? 
-		 while(!(queue.isEmpty()) && current.getDistance() < factor ) 
+		 while(!(queue.isEmpty()) && current.getDistance() <= factor ) 
 		 {
 			 current = queue.poll();
 			// visited.add(new Neighbors(current.getNeighbors()));
@@ -40,9 +40,8 @@ public class BFS {
 			 {
 				 NodeBFS toAdd = new NodeBFS(getNode(n.getProtein(),n.getIndex()),current.getDistance() + 1);
 				 
-				 if(toAdd.getNeighbors() != null 
-						 	&&
-						 		!visited.containsKey(this.getString(toAdd.getNeighbors())))
+				 if(toAdd.getNeighbors() != null &&
+				   !visited.containsKey(this.getString(toAdd.getNeighbors())))
 					 queue.add(new NodeBFS(toAdd));
 
 			 }

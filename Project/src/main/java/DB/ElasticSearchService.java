@@ -156,11 +156,11 @@ public class ElasticSearchService
 		}
 		
 		
-		public Map<String, Object> get(int index)
+		public Map<String, Object> get(int id)
 		{
 			Map<String, Object> map = null;
 			try{
-			GetResponse response = client.prepareGet(this.index, type,index + "").get();
+			GetResponse response = client.prepareGet(this.index, type,id + "").get();
 			map = response.getSource();
 			}catch(Exception e )
 			{
@@ -270,7 +270,13 @@ public class ElasticSearchService
 			 return neighbors;
 		}
 		
-		
+		public long getCountOfDocInType( )
+		{
+			long ctr  = -1 ;
+			SearchResponse searchResponse = client.prepareSearch(this.index).setTypes(this.type).execute().actionGet();
+			ctr = searchResponse.getHits().getTotalHits();
+			return ctr;
+		}
 //	
 //	/**
 //	 * Method to delete shopper Card   record

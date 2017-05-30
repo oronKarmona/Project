@@ -9,9 +9,11 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import BFS.BFS;
-import Calculation.NeighborsHelper;
-import DB.UpdateHamming;
+import Calculation.MeanRMSD;
+import DB.ElasticSearchService;
 import Helpers.JSONhelper;
+import Helpers.NeighborsHelper;
+import Helpers.UpdateHamming;
 import PCN.ReadPCNFile;
 import Table.TrainingData;
 import testing.CreateSequenceFile;
@@ -29,7 +31,10 @@ public class App
     {
 		ArrayList<Protein> proteinsDB;
 		long startTime = System.currentTimeMillis();
-
+		
+		
+		MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
+		
 		//***************  init DB *****************************//
 //		 
 //		proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
@@ -62,8 +67,8 @@ public class App
 	   // TrainingData trainingData = new TrainingData(proteinsDB);
 	    
 		//***************  CreateSequenceFile ******************************//
-	    //CreateSequenceFile file = new CreateSequenceFile(proteinsDB);
-	    
+//	    CreateSequenceFile file = new CreateSequenceFile(proteinsDB);
+//	    
 		//***************  Read PCN ******************************//
 
 //	    String DBName = "pcn_db";
@@ -72,9 +77,9 @@ public class App
 //	    	System.out.println("PCN was read and saved to "+DBName);
 //	    }
 //	    
-		
-		BFS bfs = new BFS(3);
-		bfs.run();
+//		
+//		BFS bfs = new BFS(3);
+//		bfs.run();
 	    System.exit(0);
 
     }

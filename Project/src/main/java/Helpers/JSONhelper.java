@@ -80,5 +80,21 @@ public class JSONhelper
 	        return null;
 	}
 	
+	public static void WriteMeanRMSD(double[] values , String file_name)
+	{
+		
+			try (Writer writer = new FileWriter(file_name+".json")) 
+			{
+			    Gson gson = new GsonBuilder().create();
+			    gson.toJson(values, writer);
+			    
+			  
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+	}
+	
+	
 
 }

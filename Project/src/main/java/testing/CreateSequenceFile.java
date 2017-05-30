@@ -18,7 +18,7 @@ public class CreateSequenceFile {
 		try{
 		    PrintWriter writer = new PrintWriter("proteinDB.txt", "UTF-8");
 		    for (Protein protein : m_proteinsDB) {
-		    	writer.println(String.format("> %d %s", protein.getProteinIndex(), protein.getAminoAcids()));
+		    	writer.println(String.format(">%d\n%s", protein.getProteinIndex(), protein.getAminoAcids()));
 
 			}
 
