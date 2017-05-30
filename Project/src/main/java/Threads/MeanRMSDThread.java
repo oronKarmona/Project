@@ -77,4 +77,14 @@ public class MeanRMSDThread extends Thread
 	{
 		return this.arrayOfAVGresults;
 	}
+	
+	public int[] getCountArray()
+	{
+		return this.arrayOfCounters;
+	}
+	
+	public double[] getRmsdValuesArray()
+	{
+		return this.arrayOfRMSD;
+	}
 }

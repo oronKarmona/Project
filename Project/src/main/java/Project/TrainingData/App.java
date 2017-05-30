@@ -57,7 +57,7 @@ public class App
 //		    	e.printStackTrace();
 //		    }
 //		    System.exit(0);
-//	    System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
+	    System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
 	      
 	      //checking the match between aminoacid string to its structure properties
 	      //checkAmino(proteinsDB);
