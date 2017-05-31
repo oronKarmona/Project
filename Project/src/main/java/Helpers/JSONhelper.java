@@ -58,15 +58,15 @@ public class JSONhelper
 	 * @return data from the file as ArrayList<Protein>
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<Protein> ReadJsonFile()
+	public static ArrayList<Protein> ReadJsonFile(String FileName,int amount)
 	{
 		 JSONParser parser = new JSONParser();
 		 ArrayList<Protein> proteinsDB  = new ArrayList<Protein>();
 	        try {
 	        	
-	        	for(int i = 0 ; i < 20 ; i ++)
+	        	for(int i = 0 ; i < amount ; i ++)
 	        	{
-		            Object obj = parser.parse(new FileReader("Output"+i+".json"));
+		            Object obj = parser.parse(new FileReader(FileName+i+".json"));
 		 
 		            JSONArray jsonArray = (JSONArray) obj;
 		            

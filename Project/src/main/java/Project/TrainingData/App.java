@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import BFS.BFS;
 import Calculation.MeanRMSD;
 import DB.ElasticSearchService;
+import Helpers.FileParser;
 import Helpers.JSONhelper;
 import Helpers.NeighborsHelper;
 import Helpers.UpdateHamming;
@@ -34,58 +35,39 @@ public class App
 		long startTime = System.currentTimeMillis();
 		
 //		WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
-		
 //		MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
-		
-		//***************  init DB *****************************//
-//		 
-//		proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
-//    	
-//		//***************  save DB ******************************//
-//		
-//    	JSONhelper.WriteObject(proteinsDB,20,"Output"); // writing the pdb as json file
-//    	
-//		//***************  read DB ******************************//
-//  proteinsDB = JSONhelper.ReadJsonFile(); //reading the pdb from json files
-//  for(int i = 0 ; i < proteinsDB.size() ; i++)
-//  {
-//	  if(proteinsDB.get(i).getProteinIndex() == 39096  || 38557  == proteinsDB.get(i).getProteinIndex())
-//		  System.out.println(proteinsDB.get(i).getAstralID());
-//  }
-//	    try{
-//			UpdateHamming uh = new UpdateHamming(proteinsDB);
-//		    }catch(Exception e )
-//		    {
-//		    	e.printStackTrace();
-//		    }
-//		    System.exit(0);
-	    System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
+
+
+	   
 	      
-	      //checking the match between aminoacid string to its structure properties
-	      //checkAmino(proteinsDB);
-	    
-		//***************  training ******************************//
-//
+
 	   // TrainingData trainingData = new TrainingData(proteinsDB);
 	    
-		//***************  CreateSequenceFile ******************************//
-//	    CreateSequenceFile file = new CreateSequenceFile(proteinsDB);
-//	    
-		//***************  Read PCN ******************************//
-
-//	    String DBName = "pcn_db";
-//	    File file = new File("DBfileTree1Thr~60");
-//	    if(ReadPCNFile.Read(file,DBName)){
-//	    	System.out.println("PCN was read and saved to "+DBName);
-//	    }
-//	    
-//		
 		BFS bfs = new BFS(3);
 		bfs.run();
-	    //System.exit(0);
-
+	   
+	System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }
 	
+	public static ArrayList<Protein> read_Whole_ASTRAL_and_structural_data()
+	{
+		ArrayList<Protein> proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
+		
+		return proteinsDB;
+	}
+	
+	public static void Write_PDBtoJSON_files(ArrayList<Protein> proteinsDB , int numberOfFiles , String FileName)
+	{
+		//(proteinsDB,20,"Output"); // default
+		JSONhelper.WriteObject(proteinsDB,numberOfFiles,FileName); // writing the pdb as json file
+	}
+	
+	public static ArrayList<Protein> Read_JSON_files(String fileName , int amount )
+	{
+		// ("Output" , 20 ) default
+		ArrayList<Protein>  proteinsDB = JSONhelper.ReadJsonFile(fileName , amount); //reading the pdb from json files
+		return proteinsDB;
+	}
 	/***
 	 * This method checks the number of classifications there are among the proteins data
 	 * @param proteins - arrayList of proteins
@@ -102,11 +84,7 @@ public class App
     	}
     	
     	return classes.size();
-    /*	System.out.println(classes.size()+" classes:");
-    	for(String s : classes)
-    	{
-    		System.out.println(s);
-    	} */
+  
 	}
     /***
      * Showing percentage animation through the console
