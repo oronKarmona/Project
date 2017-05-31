@@ -89,7 +89,7 @@ public class ElasticSearchService
 							
 						} 
 			        })
-			        .setBulkSize(new ByteSizeValue(300, ByteSizeUnit.MB)) 
+			         
 			        .setFlushInterval(TimeValue.timeValueSeconds(5))
 			        .setConcurrentRequests(1) 
 			        .setBackoffPolicy(
