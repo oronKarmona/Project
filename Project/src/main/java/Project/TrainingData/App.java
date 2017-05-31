@@ -15,6 +15,7 @@ import Helpers.JSONhelper;
 import Helpers.NeighborsHelper;
 import Helpers.UpdateHamming;
 import PCN.ReadPCNFile;
+import PCN.WritePCNtoDB;
 import Table.TrainingData;
 import testing.CreateSequenceFile;
 
@@ -32,8 +33,9 @@ public class App
 		ArrayList<Protein> proteinsDB;
 		long startTime = System.currentTimeMillis();
 		
+		WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
 		
-		MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
+//		MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
 		
 		//***************  init DB *****************************//
 //		 
