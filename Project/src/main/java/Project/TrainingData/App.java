@@ -33,7 +33,7 @@ public class App
 		ArrayList<Protein> proteinsDB;
 		long startTime = System.currentTimeMillis();
 		
-		WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
+//		WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
 		
 //		MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
 		
@@ -80,8 +80,8 @@ public class App
 //	    }
 //	    
 //		
-//		BFS bfs = new BFS(3);
-//		bfs.run();
+		BFS bfs = new BFS(3);
+		bfs.run();
 	    //System.exit(0);
 
     }

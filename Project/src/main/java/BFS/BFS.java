@@ -20,14 +20,14 @@ public class BFS {
 	private int factor  ;
 	
 	public BFS(int factor){
-		 elasticSearchService = new ElasticSearchService("proteins","pcn_db");
+		 elasticSearchService = new ElasticSearchService("pcn","data");
 		 this.factor = factor;
 	}
 
 	public void run(){
 	
 		
-		 queue.add(new NodeBFS(this.getRoot(1),0));
+		 queue.add(new NodeBFS(this.getRoot(0),0));
 		 current = queue.peek();
 		 // Save cluster ? 
 		 while(!(queue.isEmpty()) && current.getDistance() <= factor ) 
