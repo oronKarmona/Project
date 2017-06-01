@@ -14,16 +14,16 @@ public class Node {
 	}
 	
 	
-	public long getProtein() {
+	public long getProteinIndex() {
 		return m_protein;
 	}
-	public void setProtein(long m_currentProtein) {
+	public void setProteinIndex(long m_currentProtein) {
 		this.m_protein = m_currentProtein;
 	}
-	public int getIndex() {
+	public int getFragmentIndex() {
 		return m_index;
 	}
-	public void setIndex(int m_index) {
+	public void setFragmentIndex(int m_index) {
 		this.m_index = m_index;
 	}
 	

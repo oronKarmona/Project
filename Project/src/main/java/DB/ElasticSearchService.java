@@ -245,17 +245,11 @@ public class ElasticSearchService
 		
 		private Neighbors fromMaptoNeighbors(Map<String, Object> map )
 		{
-			
-			
-//			 Neighbors neighbors = new Neighbors();
-//			 
-//			 neighbors.setProtein((Integer)map.get("m_protein"));
-//			 neighbors.setIndex((Integer)map.get("m_index"));
-//			 neighbors.setNeighbors((ArrayList<Node>)map.get("neighbors"));
+
 			 Neighbors neighbors = new Neighbors();
 			 
-			 neighbors.setProtein((Integer)map.get("m_protein"));
-			 neighbors.setIndex((Integer)map.get("m_index"));
+			 neighbors.setProteinIndex((Integer)map.get("m_protein"));
+			 neighbors.setFragmentIndex((Integer)map.get("m_index"));
 			 neighbors.setNeighbors(this.fromMapToNeighbors(neighbors));
 			 
 			 return neighbors;

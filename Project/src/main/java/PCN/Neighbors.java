@@ -21,7 +21,7 @@ public class Neighbors extends Node {
 		neighbors = new ArrayList<Node>();
 	}
 	public Neighbors(Neighbors node) {
-		this(node.getProtein() , node.getIndex());
+		this(node.getProteinIndex() , node.getFragmentIndex());
 		neighbors = node.getNeighbors();
 	}
 	

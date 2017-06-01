@@ -52,12 +52,11 @@ public class BFS {
 		 while(!(queue.isEmpty()) && current.getDistance() <= factor ) 
 		 {
 			 current = queue.poll();
-			// visited.add(new Neighbors(current.getNeighbors()));
-			   visited.put(this.getString(current.getNeighbors()),true);
+			 visited.put(this.getString(current.getNeighbors()),true);
 			   
 			 for(Node n : current.getNeighbors().getNeighbors())
 			 {
-				 NodeBFS toAdd = new NodeBFS(getNode(n.getProtein(),n.getIndex()),current.getDistance() + 1);
+				 NodeBFS toAdd = new NodeBFS(getNode(n.getProteinIndex(),n.getFragmentIndex()),current.getDistance() + 1);
 				 
 				 if(toAdd.getNeighbors() != null  &&
 				   !visited.containsKey(this.getString(toAdd.getNeighbors()))&& 
@@ -76,7 +75,7 @@ public class BFS {
 	
 	private String getString(Neighbors n )
 	{
-		return n.getProtein()+" "+n.getIndex();
+		return n.getProteinIndex()+" "+n.getFragmentIndex();
 	}
 	/***
 	 * Get the root node 
@@ -84,30 +83,10 @@ public class BFS {
 	 */
 	private Neighbors getRoot(int index)
 	{
-		Neighbors neighbors = elasticSearchService.getNeighbors(index);
-	//	neighbors.setNeighbors(fromMapToNeighbors(neighbors));
-		
+		Neighbors neighbors = elasticSearchService.getNeighbors(index);		
 		return neighbors;
 	}
-	
-//	
-//	@SuppressWarnings("unchecked")
-//	private ArrayList<Node> fromMapToNeighbors(Neighbors neighbors)
-//	{
-//		Map<String, Object> nmap;
-//		ArrayList<Node> nodes = new ArrayList<Node>();
-//		
-//		for(int i = 0 ; i < neighbors.getNeighbors().size() ; i++)
-//		{
-//			nmap = (Map<String, Object>) neighbors.getNeighbors().get(i);
-//			if(nmap == null)
-//				return null;
-//			nodes.add(new Node( (Integer)nmap.get("m_protein"),(Integer)nmap.get("m_index")));
-//		}
-//		
-//		return nodes;
-//	}
-	
+
 	
 	private Neighbors getNode(long protein , int index)
 	{
@@ -122,8 +101,8 @@ public class BFS {
 	private boolean check_repeates(NodeBFS bfs_node )
 	{
 		Neighbors node = bfs_node.getNeighbors();
-		int protein_index = (int)node.getProtein();
-		int fragment_index = node.getIndex();
+		int protein_index = (int)node.getProteinIndex();
+		int fragment_index = node.getFragmentIndex();
 		
 		if(protein_index > 320571)
 			protein_index -= 320572;
@@ -138,10 +117,10 @@ public class BFS {
 	private boolean check_complete_correspondence(NodeBFS current_node , NodeBFS child_node)
 	{
 		Neighbors father_node = current_node.getNeighbors();
-		int father_protein_index = (int)father_node.getProtein();
+		int father_protein_index = (int)father_node.getProteinIndex();
 		
 		Neighbors son_node = child_node.getNeighbors();
-		int son_protein_index = (int)son_node.getProtein();
+		int son_protein_index = (int)son_node.getProteinIndex();
 		
 		if(father_protein_index > 320571)
 			father_protein_index -= 320572;

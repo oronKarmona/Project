@@ -34,14 +34,14 @@ public class ReadPCNFile {
 	        	if(line.charAt(0) == '#')
 	        	{
 	        		words = line.split(" ");
-	        		currentNode.setProtein(Long.parseLong(words[1]));
+	        		currentNode.setProteinIndex(Long.parseLong(words[1]));
 	        	}
 	        	if(line.charAt(0) == '>')
 	        	{
 	        		line = line.substring(0, line.length()-1);
 	        		//index in current node
 	        		words = line.substring(1).split(":");
-	        		currentNode.setIndex(Integer.parseInt(words[0]));
+	        		currentNode.setFragmentIndex(Integer.parseInt(words[0]));
 	        		words = words[1].split(",");
 	        		//neighbors of current node
 	        		for (String neighbor : words) 
