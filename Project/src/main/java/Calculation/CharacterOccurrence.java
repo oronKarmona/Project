@@ -30,7 +30,7 @@ public class CharacterOccurrence {
 			}
 		}
 		
-		return false;
+		return true;
 		
 	}
 }
