@@ -61,7 +61,8 @@ public class BFS {
 				 
 				 if(toAdd.getNeighbors() != null  &&
 				   !visited.containsKey(this.getString(toAdd.getNeighbors()))&& 
-					this.check_repeates(toAdd)
+					this.check_repeates(toAdd) &&
+					this.check_complete_correspondence(current, toAdd)
 					)
 					 	queue.add(new NodeBFS(toAdd));
 
@@ -84,28 +85,28 @@ public class BFS {
 	private Neighbors getRoot(int index)
 	{
 		Neighbors neighbors = elasticSearchService.getNeighbors(index);
-		neighbors.setNeighbors(fromMapToNeighbors(neighbors));
+	//	neighbors.setNeighbors(fromMapToNeighbors(neighbors));
 		
 		return neighbors;
 	}
 	
-	
-	@SuppressWarnings("unchecked")
-	private ArrayList<Node> fromMapToNeighbors(Neighbors neighbors)
-	{
-		Map<String, Object> nmap;
-		ArrayList<Node> nodes = new ArrayList<Node>();
-		
-		for(int i = 0 ; i < neighbors.getNeighbors().size() ; i++)
-		{
-			nmap = (Map<String, Object>) neighbors.getNeighbors().get(i);
-			if(nmap == null)
-				return null;
-			nodes.add(new Node( (Integer)nmap.get("m_protein"),(Integer)nmap.get("m_index")));
-		}
-		
-		return nodes;
-	}
+//	
+//	@SuppressWarnings("unchecked")
+//	private ArrayList<Node> fromMapToNeighbors(Neighbors neighbors)
+//	{
+//		Map<String, Object> nmap;
+//		ArrayList<Node> nodes = new ArrayList<Node>();
+//		
+//		for(int i = 0 ; i < neighbors.getNeighbors().size() ; i++)
+//		{
+//			nmap = (Map<String, Object>) neighbors.getNeighbors().get(i);
+//			if(nmap == null)
+//				return null;
+//			nodes.add(new Node( (Integer)nmap.get("m_protein"),(Integer)nmap.get("m_index")));
+//		}
+//		
+//		return nodes;
+//	}
 	
 	
 	private Neighbors getNode(long protein , int index)
@@ -113,7 +114,7 @@ public class BFS {
 		Neighbors neighbors = elasticSearchService.SearchPCNDB(protein, index);
 		if(neighbors == null)
 			return null;
-		neighbors.setNeighbors(fromMapToNeighbors(neighbors));
+	//	neighbors.setNeighbors(fromMapToNeighbors(neighbors));
 		
 		return neighbors;
 	}
@@ -132,6 +133,29 @@ public class BFS {
 		boolean occurence_check = co.Calculate(node_protein.GetFragments(fragment_index));
 		
 		return occurence_check;
+	}
+	
+	private boolean check_complete_correspondence(NodeBFS current_node , NodeBFS child_node)
+	{
+		Neighbors father_node = current_node.getNeighbors();
+		int father_protein_index = (int)father_node.getProtein();
+		
+		Neighbors son_node = child_node.getNeighbors();
+		int son_protein_index = (int)son_node.getProtein();
+		
+		if(father_protein_index > 320571)
+			father_protein_index -= 320572;
+		
+		if(son_protein_index > 320571)
+			son_protein_index -= 320572;
+		
+		Protein current_protein =  this.protein_map.get(father_protein_index);
+		Protein son_protein =  this.protein_map.get(son_protein_index);
+
+		boolean result = current_protein.getAminoAcids().equals(son_protein.getAminoAcids());
+		
+		
+		return  result;
 	}
 	
 	

@@ -239,7 +239,6 @@ public class ElasticSearchService
 			Map<String, Object> map = get(index);
 			Neighbors neighbors = fromMaptoNeighbors(map);
 			
-			Map<String, Object> nmap = (Map<String, Object>) neighbors.getNeighbors().get(0);
 			return neighbors;		 
 		}
 		
@@ -247,13 +246,37 @@ public class ElasticSearchService
 		private Neighbors fromMaptoNeighbors(Map<String, Object> map )
 		{
 			
+			
+//			 Neighbors neighbors = new Neighbors();
+//			 
+//			 neighbors.setProtein((Integer)map.get("m_protein"));
+//			 neighbors.setIndex((Integer)map.get("m_index"));
+//			 neighbors.setNeighbors((ArrayList<Node>)map.get("neighbors"));
 			 Neighbors neighbors = new Neighbors();
 			 
 			 neighbors.setProtein((Integer)map.get("m_protein"));
 			 neighbors.setIndex((Integer)map.get("m_index"));
-			 neighbors.setNeighbors((ArrayList<Node>)map.get("neighbors"));
+			 neighbors.setNeighbors(this.fromMapToNeighbors(neighbors));
 			 
 			 return neighbors;
+		}
+		
+		
+		@SuppressWarnings("unchecked")
+		private ArrayList<Node> fromMapToNeighbors(Neighbors neighbors)
+		{
+			Map<String, Object> nmap;
+			ArrayList<Node> nodes = new ArrayList<Node>();
+			
+			for(int i = 0 ; i < neighbors.getNeighbors().size() ; i++)
+			{
+				nmap = (Map<String, Object>) neighbors.getNeighbors().get(i);
+				if(nmap == null)
+					return null;
+				nodes.add(new Node( (Integer)nmap.get("m_protein"),(Integer)nmap.get("m_index")));
+			}
+			
+			return nodes;
 		}
 		
 		public long getCountOfDocInType( )
