@@ -14,10 +14,17 @@ public class CharacterOccurrence {
 		int count = 0 ;
 		char letter;
 		String proteinStr = protein.toUpperCase();
-		for(int i=0;i<20;i++)
+		for(int i=0;i<28;i++)
 		{
-			letter = (char)('A'+i);
+			if(i == 26 )
+				letter = '_';
+			else if(i == 27)
+				letter = '?';
+			else 
+				letter = (char)('A'+i);
+			
 			count= StringUtils.countOccurrencesOf(proteinStr,Character.toString(letter));
+			
 			if(count >= m_factor){
 				return false;
 			}
