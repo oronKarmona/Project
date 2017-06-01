@@ -250,6 +250,7 @@ public class ElasticSearchService
 			 
 			 neighbors.setProteinIndex((Integer)map.get("m_protein"));
 			 neighbors.setFragmentIndex((Integer)map.get("m_index"));
+			 neighbors.setNeighbors((ArrayList<Node>)map.get("neighbors"));
 			 neighbors.setNeighbors(this.fromMapToNeighbors(neighbors));
 			 
 			 return neighbors;
