@@ -9,6 +9,7 @@ import java.util.Queue;
 import DB.ElasticSearchService;
 import PCN.Neighbors;
 import PCN.Node;
+import Project.TrainingData.Protein;
 
 public class BFS {
 	
@@ -18,13 +19,26 @@ public class BFS {
 	private Map<String , Boolean> visited = new HashMap <String , Boolean>();
 	private NodeBFS current ; 
 	private int factor  ;
+	private ArrayList<Protein> uknownStructurePDB , knownStructrePDB;
+	private Map<Integer , Protein> protein_map  = new HashMap<Integer , Protein>();
 	
-	public BFS(int factor){
+	public BFS(int factor, ArrayList<Protein> uknownStructurePDB, ArrayList<Protein> knownStructrePDB){
 		 elasticSearchService = new ElasticSearchService("pcn","data");
 		 this.factor = factor;
+		 this.uknownStructurePDB = uknownStructurePDB;
+		 this.knownStructrePDB = knownStructrePDB;
+		 this.setProteinsMap();
 	}
-
-	public void run(){
+	
+	private void setProteinsMap()
+	{
+		for(Protein p : uknownStructurePDB)
+			protein_map.put(p.getProteinIndex(),p);
+		
+		for(Protein p : knownStructrePDB)
+			protein_map.put(p.getProteinIndex(), p);
+	}
+	public void runBFS(){
 	
 		
 		 queue.add(new NodeBFS(this.getRoot(0),0));
@@ -40,22 +54,19 @@ public class BFS {
 			 {
 				 NodeBFS toAdd = new NodeBFS(getNode(n.getProtein(),n.getIndex()),current.getDistance() + 1);
 				 
-				 if(toAdd.getNeighbors() != null &&
-				   !visited.containsKey(this.getString(toAdd.getNeighbors())))
-					 queue.add(new NodeBFS(toAdd));
+				 if(toAdd.getNeighbors() != null  &&
+				   !visited.containsKey(this.getString(toAdd.getNeighbors()))&& 
+					this.check_repeates(toAdd)
+					)
+					 	queue.add(new NodeBFS(toAdd));
 
 			 }
 			 
 			 
 			 
 		 }
-		
-		
-	//	System.out.println(neighbors);
-		
-		
-		
 	}
+	
 	
 	private String getString(Neighbors n )
 	{
@@ -100,6 +111,17 @@ public class BFS {
 		neighbors.setNeighbors(fromMapToNeighbors(neighbors));
 		
 		return neighbors;
+	}
+	
+	private boolean check_repeates(NodeBFS bfs_node )
+	{
+		Neighbors node = bfs_node.getNeighbors();
+		int protein_index = (int)node.getProtein();
+		int fragment_index = node.getIndex();
+		
+		Protein node_protein = this.protein_map.get(protein_index);
+		
+		return true;
 	}
 	
 	

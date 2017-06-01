@@ -14,13 +14,16 @@ import DB.ElasticSearchService;
 import Helpers.FileParser;
 import Helpers.JSONhelper;
 import Helpers.NeighborsHelper;
+import Helpers.PCNpdbParser;
 import Helpers.UpdateHamming;
 import PCN.ReadPCNFile;
 import PCN.WritePCNtoDB;
 import Table.TrainingData;
 import testing.CreateSequenceFile;
 
-
+//WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
+//MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
+// TrainingData trainingData = new TrainingData(proteinsDB);
 /***
  * Main class
  * @author oron
@@ -31,20 +34,15 @@ public class App
 	
 	public static void main( String[] args )
     {
-		ArrayList<Protein> proteinsDB;
+		ArrayList<Protein> knownStructrePDB , uknownStructurePDB;
 		long startTime = System.currentTimeMillis();
 		
-//		WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
-//		MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
+		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 
-
-	   
-	      
-
-	   // TrainingData trainingData = new TrainingData(proteinsDB);
 	    
-		BFS bfs = new BFS(3);
-		bfs.run();
+		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB);
+		bfs.runBFS();
 	   
 	System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }
@@ -62,11 +60,26 @@ public class App
 		JSONhelper.WriteObject(proteinsDB,numberOfFiles,FileName); // writing the pdb as json file
 	}
 	
-	public static ArrayList<Protein> Read_JSON_files(String fileName , int amount )
+	public static ArrayList<Protein> Read_knowStructuralPDB_files(String fileName , int amount )
 	{
 		// ("Output" , 20 ) default
 		ArrayList<Protein>  proteinsDB = JSONhelper.ReadJsonFile(fileName , amount); //reading the pdb from json files
 		return proteinsDB;
+	}
+	
+	public static ArrayList<Protein> Read_unknown_structure_PDB(String FileName)
+	{
+		ArrayList<Protein> proteinDB = null;
+		//("1//ProteomDB")
+		   try {
+			   
+			  proteinDB  = PCNpdbParser.ParseFile(FileName);
+			   
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		   
+		   return proteinDB;
 	}
 	/***
 	 * This method checks the number of classifications there are among the proteins data
