@@ -41,7 +41,7 @@ public class App
 		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 
 	    
-		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB);
+		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3);
 		bfs.runBFS();
 	   
 	System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));

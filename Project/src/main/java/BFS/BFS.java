@@ -6,6 +6,9 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
+import org.apache.lucene.search.BooleanClause.Occur;
+
+import Calculation.CharacterOccurrence;
 import DB.ElasticSearchService;
 import PCN.Neighbors;
 import PCN.Node;
@@ -21,12 +24,14 @@ public class BFS {
 	private int factor  ;
 	private ArrayList<Protein> uknownStructurePDB , knownStructrePDB;
 	private Map<Integer , Protein> protein_map  = new HashMap<Integer , Protein>();
+	private double OccurenceThreshold;
 	
-	public BFS(int factor, ArrayList<Protein> uknownStructurePDB, ArrayList<Protein> knownStructrePDB){
+	public BFS(int factor, ArrayList<Protein> uknownStructurePDB, ArrayList<Protein> knownStructrePDB , int OccurenceThreshold){
 		 elasticSearchService = new ElasticSearchService("pcn","data");
 		 this.factor = factor;
 		 this.uknownStructurePDB = uknownStructurePDB;
 		 this.knownStructrePDB = knownStructrePDB;
+		 this.OccurenceThreshold = OccurenceThreshold;
 		 this.setProteinsMap();
 	}
 	
@@ -120,8 +125,10 @@ public class BFS {
 		int fragment_index = node.getIndex();
 		
 		Protein node_protein = this.protein_map.get(protein_index);
+		CharacterOccurrence co = new CharacterOccurrence(this.OccurenceThreshold);
+		boolean occurence_check = co.Calculate(node_protein.GetFragments(fragment_index));
 		
-		return true;
+		return occurence_check;
 	}
 	
 	
