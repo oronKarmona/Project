@@ -1,11 +1,13 @@
 package PCN;
 
+import java.util.ArrayList;
+
 import DB.ElasticSearchService;
 
 public class PCNCorrector 
 {
 	private ElasticSearchService es = new ElasticSearchService("pcn","data");
-	private Neighbors neighbor ; 
+	
 	private int start_index  = 0 , final_index ; 
 	
 	public PCNCorrector()
@@ -17,13 +19,19 @@ public class PCNCorrector
 	
 	public void startCorrection()
 	{
+		Neighbors main_node , child_node; 
+		ArrayList<Node> child_neighbors  ;
+		
 		for(int i = start_index ; i < final_index ; i ++ )
 		{
-			neighbor = es.getNeighbors(i);
-			for(Node n  : neighbor.getNeighbors())
-				neighbor = es.SearchPCNDB(n.getProteinIndex(), n.getFragmentIndex());
+			main_node = es.getNeighbors(i);
 			
-			System.out.println("");
+			for(Node node  : main_node.getNeighbors())
+			{
+				child_node = es.SearchPCNDB(node.getProteinIndex(), node.getFragmentIndex());
+				child_neighbors = child_node.getNeighbors();
+			}
+			
 			
 		}
 		
