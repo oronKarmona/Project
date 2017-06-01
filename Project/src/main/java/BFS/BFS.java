@@ -124,6 +124,9 @@ public class BFS {
 		int protein_index = (int)node.getProtein();
 		int fragment_index = node.getIndex();
 		
+		if(protein_index > 320571)
+			protein_index -= 320572;
+		
 		Protein node_protein = this.protein_map.get(protein_index);
 		CharacterOccurrence co = new CharacterOccurrence(this.OccurenceThreshold);
 		boolean occurence_check = co.Calculate(node_protein.GetFragments(fragment_index));
