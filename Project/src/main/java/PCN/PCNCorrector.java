@@ -11,6 +11,7 @@ public class PCNCorrector
 	public PCNCorrector()
 	{
 		final_index = (int) (es.getCountOfDocInType() - 1) ;
+		this.startCorrection();
 	}
 	
 	

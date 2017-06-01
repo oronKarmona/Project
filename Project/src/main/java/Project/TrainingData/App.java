@@ -16,6 +16,7 @@ import Helpers.JSONhelper;
 import Helpers.NeighborsHelper;
 import Helpers.PCNpdbParser;
 import Helpers.UpdateHamming;
+import PCN.PCNCorrector;
 import PCN.ReadPCNFile;
 import PCN.WritePCNtoDB;
 import Table.TrainingData;
@@ -39,13 +40,20 @@ public class App
 		
 		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
-
+		
+		PCNCorrector p = new PCNCorrector();
 	    
-		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3);
-		bfs.runBFS();
+//		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3);
+//		bfs.runBFS();
 	   
-	System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
+		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }
+	
+	
+	
+	
+	
+	
 	
 	public static ArrayList<Protein> read_Whole_ASTRAL_and_structural_data()
 	{
