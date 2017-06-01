@@ -11,9 +11,10 @@ import DB.ElasticSearchService;
 public class ReadPCNFile {
 
 	
-	public static boolean Read(File file, String DBName){
+	public static boolean Read(File file,String index ,String type){
 		
-		ElasticSearchService elasticSearchService = new ElasticSearchService("proteins",DBName);
+		ElasticSearchService elasticSearchService = new ElasticSearchService(index,type);
+		elasticSearchService.setID(elasticSearchService.getCountOfDocInType());
 		Neighbors currentNode = new Neighbors();
 
 		String[] words;

@@ -305,5 +305,11 @@ public class ElasticSearchService
 		public void setLastDocID(String lastDocID) {
 			this.lastDocID = lastDocID;
 		}
+		
+		public void setID(long id )
+		{
+			this.id = id ;
+			
+		}
 
 	}

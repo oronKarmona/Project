@@ -38,10 +38,11 @@ public class App
 		ArrayList<Protein> knownStructrePDB , uknownStructurePDB;
 		long startTime = System.currentTimeMillis();
 		
-		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
-		
-		PCNCorrector p = new PCNCorrector();
+		ReadPCNFile.Read(new File("DBfileTree1Thr~60"), "pcn","data");
+//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+//		
+//		PCNCorrector p = new PCNCorrector();
 	    
 //		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3);
 //		bfs.runBFS();
