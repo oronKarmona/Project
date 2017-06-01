@@ -17,10 +17,10 @@ import com.google.gson.GsonBuilder;
 
 import DB.ElasticSearchService;
 import GUI.ProgressBar;
-import Helpers.ElasticSearchWriteThread;
 import Project.TrainingData.App;
-import Project.TrainingData.BuildTrainningDataTheard;
 import Project.TrainingData.Protein;
+import Threads.BuildTrainningDataTheard;
+import Threads.ElasticSearchWriteThread;
 
 /***
  * This class purpose is to manage the training data calculation

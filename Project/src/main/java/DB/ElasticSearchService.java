@@ -3,6 +3,7 @@ package DB;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -14,6 +15,7 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.node.NodeClient;
@@ -25,12 +27,17 @@ import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.get.GetField;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import PCN.Neighbors;
+import PCN.Node;
+import ProGAL.proteins.ProteinComplex;
 import Table.TrainingDataEntry;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
 public class ElasticSearchService
@@ -39,9 +46,7 @@ public class ElasticSearchService
 	private  Long id = (long) -1;
 	private static TransportClient client = null;
 	private static Gson gson = null;
-	private static IndexResponse response;
 	private Settings settings;
-	private BulkRequestBuilder bulkRequest = null;  
 	private String index , type ; 
 	private BulkProcessor bulkProcessor;
 	public ElasticSearchService(String index , String type){
@@ -58,7 +63,7 @@ public class ElasticSearchService
 			client = new PreBuiltTransportClient(settings)
 			        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
 			
-			bulkRequest = client.prepareBulk() ; 
+			client.prepareBulk(); 
 			
 			 bulkProcessor = BulkProcessor.builder(
 			        client,  
@@ -84,7 +89,7 @@ public class ElasticSearchService
 							
 						} 
 			        })
-			        .setBulkSize(new ByteSizeValue(20, ByteSizeUnit.MB)) 
+			         
 			        .setFlushInterval(TimeValue.timeValueSeconds(5))
 			        .setConcurrentRequests(1) 
 			        .setBackoffPolicy(
@@ -115,7 +120,7 @@ public class ElasticSearchService
 	public  void add(TrainingDataEntry trainingDataEntry) {
 	     try 
 	     {	 
-	    	 response = client.prepareIndex(index, type, id+"")
+	    	 client.prepareIndex(index, type, id+"")
 	    			 .setSource(gson.toJson(trainingDataEntry)).get();
 		 }catch (Exception e) {
 	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");
@@ -127,7 +132,7 @@ public class ElasticSearchService
 	public  void add(Neighbors pcnEntry) {
 	     try 
 	     {	 
-	    	 response = client.prepareIndex(index, type, id+"")
+	    	 client.prepareIndex(index, type, id+"")
 	    			 .setSource(gson.toJson(pcnEntry)).get();
 		 }catch (Exception e) {
 	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");
@@ -149,11 +154,11 @@ public class ElasticSearchService
 		}
 		
 		
-		public Map<String, Object> get(int index)
+		public Map<String, Object> get(int id)
 		{
 			Map<String, Object> map = null;
 			try{
-			GetResponse response = client.prepareGet(this.index, type,index + "").get();
+			GetResponse response = client.prepareGet(this.index, type,id + "").get();
 			map = response.getSource();
 			}catch(Exception e )
 			{
@@ -164,94 +169,99 @@ public class ElasticSearchService
 		
 		public synchronized void addToBulk(TrainingDataEntry trainingDataEntry)
 		{
-//			bulkRequest.add(client.prepareIndex(index, type, id+"")
-//	    			 .setSource(gson.toJson(trainingDataEntry)));
-//			id++ ; 
-//			
-//			if(bulkRequest.numberOfActions() > 100)
-//			{
-//			
-//				BulkWrite();	
-//			
-//			}
+
 			id++;
 			bulkProcessor.add(new IndexRequest(index, type, id+"")
-			 .source(gson.toJson(trainingDataEntry)));
-			
-			
-			
-			
+			 .source(gson.toJson(trainingDataEntry)));		
 		}
 		
-		private void BulkWrite()
+		public synchronized void addToBulk(Neighbors pcnEntry)
 		{
-			BulkResponse bulkResponse = bulkRequest.get();
-			if (bulkResponse.hasFailures()) {
-			    // process failures by iterating through each bulk response item
-			}
-		
+
+			id++;
+			bulkProcessor.add(new IndexRequest(index, type, id+"")
+			 .source(gson.toJson(pcnEntry)));		
 		}
-//	
-//	/**
-//	 * Method to delete shopper Card   record
-//	 *
-//	 * @param cardId
-//	 *            - unique identifier
-//	 */
-//	public void delete(Long cardId) {
-//	    try {
-//		 DeleteResponse response = getClient().prepareDelete("search.index.name", "search.index.type" , index.toString()).execute().actionGet();
-//		}
-//	    catch (Exception e) {
-//	    	throw new NoNodeAvailableException("[delete]: Error occurred while updating record", e);
-//		}
-//	}
-//	
-//	/**
-////	 * Method to perform search
-////	 *
-////	 * @param searchQuery
-////	 *            - search query
-////	 * @param sortBuilder
-////	 *            - sort builder to perform data sorting
-////	 * @return - list of matching records
-////	 * @throws Exception
-////	 */
-//	public List<String> performFieldSearch(QueryBuilder searchQuery, SortBuilder sortBuilder) throws Exception {
-//		try {
-//	CountResponse countresponse = client.prepareCount(I18NUtility.getMessage("search.index.name"))
-//	.setQuery(QueryBuilders.matchAllQuery()).execute().actionGet();
-//	int recordCount = (int) countresponse.getCount();
-//	
-//	SearchResponse response = getClient().prepareSearch(I18NUtility.getMessage("search.index.name"))
-//		.setTypes(I18NUtility.getMessage("search.index.type")).setSearchType(SearchType.QUERY_AND_FETCH).setQuery(searchQuery).addSort(sortBuilder). .setSize(recordCount) .execute().actionGet();
-//	
-//	SearchHit[] searchHits = response.getHits().getHits();
-//	List<String> searchResults = new ArrayList<String>();
-//	 for (SearchHit searchHit : searchHits) {
-//		String searchResult = searchHit.getSourceAsString();
-//		searchResults.add(searchResult);
-//	       }
-//	return searchResults;
-//	}
-//	catch (Exception e) {
-//		throw new NoNodeAvailableException("Error occurred while  searching", e.getCause());
-//		}
-//	     }
-//	}
-//	
-//	/**
-//	 * Builds search query based on search keyword and filed name
-//	 *
-//	 * @param searchKeyword
-//	 *            - search keyword
-//	 * @param fieldName
-//	 *            - field name on which search has to be performed
-//	*/
-//	public BoolQueryBuilder buildSearchQuery(String searchKeyword, String fieldName){
-//		BoolQueryBuilder searchQuery = QueryBuilders.boolQuery ();
-//		searchQuery.must (QueryBuilders.queryString(searchString).phraseSlop(searchString 	.length()).field(fieldName));
-//		searchQuery.mustNot(QueryBuilders.termQuery("whetherActive", Boolean.FALSE));
-//		return searchQuery;
-//	    }
+		
+	
+		
+		public SearchHit[] SearchTrainingDataDB(int firstProteinIndex , int  secondProteinIndex , int firstFragmentIndex , int secondFragmentIndex)
+		{
+			 QueryBuilder qb = QueryBuilders.boolQuery()
+		                .must(QueryBuilders.matchQuery("firstProteinIndex", firstProteinIndex))
+		                .must(QueryBuilders.matchQuery("secondProteinIndex", secondProteinIndex))
+		                		.must(QueryBuilders.matchQuery("firstFragmentIndex", firstFragmentIndex))
+				                .must(QueryBuilders.matchQuery("secondFragmentIndex", secondFragmentIndex));
+			 
+			 SearchResponse r = client.prepareSearch(this.index)
+					 				  .setTypes(this.type)
+					 				  .setQuery(qb)
+					 				  .execute().actionGet();
+			 
+			 
+			 SearchHit[]  results = r.getHits().getHits();
+			 
+			 return results;
+			 
+		}
+		
+		public Neighbors SearchPCNDB(long ProteinIndex , int  fragmentIndex )
+		{
+			 QueryBuilder qb = QueryBuilders.boolQuery()
+		                .must(QueryBuilders.matchQuery("m_protein", ProteinIndex))
+		                .must(QueryBuilders.matchQuery("m_index", fragmentIndex));
+			 
+			 SearchResponse r = client.prepareSearch(this.index)
+					 				  .setTypes(this.type)
+					 				  .setQuery(qb)
+					 				  .execute().actionGet();
+			 
+			 
+			 SearchHit[]  results = r.getHits().getHits();
+			 
+			 try{
+			if( results[0].getSource() != null)
+				
+				return fromMaptoNeighbors(results[0].getSource());
+			
+			 }catch(ArrayIndexOutOfBoundsException e)
+			 {
+				 System.out.println(String.format("Protein Index: %d fragmentIndex: %d IS NOT FOUND!", ProteinIndex , fragmentIndex));
+			 }
+				
+			 return null;
+		}
+		
+		
+		@SuppressWarnings("unchecked")
+		public Neighbors getNeighbors(int index)
+		{ 
+			Map<String, Object> map = get(index);
+			Neighbors neighbors = fromMaptoNeighbors(map);
+			
+			Map<String, Object> nmap = (Map<String, Object>) neighbors.getNeighbors().get(0);
+			return neighbors;		 
+		}
+		
+		
+		private Neighbors fromMaptoNeighbors(Map<String, Object> map )
+		{
+			
+			 Neighbors neighbors = new Neighbors();
+			 
+			 neighbors.setProtein((Integer)map.get("m_protein"));
+			 neighbors.setIndex((Integer)map.get("m_index"));
+			 neighbors.setNeighbors((ArrayList<Node>)map.get("neighbors"));
+			 
+			 return neighbors;
+		}
+		
+		public long getCountOfDocInType( )
+		{
+			long ctr  = -1 ;
+			SearchResponse searchResponse = client.prepareSearch(this.index).setTypes(this.type).execute().actionGet();
+			ctr = searchResponse.getHits().getTotalHits();
+			return ctr;
+		}
+
 	}
