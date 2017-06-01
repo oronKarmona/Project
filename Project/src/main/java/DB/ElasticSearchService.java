@@ -49,8 +49,10 @@ public class ElasticSearchService
 	private Settings settings;
 	private String index , type ; 
 	private BulkProcessor bulkProcessor;
+	private String lastDocID = null; 
+	
 	public ElasticSearchService(String index , String type){
-
+	
 		this.index = index; 
 		this.type = type;
 		
@@ -153,6 +155,17 @@ public class ElasticSearchService
 			client.update(updateRequest).get();
 		}
 		
+		public void updateDocument(ArrayList<Node> neighbors,String id) throws IOException, InterruptedException, ExecutionException
+		{
+	
+			UpdateRequest updateRequest = new UpdateRequest(this.index, type,id)
+			        .doc(jsonBuilder()
+			            .startObject()
+			                .field("neighbors", neighbors)
+			            .endObject());             
+			client.update(updateRequest).get();
+		}
+		
 		
 		public Map<String, Object> get(int id)
 		{
@@ -221,11 +234,14 @@ public class ElasticSearchService
 			 
 			 try{
 			if( results[0].getSource() != null)
-				
+			{
+				this.setLastDocID(results[0].getId());
 				return fromMaptoNeighbors(results[0].getSource());
+			}
 			
 			 }catch(ArrayIndexOutOfBoundsException e)
 			 {
+				 this.setLastDocID(null);
 				 System.out.println(String.format("Protein Index: %d fragmentIndex: %d IS NOT FOUND!", ProteinIndex , fragmentIndex));
 			 }
 				
@@ -280,6 +296,14 @@ public class ElasticSearchService
 			SearchResponse searchResponse = client.prepareSearch(this.index).setTypes(this.type).execute().actionGet();
 			ctr = searchResponse.getHits().getTotalHits();
 			return ctr;
+		}
+
+		public String getLastDocID() {
+			return lastDocID;
+		}
+
+		public void setLastDocID(String lastDocID) {
+			this.lastDocID = lastDocID;
 		}
 
 	}
