@@ -5,11 +5,17 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import DB.ElasticSearchService;
 
 public class ReadPCNFile {
 
+	static LocalDateTime now = LocalDateTime.now();
+	static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 	
 	public static boolean Read(File file,String index ,String type){
 		
@@ -35,7 +41,12 @@ public class ReadPCNFile {
 	        	if(line.charAt(0) == '#')
 	        	{
 	        		words = line.split(" ");
+	        		
 	        		currentNode.setProteinIndex(Long.parseLong(words[1]));
+	        		System.out.println(currentNode.getProteinIndex());
+	        		now = LocalDateTime.now();
+	    			System.out.println(dtf.format(now)); //2016/11/16 12:08:43
+	    			
 	        	}
 	        	if(line.charAt(0) == '>')
 	        	{

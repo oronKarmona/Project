@@ -102,25 +102,11 @@ public class TrainingData {
 			e.printStackTrace();
 		}
 	
-//		for (BuildTrainningDataTheard buildTrainningDataTheard : TheardList) {
-//			TrainingData.addAll(buildTrainningDataTheard.GetTrainingData());			
-//		}
-//		System.out.println(TrainingData.size());
+
 		endTime = System.currentTimeMillis();
 		long totalTime = (endTime  - startTime ) /(1000 * 60);
 		System.out.println("Total calculation time: " + totalTime + " minutes");
-//		startTime = System.currentTimeMillis();
-//		System.out.println("Writing to elastic db");
-//		
-//		for(TrainingDataEntry t : TrainingData)
-//		{
-//			elasticSearchService.add(t);
-//		}
-//		
-//		
-//		endTime = System.currentTimeMillis();
-//		 totalTime = (endTime  - startTime ) /(1000 * 60);
-//		System.out.println("Total calculation time: " + totalTime + " minutes");
+
 
 	}
 	/***
@@ -139,7 +125,7 @@ public class TrainingData {
 //	}
 	
 	static DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-	//static Date date = new Date();
+	
 	static LocalDateTime now = LocalDateTime.now();
 	static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
