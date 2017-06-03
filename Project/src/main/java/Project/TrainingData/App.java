@@ -40,7 +40,7 @@ public class App
 		ArrayList<Protein> knownStructrePDB = new ArrayList<Protein>(), uknownStructurePDB;
 		long startTime = System.currentTimeMillis();
 		
-		ElasticSearchService es = new ElasticSearchService("protein","known_structure");
+//		ElasticSearchService es = new ElasticSearchService("protein","known_structure");
 		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 //		
