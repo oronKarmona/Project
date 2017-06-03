@@ -8,13 +8,14 @@ import ParallelBFS.ParallelBFS;
 
 public class ParallelBFSThread extends Thread
 {
-	private ElasticSearchService es ; 
+	private ElasticSearchService es , writeClusterClient; 
 	private NodeBFS current ; 
 	private NodeBFS toAdd;
 	
-	public ParallelBFSThread(ElasticSearchService es )
+	public ParallelBFSThread(ElasticSearchService es, ElasticSearchService writeClusterClient )
 	{
 		this.es = es ; 
+		this.writeClusterClient = writeClusterClient;
 	}
 	
 	

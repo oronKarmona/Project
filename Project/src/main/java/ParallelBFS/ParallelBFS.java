@@ -15,7 +15,8 @@ import Threads.ParallelBFSThread;
 
 public class ParallelBFS 
 {
-	private ElasticSearchService elasticSearchService;
+	private ElasticSearchService readPcnClient;
+	private static ElasticSearchService writeClusterClient;
 	private static Queue<NodeBFS> queue = new LinkedList<NodeBFS>();
 	private static Map<String , Boolean> visited = new HashMap <String , Boolean>();
 	private static NodeBFS current ; 
@@ -28,7 +29,8 @@ public class ParallelBFS
 	
 	public ParallelBFS(int distance_factor, ArrayList<Protein> uknownStructurePDB, ArrayList<Protein> knownStructrePDB , int OccurenceThreshold , 
 							String elastic_search_index , String elastic_search_type){
-		 elasticSearchService = new ElasticSearchService(elastic_search_index,elastic_search_type);
+		 readPcnClient = new ElasticSearchService(elastic_search_index,elastic_search_type);
+		 writeClusterClient = new ElasticSearchService("cluster","0");
 		 distance_threshold = distance_factor;
 		 this.uknownStructurePDB = uknownStructurePDB;
 		 this.knownStructrePDB = knownStructrePDB;
@@ -44,7 +46,7 @@ public class ParallelBFS
 	{
 		threads = new ArrayList<ParallelBFSThread>();
 		for(int i = 0 ; i < Amount_of_threads ; i ++)
-			threads.add( new ParallelBFSThread(elasticSearchService));
+			threads.add( new ParallelBFSThread(readPcnClient,writeClusterClient));
 	}
 	
 	private void startThreads()
@@ -67,7 +69,6 @@ public class ParallelBFS
 		 // Save cluster ? 
 		 current = queue.poll();
 	     visited.put(getString(current.getNeighbors()),true);
-			   
 			 for(Node n : current.getNeighbors().getNeighbors())
 			 {
 				 NodeBFS toAdd = new NodeBFS(getNode(n.getProteinIndex(),n.getFragmentIndex()),current.getDistance() + 1);
@@ -91,6 +92,8 @@ public class ParallelBFS
 	public static synchronized void add_to_visited(NodeBFS node)
 	{
 		visited.put(getString(node.getNeighbors()),true);
+		writeClusterClient.addToBulk(node.getNeighbors());
+		System.out.println(node.getDistance());
 	}
 	
 	public static synchronized void add_to_queue(NodeBFS node )
@@ -123,14 +126,14 @@ public class ParallelBFS
 	 */
 	private Neighbors getRoot(int index)
 	{
-		Neighbors neighbors = elasticSearchService.getNeighbors(index);		
+		Neighbors neighbors = readPcnClient.getNeighbors(index);		
 		return neighbors;
 	}
 
 	
 	private Neighbors getNode(long protein , int index)
 	{
-		Neighbors neighbors = elasticSearchService.SearchPCNDB(protein, index);
+		Neighbors neighbors = readPcnClient.SearchPCNDB(protein, index);
 		if(neighbors == null)
 			return null;
 		
