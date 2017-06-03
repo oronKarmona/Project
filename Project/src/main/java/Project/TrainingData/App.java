@@ -49,7 +49,7 @@ public class App
 //		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3);
 //		bfs.runBFS();
 		
-		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data");
+		ParallelBFS bfs = new ParallelBFS(4,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data");
 		bfs.InitiateBFS(0);
 	   
 		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));

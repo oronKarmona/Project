@@ -24,7 +24,8 @@ public class ParallelBFS
 	private ArrayList<Protein> uknownStructurePDB , knownStructrePDB;
 	private static Map<Integer , Protein> protein_map  = new HashMap<Integer , Protein>();
 	private static double OThreshold;
-	private static int barrier ,Amount_of_threads ; 
+	private static int barrier ,Amount_of_threads ;
+	private static Object lock; 
 	private ArrayList<ParallelBFSThread> threads ; 
 	
 	public ParallelBFS(int distance_factor, ArrayList<Protein> uknownStructurePDB, ArrayList<Protein> knownStructrePDB , int OccurenceThreshold , 
@@ -103,16 +104,17 @@ public class ParallelBFS
 					check_repeates(child) &&
 					check_complete_correspondence(father, child)
 					)
+		 {
 			 		queue.add(child);
+		 }
 	}
 	
 	public static synchronized NodeBFS get_from_queue()
 	{
-		if(queue.isEmpty() && barrier == 0 )
+		if(queue.isEmpty() || (queue.peek().getDistance()>= distance_threshold) )
 			return null;
-		else if(queue.peek().getDistance() >= distance_threshold)
-			return null;
-		else
+	
+		
 			return queue.poll();
 	}
 	private static String getString(Neighbors n )
