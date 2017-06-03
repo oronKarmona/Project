@@ -12,6 +12,7 @@ import Calculation.CharacterOccurrence;
 import DB.ElasticSearchService;
 import PCN.Neighbors;
 import PCN.Node;
+import ParallelBFS.NodeBFS;
 import Project.TrainingData.Protein;
 
 public class BFS {
