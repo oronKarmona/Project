@@ -1,5 +1,7 @@
 package Threads;
 
+import java.util.ArrayList;
+
 import DB.ElasticSearchService;
 import PCN.Neighbors;
 import PCN.Node;
@@ -8,14 +10,14 @@ import ParallelBFS.ParallelBFS;
 
 public class ParallelBFSThread extends Thread
 {
-	private ElasticSearchService es , writeClusterClient; 
+	private ElasticSearchService es ,  neighborsReaderClient; 
 	private NodeBFS current ; 
 	private NodeBFS toAdd;
 	
-	public ParallelBFSThread(ElasticSearchService es, ElasticSearchService writeClusterClient )
+	public ParallelBFSThread(ElasticSearchService es, String cluster_index , String cluster_type )
 	{
 		this.es = es ; 
-		this.writeClusterClient = writeClusterClient;
+		this.neighborsReaderClient = new ElasticSearchService(cluster_index,cluster_type);
 	}
 	
 	
@@ -34,7 +36,7 @@ public class ParallelBFSThread extends Thread
 	private void runBFS()
 	{
 		add_to_visited();
-		
+		current.getNeighbors().getNeighbors().addAll(this.get_unrecorded_neighbors());
 		for(Node node : current.getNeighbors().getNeighbors())
 		{
 			 toAdd = new NodeBFS(getNode(node.getProteinIndex(),node.getFragmentIndex()),current.getDistance() + 1);
@@ -42,7 +44,11 @@ public class ParallelBFSThread extends Thread
 		}
 	}
 	
-	
+	private ArrayList<Neighbors> get_unrecorded_neighbors()
+	{
+		ArrayList<Neighbors> neighbors = neighborsReaderClient.SearchForNeighborsInPCN(current.getNeighbors().getProteinIndex(), current.getNeighbors().getFragmentIndex());
+		return neighbors;
+	}
 	private void add_to_queue()
 	{
 		ParallelBFS.add_to_queue(current , toAdd);

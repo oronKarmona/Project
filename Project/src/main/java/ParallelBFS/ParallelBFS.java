@@ -47,7 +47,7 @@ public class ParallelBFS
 	{
 		threads = new ArrayList<ParallelBFSThread>();
 		for(int i = 0 ; i < Amount_of_threads ; i ++)
-			threads.add( new ParallelBFSThread(readPcnClient,writeClusterClient));
+			threads.add( new ParallelBFSThread(readPcnClient,"cluster","0"));
 	}
 	
 	private void startThreads()
