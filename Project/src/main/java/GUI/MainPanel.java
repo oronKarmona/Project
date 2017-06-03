@@ -10,7 +10,9 @@ public class MainPanel extends JPanel{
 	
     private Image m_image;
 
-    public MainPanel(Image image) {
+    public MainPanel(Image image, String name) {
+
+		this.setName(name);
     	m_image = image;	
     }
  

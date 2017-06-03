@@ -38,8 +38,8 @@ public class App
 	   // TrainingData trainingData = new TrainingData(proteinsDB);
 
 //		ElasticSearchService es = new ElasticSearchService("protein","known_structure");
-		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+		//knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+		//uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 //		
 //		PCNCorrector p = new PCNCorrector();
 	//	BFS bfs = new BFS(3);
@@ -47,8 +47,8 @@ public class App
 //		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3);
 //		bfs.runBFS();
 		
-		ParallelBFS bfs = new ParallelBFS(4,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data");
-		bfs.InitiateBFS(0);
+		//ParallelBFS bfs = new ParallelBFS(4,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data");
+		//bfs.InitiateBFS(0);
 	   
 		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }

@@ -47,21 +47,21 @@ public class Main extends JFrame {
 	       try{
 	            File image2 = new File("background.jpg");
 	            Image image = ImageIO.read(image2);
-		        m_mainPanel = new MainPanel(image);
+		        m_mainPanel = new MainPanel(image, "main");
 	        }
 	        catch (IOException e){
 	            e.printStackTrace();
 	        }
 
 	       //about
-	       m_aboutPanel = new AboutPanel();
+	       m_aboutPanel = new AboutPanel("about");
 	       //hamming
-		   m_hammingSettingsPanel= new HammingSettingsPanel();
+		   m_hammingSettingsPanel= new HammingSettingsPanel("hamming");
 		  
 		   //bfs
 		   
 		   //protein data
-		   m_proteinSearch = new ProteinSearch();
+		   m_proteinSearch = new ProteinSearch("protein search");
 		   
 		  setLayout(new BorderLayout());
 
@@ -199,7 +199,15 @@ public class Main extends JFrame {
 	
 	private void changePanel(JPanel panel) {
 	    getContentPane().removeAll();
-	    getContentPane().add(panel, BorderLayout.CENTER);
+	    if(panel.getName().equals("main") || panel.getName().equals("about"))
+	    {
+	    	getContentPane().add(panel, BorderLayout.CENTER);
+	    }
+	    else
+	    {
+		    getContentPane().add(panel, BorderLayout.WEST);
+
+	    }
 	    getContentPane().doLayout();
 	    update(getGraphics());
 	}

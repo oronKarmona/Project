@@ -24,9 +24,10 @@ public class HammingSettingsPanel extends JPanel{
 
 	   private JLabel statusLabel;
 	   
-	   public HammingSettingsPanel() {
+	   public HammingSettingsPanel(String name) {
 
-		   
+			this.setName(name);
+	   
 			//******************* set panels **************************//
 		    JPanel upperPanel = new JPanel();
 		    JPanel lowerPanel = new JPanel();

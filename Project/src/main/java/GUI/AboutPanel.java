@@ -49,8 +49,9 @@ public class AboutPanel extends JPanel{
 	 Image scaledImage2;
 
 	 ImageIcon imageIcon;
-	public AboutPanel() {
-
+	public AboutPanel(String name) {
+		
+		this.setName(name);
 		
 		//******************* set panels **************************//
 	    JPanel upperPanel = new JPanel();
@@ -88,7 +89,7 @@ public class AboutPanel extends JPanel{
 	    constraints.gridy = 1;
 	    upperPanel.add(area,constraints);
 	    
-	    //***************************** Lower Panel ***********************************************//
+	    //***************************** Lower Panel ************************//
         Image image;
 		try {
 	        File imagefile = new File("litaf.jpg");
