@@ -38,11 +38,15 @@ public class ParallelBFSThread extends Thread
 		for(Node node : current.getNeighbors().getNeighbors())
 		{
 			 toAdd = new NodeBFS(getNode(node.getProteinIndex(),node.getFragmentIndex()),current.getDistance() + 1);
+			 add_to_queue();
 		}
 	}
 	
 	
-	
+	private void add_to_queue()
+	{
+		ParallelBFS.add_to_queue(current , toAdd);
+	}
 	private void add_to_visited()
 	{
 		ParallelBFS.add_to_visited(current);

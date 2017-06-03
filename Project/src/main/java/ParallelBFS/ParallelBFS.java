@@ -96,14 +96,14 @@ public class ParallelBFS
 		System.out.println(node.getDistance());
 	}
 	
-	public static synchronized void add_to_queue(NodeBFS node )
+	public static synchronized void add_to_queue(NodeBFS father ,NodeBFS child )
 	{
-		 if(node.getNeighbors() != null  &&
-				   !visited.containsKey(getString(node.getNeighbors()))&& 
-					check_repeates(node) &&
-					check_complete_correspondence(current, node)
+		 if(child.getNeighbors() != null  &&
+				   !visited.containsKey(getString(child.getNeighbors()))&& 
+					check_repeates(child) &&
+					check_complete_correspondence(father, child)
 					)
-			 		queue.add(node);
+			 		queue.add(child);
 	}
 	
 	public static synchronized NodeBFS get_from_queue()
