@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import BFS.BFS;
 import Calculation.MeanRMSD;
 import DB.ElasticSearchService;
+import GUI.Main;
 import Helpers.FileParser;
 import Helpers.JSONhelper;
 import Helpers.NeighborsHelper;
@@ -36,15 +37,16 @@ public class App
 		
 //		WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
 //		MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
-
-
+	      Main main = new Main();
+	      main.setBounds(200, 100, 700, 550);
+	      main.setVisible(true);
 	   
 	      
 
 	   // TrainingData trainingData = new TrainingData(proteinsDB);
 	    
-		BFS bfs = new BFS(3);
-		bfs.run();
+	//	BFS bfs = new BFS(3);
+		//bfs.run();
 	   
 	System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }
