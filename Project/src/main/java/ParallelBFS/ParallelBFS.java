@@ -36,11 +36,13 @@ public class ParallelBFS
 		 this.setProteinsMap();
 		 Amount_of_threads = Runtime.getRuntime().availableProcessors();
 		 barrier = Amount_of_threads;
+		
 		 createThreads();
 	}
 	
 	private void createThreads()
 	{
+		threads = new ArrayList<ParallelBFSThread>();
 		for(int i = 0 ; i < Amount_of_threads ; i ++)
 			threads.add( new ParallelBFSThread(elasticSearchService));
 	}
