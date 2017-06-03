@@ -1,4 +1,4 @@
-package BFS;
+package ParallelBFS;
 
 import PCN.Neighbors;
 
