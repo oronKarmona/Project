@@ -5,15 +5,22 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import DB.ElasticSearchService;
 
 public class ReadPCNFile {
 
+	static LocalDateTime now = LocalDateTime.now();
+	static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 	
-	public static boolean Read(File file, String DBName){
+	public static boolean Read(File file,String index ,String type){
 		
-		ElasticSearchService elasticSearchService = new ElasticSearchService("proteins",DBName);
+		ElasticSearchService elasticSearchService = new ElasticSearchService(index,type);
+		elasticSearchService.setID(elasticSearchService.getCountOfDocInType());
 		Neighbors currentNode = new Neighbors();
 
 		String[] words;
@@ -34,14 +41,19 @@ public class ReadPCNFile {
 	        	if(line.charAt(0) == '#')
 	        	{
 	        		words = line.split(" ");
-	        		currentNode.setProtein(Long.parseLong(words[1]));
+	        		
+	        		currentNode.setProteinIndex(Long.parseLong(words[1]));
+	        		System.out.println(currentNode.getProteinIndex());
+	        		now = LocalDateTime.now();
+	    			System.out.println(dtf.format(now)); //2016/11/16 12:08:43
+	    			
 	        	}
 	        	if(line.charAt(0) == '>')
 	        	{
 	        		line = line.substring(0, line.length()-1);
 	        		//index in current node
 	        		words = line.substring(1).split(":");
-	        		currentNode.setIndex(Integer.parseInt(words[0]));
+	        		currentNode.setFragmentIndex(Integer.parseInt(words[0]));
 	        		words = words[1].split(",");
 	        		//neighbors of current node
 	        		for (String neighbor : words) 

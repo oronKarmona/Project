@@ -38,6 +38,7 @@ import com.google.gson.JsonElement;
 import PCN.Neighbors;
 import PCN.Node;
 import ProGAL.proteins.ProteinComplex;
+import Project.TrainingData.Protein;
 import Table.TrainingDataEntry;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
 public class ElasticSearchService
@@ -49,8 +50,10 @@ public class ElasticSearchService
 	private Settings settings;
 	private String index , type ; 
 	private BulkProcessor bulkProcessor;
+	private String lastDocID = null; 
+	
 	public ElasticSearchService(String index , String type){
-
+	
 		this.index = index; 
 		this.type = type;
 		
@@ -128,6 +131,19 @@ public class ElasticSearchService
 	     id++;
 	}
 	
+	
+	@SuppressWarnings("deprecation")
+	public  void add(Protein protein) {
+	     try 
+	     {	 
+	    	 client.prepareIndex(index, type, id+"")
+	    			 .setSource(gson.toJson(protein)).get();
+		 }catch (Exception e) {
+	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");
+	     }
+	     id++;
+	}
+	
 	@SuppressWarnings("deprecation")
 	public  void add(Neighbors pcnEntry) {
 	     try 
@@ -149,6 +165,17 @@ public class ElasticSearchService
 			        .doc(jsonBuilder()
 			            .startObject()
 			                .field("Hamming_Distance", hamming)
+			            .endObject());             
+			client.update(updateRequest).get();
+		}
+		
+		public void updateDocument(ArrayList<Node> neighbors,String id) throws IOException, InterruptedException, ExecutionException
+		{
+	
+			UpdateRequest updateRequest = new UpdateRequest(this.index, type,id)
+			        .doc(jsonBuilder()
+			            .startObject()
+			                .field("neighbors", neighbors)
 			            .endObject());             
 			client.update(updateRequest).get();
 		}
@@ -221,11 +248,14 @@ public class ElasticSearchService
 			 
 			 try{
 			if( results[0].getSource() != null)
-				
+			{
+				this.setLastDocID(results[0].getId());
 				return fromMaptoNeighbors(results[0].getSource());
+			}
 			
 			 }catch(ArrayIndexOutOfBoundsException e)
 			 {
+				 this.setLastDocID(null);
 				 System.out.println(String.format("Protein Index: %d fragmentIndex: %d IS NOT FOUND!", ProteinIndex , fragmentIndex));
 			 }
 				
@@ -239,21 +269,39 @@ public class ElasticSearchService
 			Map<String, Object> map = get(index);
 			Neighbors neighbors = fromMaptoNeighbors(map);
 			
-			Map<String, Object> nmap = (Map<String, Object>) neighbors.getNeighbors().get(0);
 			return neighbors;		 
 		}
 		
 		
 		private Neighbors fromMaptoNeighbors(Map<String, Object> map )
 		{
-			
+
 			 Neighbors neighbors = new Neighbors();
 			 
-			 neighbors.setProtein((Integer)map.get("m_protein"));
-			 neighbors.setIndex((Integer)map.get("m_index"));
+			 neighbors.setProteinIndex((Integer)map.get("m_protein"));
+			 neighbors.setFragmentIndex((Integer)map.get("m_index"));
 			 neighbors.setNeighbors((ArrayList<Node>)map.get("neighbors"));
+			 neighbors.setNeighbors(this.fromMapToNeighbors(neighbors));
 			 
 			 return neighbors;
+		}
+		
+		
+		@SuppressWarnings("unchecked")
+		private ArrayList<Node> fromMapToNeighbors(Neighbors neighbors)
+		{
+			Map<String, Object> nmap;
+			ArrayList<Node> nodes = new ArrayList<Node>();
+			
+			for(int i = 0 ; i < neighbors.getNeighbors().size() ; i++)
+			{
+				nmap = (Map<String, Object>) neighbors.getNeighbors().get(i);
+				if(nmap == null)
+					return null;
+				nodes.add(new Node( (Integer)nmap.get("m_protein"),(Integer)nmap.get("m_index")));
+			}
+			
+			return nodes;
 		}
 		
 		public long getCountOfDocInType( )
@@ -262,6 +310,20 @@ public class ElasticSearchService
 			SearchResponse searchResponse = client.prepareSearch(this.index).setTypes(this.type).execute().actionGet();
 			ctr = searchResponse.getHits().getTotalHits();
 			return ctr;
+		}
+
+		public String getLastDocID() {
+			return lastDocID;
+		}
+
+		public void setLastDocID(String lastDocID) {
+			this.lastDocID = lastDocID;
+		}
+		
+		public void setID(long id )
+		{
+			this.id = id ;
+			
 		}
 
 	}

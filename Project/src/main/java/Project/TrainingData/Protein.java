@@ -55,6 +55,16 @@ public class Protein implements Serializable{
 	 */
 	private int fragment_count;
 	
+	public Protein(Protein temp) {
+		
+		this.setAminoAcids(temp.getAminoAcids());
+		this.setProteinIndex(temp.getProteinIndex());
+	}
+
+	public Protein() {
+	
+	}
+
 	/***
 	 * Setting the amino acid String without spaces
 	 * @param aminoAcids - amino acid String as saved in Astral DB

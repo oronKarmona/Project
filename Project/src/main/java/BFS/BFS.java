@@ -6,9 +6,14 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
+import org.apache.lucene.search.BooleanClause.Occur;
+
+import Calculation.CharacterOccurrence;
 import DB.ElasticSearchService;
 import PCN.Neighbors;
 import PCN.Node;
+import ParallelBFS.NodeBFS;
+import Project.TrainingData.Protein;
 
 public class BFS {
 	
@@ -18,13 +23,28 @@ public class BFS {
 	private Map<String , Boolean> visited = new HashMap <String , Boolean>();
 	private NodeBFS current ; 
 	private int factor  ;
+	private ArrayList<Protein> uknownStructurePDB , knownStructrePDB;
+	private Map<Integer , Protein> protein_map  = new HashMap<Integer , Protein>();
+	private double OccurenceThreshold;
 	
-	public BFS(int factor){
+	public BFS(int factor, ArrayList<Protein> uknownStructurePDB, ArrayList<Protein> knownStructrePDB , int OccurenceThreshold){
 		 elasticSearchService = new ElasticSearchService("pcn","data");
 		 this.factor = factor;
+		 this.uknownStructurePDB = uknownStructurePDB;
+		 this.knownStructrePDB = knownStructrePDB;
+		 this.OccurenceThreshold = OccurenceThreshold;
+		 this.setProteinsMap();
 	}
-
-	public void run(){
+	
+	private void setProteinsMap()
+	{
+		for(Protein p : uknownStructurePDB)
+			protein_map.put(p.getProteinIndex(),p);
+		
+		for(Protein p : knownStructrePDB)
+			protein_map.put(p.getProteinIndex(), p);
+	}
+	public void runBFS(){
 	
 		
 		 queue.add(new NodeBFS(this.getRoot(0),0));
@@ -33,33 +53,30 @@ public class BFS {
 		 while(!(queue.isEmpty()) && current.getDistance() <= factor ) 
 		 {
 			 current = queue.poll();
-			// visited.add(new Neighbors(current.getNeighbors()));
-			   visited.put(this.getString(current.getNeighbors()),true);
+			 visited.put(this.getString(current.getNeighbors()),true);
 			   
 			 for(Node n : current.getNeighbors().getNeighbors())
 			 {
-				 NodeBFS toAdd = new NodeBFS(getNode(n.getProtein(),n.getIndex()),current.getDistance() + 1);
+				 NodeBFS toAdd = new NodeBFS(getNode(n.getProteinIndex(),n.getFragmentIndex()),current.getDistance() + 1);
 				 
-				 if(toAdd.getNeighbors() != null &&
-				   !visited.containsKey(this.getString(toAdd.getNeighbors())))
-					 queue.add(new NodeBFS(toAdd));
+				 if(toAdd.getNeighbors() != null  &&
+				   !visited.containsKey(this.getString(toAdd.getNeighbors()))&& 
+					this.check_repeates(toAdd) &&
+					this.check_complete_correspondence(current, toAdd)
+					)
+					 	queue.add(new NodeBFS(toAdd));
 
 			 }
 			 
 			 
 			 
 		 }
-		
-		
-	//	System.out.println(neighbors);
-		
-		
-		
 	}
+	
 	
 	private String getString(Neighbors n )
 	{
-		return n.getProtein()+" "+n.getIndex();
+		return n.getProteinIndex()+" "+n.getFragmentIndex();
 	}
 	/***
 	 * Get the root node 
@@ -67,39 +84,58 @@ public class BFS {
 	 */
 	private Neighbors getRoot(int index)
 	{
-		Neighbors neighbors = elasticSearchService.getNeighbors(index);
-		neighbors.setNeighbors(fromMapToNeighbors(neighbors));
-		
+		Neighbors neighbors = elasticSearchService.getNeighbors(index);		
 		return neighbors;
 	}
-	
-	
-	@SuppressWarnings("unchecked")
-	private ArrayList<Node> fromMapToNeighbors(Neighbors neighbors)
-	{
-		Map<String, Object> nmap;
-		ArrayList<Node> nodes = new ArrayList<Node>();
-		
-		for(int i = 0 ; i < neighbors.getNeighbors().size() ; i++)
-		{
-			nmap = (Map<String, Object>) neighbors.getNeighbors().get(i);
-			if(nmap == null)
-				return null;
-			nodes.add(new Node( (Integer)nmap.get("m_protein"),(Integer)nmap.get("m_index")));
-		}
-		
-		return nodes;
-	}
-	
+
 	
 	private Neighbors getNode(long protein , int index)
 	{
 		Neighbors neighbors = elasticSearchService.SearchPCNDB(protein, index);
 		if(neighbors == null)
 			return null;
-		neighbors.setNeighbors(fromMapToNeighbors(neighbors));
+	//	neighbors.setNeighbors(fromMapToNeighbors(neighbors));
 		
 		return neighbors;
+	}
+	
+	private boolean check_repeates(NodeBFS bfs_node )
+	{
+		Neighbors node = bfs_node.getNeighbors();
+		int protein_index = (int)node.getProteinIndex();
+		int fragment_index = node.getFragmentIndex();
+		
+		if(protein_index > 320571)
+			protein_index -= 320572;
+		
+		Protein node_protein = this.protein_map.get(protein_index);
+		CharacterOccurrence co = new CharacterOccurrence(this.OccurenceThreshold);
+		boolean occurence_check = co.Calculate(node_protein.GetFragments(fragment_index));
+		
+		return occurence_check;
+	}
+	
+	private boolean check_complete_correspondence(NodeBFS current_node , NodeBFS child_node)
+	{
+		Neighbors father_node = current_node.getNeighbors();
+		int father_protein_index = (int)father_node.getProteinIndex();
+		
+		Neighbors son_node = child_node.getNeighbors();
+		int son_protein_index = (int)son_node.getProteinIndex();
+		
+		if(father_protein_index > 320571)
+			father_protein_index -= 320572;
+		
+		if(son_protein_index > 320571)
+			son_protein_index -= 320572;
+		
+		Protein current_protein =  this.protein_map.get(father_protein_index);
+		Protein son_protein =  this.protein_map.get(son_protein_index);
+
+		boolean result = current_protein.getAminoAcids().equals(son_protein.getAminoAcids());
+		
+		
+		return  result;
 	}
 	
 	
