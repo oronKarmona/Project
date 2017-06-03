@@ -66,7 +66,8 @@ public class JSONhelper
 	        	
 	        	for(int i = 0 ; i < amount ; i ++)
 	        	{
-		            Object obj = parser.parse(new FileReader(FileName+i+".json"));
+		            @SuppressWarnings("resource")
+					Object obj = parser.parse(new FileReader(FileName+i+".json"));
 		 
 		            JSONArray jsonArray = (JSONArray) obj;
 		            
