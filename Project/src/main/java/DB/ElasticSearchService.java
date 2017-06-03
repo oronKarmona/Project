@@ -38,6 +38,7 @@ import com.google.gson.JsonElement;
 import PCN.Neighbors;
 import PCN.Node;
 import ProGAL.proteins.ProteinComplex;
+import Project.TrainingData.Protein;
 import Table.TrainingDataEntry;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
 public class ElasticSearchService
@@ -124,6 +125,19 @@ public class ElasticSearchService
 	     {	 
 	    	 client.prepareIndex(index, type, id+"")
 	    			 .setSource(gson.toJson(trainingDataEntry)).get();
+		 }catch (Exception e) {
+	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");
+	     }
+	     id++;
+	}
+	
+	
+	@SuppressWarnings("deprecation")
+	public  void add(Protein protein) {
+	     try 
+	     {	 
+	    	 client.prepareIndex(index, type, id+"")
+	    			 .setSource(gson.toJson(protein)).get();
 		 }catch (Exception e) {
 	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");
 	     }

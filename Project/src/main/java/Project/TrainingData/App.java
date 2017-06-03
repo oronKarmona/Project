@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
 
@@ -36,10 +37,10 @@ public class App
 	
 	public static void main( String[] args )
     {
-		ArrayList<Protein> knownStructrePDB , uknownStructurePDB;
+		ArrayList<Protein> knownStructrePDB = new ArrayList<Protein>(), uknownStructurePDB;
 		long startTime = System.currentTimeMillis();
 		
-	
+		ElasticSearchService es = new ElasticSearchService("protein","known_structure");
 		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 //		
@@ -56,7 +57,19 @@ public class App
 	
 	
 	
-	
+	public static Protein fromMapToProtein(Map<String, Object> map)
+	{
+		Protein p = new Protein();
+		p.setProteinIndex((Integer)map.get("ProteinIndex"));
+		p.setAstralID((String)map.get("astralID"));
+		p.setType("type");
+		p.setAminoAcids((String) map.get("aminoAcids"));
+		p.setFragment_count((Integer)map.get("fragment_count"));
+		
+		
+		
+		return p ;
+	}
 	
 	
 	
