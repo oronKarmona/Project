@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import DB.ElasticSearchService;
 import GUI.Main;
 import Helpers.FileParser;
 import Helpers.JSONhelper;
@@ -26,7 +27,8 @@ public class App
 		ArrayList<Protein> knownStructrePDB = new ArrayList<Protein>(), uknownStructurePDB;
 		long startTime = System.currentTimeMillis();
 		
-
+		ElasticSearchService es = new ElasticSearchService("pcn","data");
+		es.SearchForNeighborsInPCN(27997, 23);
 //		WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
 //		MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
 	      Main main = new Main();

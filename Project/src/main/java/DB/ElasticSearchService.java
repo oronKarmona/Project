@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.bulk.BackoffPolicy;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -27,6 +28,8 @@ import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.get.GetField;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.DisMaxQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -253,6 +256,7 @@ public class ElasticSearchService
 				return fromMaptoNeighbors(results[0].getSource());
 			}
 			
+			
 			 }catch(ArrayIndexOutOfBoundsException e)
 			 {
 				 this.setLastDocID(null);
@@ -262,6 +266,52 @@ public class ElasticSearchService
 			 return null;
 		}
 		
+		public ArrayList<Neighbors> SearchForNeighborsInPCN(long ProteinIndex , int  fragmentIndex )
+		{
+			ArrayList<Neighbors> neighbors = new ArrayList<Neighbors>();
+			
+			QueryBuilder qb = QueryBuilders.boolQuery()
+		                .must(QueryBuilders.termQuery("neighbors.m_protein",ProteinIndex))
+		                .must(QueryBuilders.termQuery("neighbors.m_index",fragmentIndex)) 
+		                ;
+
+			 SearchResponse r = client.prepareSearch(this.index)
+					 				  .setTypes(this.type)
+					 				  .setQuery(qb)
+					 				  .execute().actionGet();
+			
+			 
+			 SearchHit[]  results = r.getHits().getHits();
+			 Neighbors node ; 
+			 try{
+			for(SearchHit hit :  results)
+			{
+				this.setLastDocID(hit.getId());
+				node =  fromMaptoNeighbors(hit.getSource());
+				if(check_exist(ProteinIndex, fragmentIndex, node))
+					neighbors.add(new Neighbors(node));
+				
+			}
+			
+			 }catch(ArrayIndexOutOfBoundsException e)
+			 {
+				 this.setLastDocID(null);
+				 System.out.println(String.format("Protein Index: %d fragmentIndex: %d IS NOT FOUND!", ProteinIndex , fragmentIndex));
+			 }
+				
+			 return neighbors;
+		}
+		
+		private boolean check_exist(long ProteinIndex , int  fragmentIndex ,Neighbors node)
+		{
+			for(Node n : node.neighbors)
+			{
+				if(n.getProteinIndex() == ProteinIndex && n.getFragmentIndex() == fragmentIndex)
+					return true;
+			}
+			
+			return false;
+		}
 		
 		@SuppressWarnings("unchecked")
 		public Neighbors getNeighbors(int index)
