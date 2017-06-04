@@ -47,7 +47,7 @@ public class ParallelBFS
 	{
 		threads = new ArrayList<ParallelBFSThread>();
 		for(int i = 0 ; i < Amount_of_threads ; i ++)
-			threads.add( new ParallelBFSThread(readPcnClient,"cluster","0"));
+			threads.add( new ParallelBFSThread(readPcnClient));
 	}
 	
 	private void startThreads()
@@ -70,6 +70,9 @@ public class ParallelBFS
 		 // Save cluster ? 
 		 current = queue.poll();
 	     visited.put(getString(current.getNeighbors()),true);
+	     current.getNeighbors().getNeighbors().addAll(readPcnClient.SearchForNeighborsInPCN(current.getNeighbors().getProteinIndex(), 
+	    		 current.getNeighbors().getFragmentIndex()));
+	    		 
 			 for(Node n : current.getNeighbors().getNeighbors())
 			 {
 				 NodeBFS toAdd = new NodeBFS(getNode(n.getProteinIndex(),n.getFragmentIndex()),current.getDistance() + 1);

@@ -14,10 +14,10 @@ public class ParallelBFSThread extends Thread
 	private NodeBFS current ; 
 	private NodeBFS toAdd;
 	
-	public ParallelBFSThread(ElasticSearchService es, String cluster_index , String cluster_type )
+	public ParallelBFSThread(ElasticSearchService es )
 	{
 		this.es = es ; 
-		this.neighborsReaderClient = new ElasticSearchService(cluster_index,cluster_type);
+		this.neighborsReaderClient = new ElasticSearchService("pcn","data");
 	}
 	
 	
