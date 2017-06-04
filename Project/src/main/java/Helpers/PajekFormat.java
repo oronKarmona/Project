@@ -55,7 +55,7 @@ public class PajekFormat
 				for(Node n : node.getNeighbors())
 				{
 					edgesPart+=" ";
-					edgesPart += integerRepresentation.get(n.getProteinIndex()+"_"+n.getFragmentIndex());
+					edgesPart += integerRepresentation.get(this.node_toString(n));
 				}
 				edgesPart += "\n";
 				count += node.getNeighbors().size() ;
@@ -75,6 +75,10 @@ public class PajekFormat
 			return line;
 		}
 		private String node_toString(Neighbors node)
+		{
+			return node.getProteinIndex()+"_"+node.getFragmentIndex();
+		}
+		private String node_toString(Node node)
 		{
 			return node.getProteinIndex()+"_"+node.getFragmentIndex();
 		}
