@@ -40,11 +40,11 @@ public class App
 	   // TrainingData trainingData = new TrainingData(proteinsDB);
 
 //		ElasticSearchService es = new ElasticSearchService("protein","known_structure");
-		//knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-		//uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
-
-		//ParallelBFS bfs = new ParallelBFS(4,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data");
-		//bfs.InitiateBFS(0);
+//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+//
+//		ParallelBFS bfs = new ParallelBFS(4,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data");
+//		bfs.InitiateBFS(0);
 	   
 		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }

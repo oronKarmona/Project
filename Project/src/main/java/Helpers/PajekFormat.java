@@ -31,6 +31,8 @@ public class PajekFormat
 			for(int i = 0 ; i < number_of_vertex ; i++)
 			{
 				graph.add(es.getNeighbors(i));
+				if(i == 17)
+					System.out.println();
 				integerRepresentation.put(this.node_toString(graph.get(graph.size() - 1)), i + 1) ;
 			}
 			
@@ -49,7 +51,7 @@ public class PajekFormat
 				pajekFile += addVertexLine(node);
 				count += node.getNeighbors().size() ;
 			}
-			
+			System.out.println(pajekFile);
 			return count;
 		}
 		
@@ -57,13 +59,14 @@ public class PajekFormat
 		{
 			String node_as_string = node_toString(node);
 			String line = integerRepresentation.get(node_as_string)+"";
-			line += " " +"" +node_as_string + "";
+			line += " " +'"' +node_as_string  + '"' + '\n';
+			
 			
 			return line;
 		}
 		private String node_toString(Neighbors node)
 		{
-			return node.getProteinIndex()+"_"+node.getFragmentIndex()+"\n";
+			return node.getProteinIndex()+"_"+node.getFragmentIndex();
 		}
 		private String create_head_section_title(boolean vertex_or_edge)
 		{

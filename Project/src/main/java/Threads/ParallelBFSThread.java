@@ -35,7 +35,8 @@ public class ParallelBFSThread extends Thread
 	
 	private void runBFS()
 	{
-		add_to_visited();
+		if(!add_to_visited())
+			return;
 		current.getNeighbors().getNeighbors().addAll(this.get_unrecorded_neighbors());
 		for(Node node : current.getNeighbors().getNeighbors())
 		{
@@ -53,9 +54,9 @@ public class ParallelBFSThread extends Thread
 	{
 		ParallelBFS.add_to_queue(current , toAdd);
 	}
-	private void add_to_visited()
+	private boolean  add_to_visited()
 	{
-		ParallelBFS.add_to_visited(current);
+		return ParallelBFS.add_to_visited(current);
 	}
 	
 	
