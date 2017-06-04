@@ -27,8 +27,9 @@ public class PajekFormat
 			for(int i = 0 ; i < number_of_vertex ; i++)
 				graph.add(es.getNeighbors(i));
 			
-			number_of_edges = this.count_number_of_edges();
 			pajekFile = create_head_section_title(true); // true for vertex
+			number_of_edges = this.count_number_of_edges();
+			
 				
 		}
 		
