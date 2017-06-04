@@ -57,7 +57,7 @@ public class PajekFormat
 		{
 			String node_as_string = node_toString(node);
 			String line = integerRepresentation.get(node_as_string)+"";
-			line += " " + node_as_string;
+			line += " " +"" +node_as_string + "";
 			
 			return line;
 		}
