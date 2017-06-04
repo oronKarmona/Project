@@ -63,7 +63,7 @@ public class PajekFormat
 		}
 		private String node_toString(Neighbors node)
 		{
-			return node.getProteinIndex()+"_"+node.getProteinIndex()+"\n";
+			return node.getProteinIndex()+"_"+node.getFragmentIndex()+"\n";
 		}
 		private String create_head_section_title(boolean vertex_or_edge)
 		{
