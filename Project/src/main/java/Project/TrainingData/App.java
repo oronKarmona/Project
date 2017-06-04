@@ -9,6 +9,7 @@ import GUI.Main;
 import Helpers.FileParser;
 import Helpers.JSONhelper;
 import Helpers.PCNpdbParser;
+import Helpers.PajekFormat;
 import ParallelBFS.ParallelBFS;
 
 //WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
@@ -35,20 +36,14 @@ public class App
 	      main.setBounds(200, 100, 700, 550);
 	      main.setVisible(true);
 	   
-	      
+	      PajekFormat pf = new PajekFormat("cluster" , "0");
 
 	   // TrainingData trainingData = new TrainingData(proteinsDB);
 
 //		ElasticSearchService es = new ElasticSearchService("protein","known_structure");
 		//knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 		//uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
-//		
-//		PCNCorrector p = new PCNCorrector();
-	//	BFS bfs = new BFS(3);
-		//bfs.run();
-//		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3);
-//		bfs.runBFS();
-		
+
 		//ParallelBFS bfs = new ParallelBFS(4,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data");
 		//bfs.InitiateBFS(0);
 	   
