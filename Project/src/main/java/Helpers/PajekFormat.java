@@ -6,6 +6,7 @@ import java.util.Map;
 
 import DB.ElasticSearchService;
 import PCN.Neighbors;
+import PCN.Node;
 
 public class PajekFormat 
 {
@@ -13,6 +14,7 @@ public class PajekFormat
 		private ArrayList<Neighbors> graph;
 		private long number_of_edges = 0 , number_of_vertex;
 		private String pajekFile = "";
+		private String edgesPart = "";
 		private Map<String,Integer> integerRepresentation ;
 		public PajekFormat(String cluster_es_index , String cluster_es_type)
 		{
@@ -31,14 +33,13 @@ public class PajekFormat
 			for(int i = 0 ; i < number_of_vertex ; i++)
 			{
 				graph.add(es.getNeighbors(i));
-				if(i == 17)
-					System.out.println();
 				integerRepresentation.put(this.node_toString(graph.get(graph.size() - 1)), i + 1) ;
 			}
 			
 			pajekFile = create_head_section_title(true); // true for vertex
 			number_of_edges = this.count_number_of_edges();
-			
+			pajekFile += create_head_section_title(false);
+			pajekFile += edgesPart;
 				
 		}
 		
@@ -49,9 +50,16 @@ public class PajekFormat
 			for(Neighbors node : graph)
 			{
 				pajekFile += addVertexLine(node);
+				edgesPart += integerRepresentation.get(this.node_toString(node));
+				for(Node n : node.getNeighbors())
+				{
+					edgesPart+=" ";
+					edgesPart += integerRepresentation.get(n.getProteinIndex()+"_"+n.getFragmentIndex());
+				}
+				edgesPart += "\n";
 				count += node.getNeighbors().size() ;
+				
 			}
-			System.out.println(pajekFile);
 			return count;
 		}
 		
@@ -59,12 +67,9 @@ public class PajekFormat
 		{
 			String node_as_string = node_toString(node);
 			String line = integerRepresentation.get(node_as_string)+"";
-<<<<<<< HEAD
 			line += " " +'"' +node_as_string  + '"' + '\n';
 			
-=======
 			line += " " +"\"" +node_as_string + "\"";
->>>>>>> branch 'master' of https://github.com/oronKarmona/Project.git
 			
 			return line;
 		}
