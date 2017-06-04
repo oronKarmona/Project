@@ -28,14 +28,13 @@ public class App
 		ArrayList<Protein> knownStructrePDB = new ArrayList<Protein>(), uknownStructurePDB;
 		long startTime = System.currentTimeMillis();
 		
-		ElasticSearchService es = new ElasticSearchService("pcn","data");
-		es.SearchForNeighborsInPCN(27997, 23);
+		
 //		WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
 //		MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
-	      Main main = new Main();
-	      main.setBounds(200, 100, 700, 550);
-	      main.setVisible(true);
-	   
+//	      Main main = new Main();
+//	      main.setBounds(200, 100, 700, 550);
+//	      main.setVisible(true);
+//	   
 	      PajekFormat pf = new PajekFormat("cluster" , "0");
 
 	   // TrainingData trainingData = new TrainingData(proteinsDB);

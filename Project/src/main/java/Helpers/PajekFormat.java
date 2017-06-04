@@ -28,6 +28,7 @@ public class PajekFormat
 			{
 				graph.add(es.getNeighbors(i));
 			}
+			System.out.println();
 				
 		}
 }
