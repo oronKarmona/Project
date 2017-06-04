@@ -68,11 +68,7 @@ public class PajekFormat
 			String node_as_string = node_toString(node);
 			String line = integerRepresentation.get(node_as_string)+"";
 			line += " " +'"' +node_as_string  + '"' + '\n';
-			
-<<<<<<< HEAD
 
-=======
->>>>>>> branch 'master' of https://github.com/oronKarmona/Project.git
 			line += " " +"\"" +node_as_string + "\"";
 			
 			return line;
