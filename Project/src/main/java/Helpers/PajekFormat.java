@@ -43,7 +43,7 @@ public class PajekFormat
 			number_of_edges = this.count_number_of_edges();
 			pajekFile += create_head_section_title(false);
 			pajekFile += edgesPart;
-			System.out.println(pajekFile);
+			//System.out.println(pajekFile);
 			this.saveToFile();
 				
 		}

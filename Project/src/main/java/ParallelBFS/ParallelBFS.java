@@ -77,7 +77,8 @@ public class ParallelBFS
 			 {
 				 NodeBFS toAdd = new NodeBFS(getNode(n.getProteinIndex(),n.getFragmentIndex()),current.getDistance() + 1);
 				 
-				 if(toAdd.getNeighbors() != null  &&
+				 if(toAdd != null &&
+						 toAdd.getNeighbors() != null  &&
 				   !visited.containsKey(getString(toAdd.getNeighbors()))&& 
 					check_repeates(toAdd) &&
 					check_complete_correspondence(current, toAdd)
@@ -92,7 +93,10 @@ public class ParallelBFS
 			 
 		
 	}
-	
+	public void flushBulk()
+	{
+		writeClusterClient.bulkProcessor.flush();
+	}
 	public static synchronized boolean add_to_visited(NodeBFS node)
 	{
 		if(node.getNeighbors().getProteinIndex() == 321076)
@@ -109,13 +113,11 @@ public class ParallelBFS
 	
 	public static synchronized void add_to_queue(NodeBFS father ,NodeBFS child )
 	{
-		if(child.getNeighbors().getProteinIndex() == 321076)
-			System.out.println();
 		
-		 if(child.getNeighbors() != null  &&
+		 if(child != null && child.getNeighbors() != null  &&
 				   (!check_exist(child.getNeighbors())&& 
 					check_repeates(child) &&
-					check_complete_correspondence(father, child)
+					!check_complete_correspondence(father, child)
 					))
 		 {
 			 		queue.add(child);
@@ -216,9 +218,10 @@ public class ParallelBFS
 	{
 		for(Protein p : uknownStructurePDB)
 			protein_map.put(p.getProteinIndex(),p);
-		
-		for(Protein p : knownStructrePDB)
-			protein_map.put(p.getProteinIndex(), p);
+		for(int i = 0 ; i < knownStructrePDB.size() ; i++)
+			protein_map.put(i, knownStructrePDB.get(i));
+//		for(Protein p : knownStructrePDB)
+//			protein_map.put(p.getProteinIndex(), p);
 	}
 	
 	public static synchronized void update_barrier()

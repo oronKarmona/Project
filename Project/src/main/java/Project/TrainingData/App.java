@@ -39,11 +39,12 @@ public class App
 		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 
-		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3 );
-		bfs.runBFS();
-//		ParallelBFS bfs = new ParallelBFS(4,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data");
-//		bfs.InitiateBFS(65060);
-	   
+//		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3 );
+//		bfs.runBFS();
+		ParallelBFS bfs = new ParallelBFS(4,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data");
+		bfs.InitiateBFS(0);
+		bfs.flushBulk();
+		PajekFormat pf = new PajekFormat("cluster", "0");
 		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }
 	

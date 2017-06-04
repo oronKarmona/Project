@@ -52,7 +52,7 @@ public class ElasticSearchService
 	private static Gson gson = null;
 	private Settings settings;
 	private String index , type ; 
-	private BulkProcessor bulkProcessor;
+	public  BulkProcessor bulkProcessor;
 	private String lastDocID = null; 
 	
 	public ElasticSearchService(String index , String type){
