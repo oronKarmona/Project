@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import BFS.BFS;
 import DB.ElasticSearchService;
 import GUI.Main;
 import Helpers.FileParser;
@@ -29,22 +30,19 @@ public class App
 		long startTime = System.currentTimeMillis();
 		
 		
-//		WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
-//		MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
+
 //	      Main main = new Main();
 //	      main.setBounds(200, 100, 700, 550);
 //	      main.setVisible(true);
 //	   
-	      PajekFormat pf = new PajekFormat("cluster" , "0");
 
-	   // TrainingData trainingData = new TrainingData(proteinsDB);
+		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 
-//		ElasticSearchService es = new ElasticSearchService("protein","known_structure");
-//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
-//
+		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3 );
+		bfs.runBFS();
 //		ParallelBFS bfs = new ParallelBFS(4,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data");
-//		bfs.InitiateBFS(0);
+//		bfs.InitiateBFS(65060);
 	   
 		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }

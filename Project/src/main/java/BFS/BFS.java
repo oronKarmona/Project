@@ -17,7 +17,7 @@ import Project.TrainingData.Protein;
 
 public class BFS {
 	
-	private ElasticSearchService elasticSearchService;
+	private ElasticSearchService elasticSearchService ,writeClusterClient;
 	private Queue<NodeBFS> queue = new LinkedList<NodeBFS>();
 	//private ArrayList<Neighbors> visited = new ArrayList<Neighbors>();
 	private Map<String , Boolean> visited = new HashMap <String , Boolean>();
@@ -29,6 +29,7 @@ public class BFS {
 	
 	public BFS(int factor, ArrayList<Protein> uknownStructurePDB, ArrayList<Protein> knownStructrePDB , int OccurenceThreshold){
 		 elasticSearchService = new ElasticSearchService("pcn","data");
+		 writeClusterClient = new ElasticSearchService("cluster","0");
 		 this.factor = factor;
 		 this.uknownStructurePDB = uknownStructurePDB;
 		 this.knownStructrePDB = knownStructrePDB;
@@ -54,7 +55,7 @@ public class BFS {
 		 {
 			 current = queue.poll();
 			 visited.put(this.getString(current.getNeighbors()),true);
-			   
+			  writeClusterClient.add(current.getNeighbors()); 
 			 for(Node n : current.getNeighbors().getNeighbors())
 			 {
 				 NodeBFS toAdd = new NodeBFS(getNode(n.getProteinIndex(),n.getFragmentIndex()),current.getDistance() + 1);
