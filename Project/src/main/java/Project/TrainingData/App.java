@@ -11,6 +11,7 @@ import Helpers.FileParser;
 import Helpers.JSONhelper;
 import Helpers.PCNpdbParser;
 import Helpers.PajekFormat;
+import PCN.WritePCNtoDB;
 import ParallelBFS.ParallelBFS;
 
 //WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
@@ -26,26 +27,29 @@ public class App
 	
 	public static void main( String[] args )
     {
-		ArrayList<Protein> knownStructrePDB = new ArrayList<Protein>(), uknownStructurePDB;
+		ArrayList<Protein> uknownStructurePDB,knownStructrePDB;
 		long startTime = System.currentTimeMillis();
 		
-		
-
-//	      Main main = new Main();
+	//	WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"second_pcn","data",false);
+	//	pcn2db.flushBulk();
+		WritePCNtoDB pcn2db2 = new WritePCNtoDB("pcn//pcn~",50,"second_pcn","data",true);
+		pcn2db2.flushBulk();
+		//	      Main main = new Main();
 //	      main.setBounds(200, 100, 700, 550);
 //	      main.setVisible(true);
 //	   
 
-		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 
 //		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3 );
 //		bfs.runBFS();
-		ParallelBFS bfs = new ParallelBFS(5,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data");
-		bfs.InitiateBFS(0);
-		bfs.flushBulk();
-		PajekFormat pf = new PajekFormat("cluster", "0");
-		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
+//		ParallelBFS bfs = new ParallelBFS(5,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
+//								"cluster","1");
+//		bfs.InitiateBFS(23056);
+//		bfs.flushBulk();
+//		PajekFormat pf = new PajekFormat("cluster", "0");
+//		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }
 	
 	

@@ -30,9 +30,10 @@ public class ParallelBFS
 	private ArrayList<ParallelBFSThread> threads ; 
 	
 	public ParallelBFS(int distance_factor, ArrayList<Protein> uknownStructurePDB, ArrayList<Protein> knownStructrePDB , int OccurenceThreshold , 
-							String elastic_search_index , String elastic_search_type){
+							String elastic_search_index , String elastic_search_type,
+							String cluster_index , String cluster_type){
 		 readPcnClient = new ElasticSearchService(elastic_search_index,elastic_search_type);
-		 writeClusterClient = new ElasticSearchService("cluster","0");
+		 writeClusterClient = new ElasticSearchService(cluster_index,cluster_type);
 		 distance_threshold = distance_factor;
 		 this.uknownStructurePDB = uknownStructurePDB;
 		 this.knownStructrePDB = knownStructrePDB;
@@ -69,8 +70,11 @@ public class ParallelBFS
 		 queue.add(new NodeBFS(this.getRoot(root_index),0));
 		 current = queue.get(0);
 		 current = queue.remove(0);
+		 
 	     add_to_visited(current);
+	     
 	     writeToDB(current);
+	     
 	     current.getNeighbors().getNeighbors().addAll(readPcnClient.SearchForNeighborsInPCN(current.getNeighbors().getProteinIndex(), 
 	    		 current.getNeighbors().getFragmentIndex()));
 	    		 
@@ -107,7 +111,8 @@ public class ParallelBFS
 	
 	public static synchronized void add_to_queue(NodeBFS father ,NodeBFS child )
 	{
-		
+//		if(child.getDistance() == 3 )
+//			System.out.println();
 		 if(child != null && child.getNeighbors() != null  &&
 				   (!check_exist(child.getNeighbors())&& 
 					check_repeates(child) &&
