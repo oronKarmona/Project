@@ -38,7 +38,7 @@ import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
-import PCN.Neighbors;
+import PCN.Vertex;
 import PCN.Node;
 import ProGAL.proteins.ProteinComplex;
 import Project.TrainingData.Protein;
@@ -148,7 +148,7 @@ public class ElasticSearchService
 	}
 	
 	@SuppressWarnings("deprecation")
-	public  void add(Neighbors pcnEntry) {
+	public  void add(Vertex pcnEntry) {
 	     try 
 	     {	 
 	    	 client.prepareIndex(index, type, id+"")
@@ -205,7 +205,7 @@ public class ElasticSearchService
 			 .source(gson.toJson(trainingDataEntry)));		
 		}
 		
-		public synchronized void addToBulk(Neighbors pcnEntry)
+		public synchronized void addToBulk(Vertex pcnEntry)
 		{
 
 			id++;
@@ -235,7 +235,7 @@ public class ElasticSearchService
 			 
 		}
 		
-		public Neighbors SearchPCNDB(long ProteinIndex , int  fragmentIndex )
+		public Vertex SearchPCNDB(long ProteinIndex , int  fragmentIndex )
 		{
 			 QueryBuilder qb = QueryBuilders.boolQuery()
 		                .must(QueryBuilders.matchQuery("m_protein", ProteinIndex))
@@ -266,9 +266,9 @@ public class ElasticSearchService
 			 return null;
 		}
 		
-		public ArrayList<Neighbors> SearchForNeighborsInPCN(long ProteinIndex , int  fragmentIndex )
+		public ArrayList<Vertex> SearchForNeighborsInPCN(long ProteinIndex , int  fragmentIndex )
 		{
-			ArrayList<Neighbors> neighbors = new ArrayList<Neighbors>();
+			ArrayList<Vertex> neighbors = new ArrayList<Vertex>();
 			
 			QueryBuilder qb = QueryBuilders.boolQuery()
 		                .must(QueryBuilders.termQuery("neighbors.m_protein",ProteinIndex))
@@ -282,14 +282,14 @@ public class ElasticSearchService
 			
 			 
 			 SearchHit[]  results = r.getHits().getHits();
-			 Neighbors node ; 
+			 Vertex node ; 
 			 try{
 			for(SearchHit hit :  results)
 			{
 				this.setLastDocID(hit.getId());
 				node =  fromMaptoNeighbors(hit.getSource());
 				if(check_exist(ProteinIndex, fragmentIndex, node))
-					neighbors.add(new Neighbors(node));
+					neighbors.add(new Vertex(node));
 				
 			}
 			
@@ -302,7 +302,7 @@ public class ElasticSearchService
 			 return neighbors;
 		}
 		
-		private boolean check_exist(long ProteinIndex , int  fragmentIndex ,Neighbors node)
+		private boolean check_exist(long ProteinIndex , int  fragmentIndex ,Vertex node)
 		{
 			for(Node n : node.neighbors)
 			{
@@ -314,19 +314,19 @@ public class ElasticSearchService
 		}
 		
 		@SuppressWarnings("unchecked")
-		public Neighbors getNeighbors(int index)
+		public Vertex getVertexAt(int index)
 		{ 
 			Map<String, Object> map = get(index);
-			Neighbors neighbors = fromMaptoNeighbors(map);
+			Vertex neighbors = fromMaptoNeighbors(map);
 			
 			return neighbors;		 
 		}
 		
 		
-		private Neighbors fromMaptoNeighbors(Map<String, Object> map )
+		private Vertex fromMaptoNeighbors(Map<String, Object> map )
 		{
 
-			 Neighbors neighbors = new Neighbors();
+			 Vertex neighbors = new Vertex();
 			 
 			 neighbors.setProteinIndex((Integer)map.get("m_protein"));
 			 neighbors.setFragmentIndex((Integer)map.get("m_index"));
@@ -338,7 +338,7 @@ public class ElasticSearchService
 		
 		
 		@SuppressWarnings("unchecked")
-		private ArrayList<Node> fromMapToNeighbors(Neighbors neighbors)
+		private ArrayList<Node> fromMapToNeighbors(Vertex neighbors)
 		{
 			Map<String, Object> nmap;
 			ArrayList<Node> nodes = new ArrayList<Node>();

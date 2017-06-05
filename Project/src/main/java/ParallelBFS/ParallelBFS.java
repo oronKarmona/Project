@@ -8,7 +8,7 @@ import java.util.Queue;
 
 import Calculation.CharacterOccurrence;
 import DB.ElasticSearchService;
-import PCN.Neighbors;
+import PCN.Vertex;
 import PCN.Node;
 import Project.TrainingData.Protein;
 import Threads.ParallelBFSThread;
@@ -87,7 +87,7 @@ public class ParallelBFS
 		
 	}
 	
-	private ArrayList<Neighbors>  return_unrecoreded_neighbors(NodeBFS node)
+	private ArrayList<Vertex>  return_unrecoreded_neighbors(NodeBFS node)
 	{	
 		
 		return readPcnClient.SearchForNeighborsInPCN(node.getNeighbors().getProteinIndex(), 
@@ -126,7 +126,7 @@ public class ParallelBFS
 		 }
 	}
 	
-	private static boolean check_marked(Neighbors node)
+	private static boolean check_marked(Vertex node)
 	{
 //		boolean result ; 
 //		try{
@@ -148,7 +148,7 @@ public class ParallelBFS
 		return true;
 	}
 	
-	private static boolean check_exist(Neighbors node)
+	private static boolean check_exist(Vertex node)
 	{
 		boolean result ; 
 		try{
@@ -168,7 +168,7 @@ public class ParallelBFS
 		
 			return queue.remove(0);
 	}
-	private static String getString(Neighbors n )
+	private static String getString(Vertex n )
 	{
 		return n.getProteinIndex()+"_"+n.getFragmentIndex();
 	}
@@ -177,16 +177,16 @@ public class ParallelBFS
 	 * Get the root node 
 	 * @return root node
 	 */
-	private Neighbors getRoot(int index)
+	private Vertex getRoot(int index)
 	{
-		Neighbors neighbors = readPcnClient.getNeighbors(index);		
+		Vertex neighbors = readPcnClient.getVertexAt(index);		
 		return neighbors;
 	}
 
 	
-	private Neighbors getNode(long protein , int index)
+	private Vertex getNode(long protein , int index)
 	{
-		Neighbors neighbors = readPcnClient.SearchPCNDB(protein, index);
+		Vertex neighbors = readPcnClient.SearchPCNDB(protein, index);
 		if(neighbors == null)
 			return null;
 		
@@ -195,7 +195,7 @@ public class ParallelBFS
 	
 	private static boolean check_repeates(NodeBFS bfs_node )
 	{
-		Neighbors node = bfs_node.getNeighbors();
+		Vertex node = bfs_node.getNeighbors();
 		int protein_index = (int)node.getProteinIndex();
 		int fragment_index = node.getFragmentIndex();
 		
@@ -211,10 +211,10 @@ public class ParallelBFS
 	
 	private static boolean check_complete_correspondence(NodeBFS current_node , NodeBFS child_node)
 	{
-		Neighbors father_node = current_node.getNeighbors();
+		Vertex father_node = current_node.getNeighbors();
 		int father_protein_index = (int)father_node.getProteinIndex();
 		
-		Neighbors son_node = child_node.getNeighbors();
+		Vertex son_node = child_node.getNeighbors();
 		int son_protein_index = (int)son_node.getProteinIndex();
 		
 		father_protein_index = protein_index_corrector(father_protein_index);

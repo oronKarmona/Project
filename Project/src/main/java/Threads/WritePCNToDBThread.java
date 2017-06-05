@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import DB.ElasticSearchService;
-import PCN.Neighbors;
+import PCN.Vertex;
 import PCN.Node;
 import PCN.WritePCNtoDB;
 
@@ -41,7 +41,7 @@ public class WritePCNToDBThread extends Thread
 	
 	private void readFile(File pcn_file) throws FileNotFoundException
 	{
-		Neighbors currentNode = new Neighbors();
+		Vertex currentNode = new Vertex();
 
 		String[] words;
 		String[] neighborsList;
@@ -105,7 +105,7 @@ public class WritePCNToDBThread extends Thread
 	}
 	
 	
-	private void writeToDB(Neighbors currentNode)
+	private void writeToDB(Vertex currentNode)
 	{
 		es.addToBulk(currentNode);
 	}

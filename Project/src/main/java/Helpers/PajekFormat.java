@@ -7,23 +7,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import DB.ElasticSearchService;
-import PCN.Neighbors;
+import PCN.Vertex;
 import PCN.Node;
 
 public class PajekFormat 
 {
 		private ElasticSearchService es ; 
-		private ArrayList<Neighbors> graph;
+		private ArrayList<Vertex> graph;
 		private long number_of_edges = 0 , number_of_vertex;
 		private String pajekFile = "" , fileName;
 		private String edgesPart = "";
-		private Map<String,Integer> integerRepresentation ;
+		private Map<String,Integer> vertexMap ;
 		public PajekFormat(String cluster_es_index , String cluster_es_type)
 		{
 			fileName = cluster_es_index+cluster_es_type+".net";
 			this.es = new ElasticSearchService(cluster_es_index, cluster_es_type);
-			graph = new ArrayList<Neighbors>();
-			integerRepresentation = new HashMap<String,Integer>();
+			graph = new ArrayList<Vertex>();
+			vertexMap = new HashMap<String,Integer>();
 			this.retreive_graph();
 		}
 		
@@ -35,12 +35,12 @@ public class PajekFormat
 			
 			for(int i = 0 ; i < number_of_vertex ; i++)
 			{
-				graph.add(es.getNeighbors(i));
-				integerRepresentation.put(this.node_toString(graph.get(graph.size() - 1)), i + 1) ;
+				graph.add(es.getVertexAt(i));
+				vertexMap.put(this.node_toString(graph.get(graph.size() - 1)), i + 1) ;
 			}
 			
 			pajekFile = create_head_section_title(true); // true for vertex
-			number_of_edges = this.count_number_of_edges();
+			number_of_edges = this.create_file();
 			pajekFile += create_head_section_title(false);
 			pajekFile += edgesPart;
 			//System.out.println(pajekFile);
@@ -49,18 +49,23 @@ public class PajekFormat
 		}
 		
 		
-		private long count_number_of_edges()
+		private long create_file()
 		{
 			long count  = 0 ;
 			int numberVertex;
-			for(Neighbors node : graph)
+			
+			
+			
+			for(Vertex node : graph)
 			{
 				pajekFile += addVertexLine(node);
-				edgesPart += integerRepresentation.get(this.node_toString(node));
+				
+				edgesPart += vertexMap.get(this.node_toString(node));
+				
 				for(Node n : node.getNeighbors())
 				{
 					try{
-					numberVertex= integerRepresentation.get(this.node_toString(n));
+					numberVertex= vertexMap.get(this.node_toString(n));
 					edgesPart+=" ";
 					edgesPart+=numberVertex;
 					}catch(NullPointerException e)
@@ -84,16 +89,15 @@ public class PajekFormat
 				e.printStackTrace();
 			}
 		}
-		private String addVertexLine(Neighbors node)
+		private String addVertexLine(Vertex node)
 		{
 			String node_as_string = node_toString(node);
-			String line = integerRepresentation.get(node_as_string)+"";
+			String line = vertexMap.get(node_as_string)+"";
 			line += " " +'"' +node_as_string  + '"' + '\n';
 
-			
 			return line;
 		}
-		private String node_toString(Neighbors node)
+		private String node_toString(Vertex node)
 		{
 			return node.getProteinIndex()+"_"+node.getFragmentIndex();
 		}

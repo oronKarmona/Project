@@ -3,7 +3,7 @@ package Threads;
 import java.util.ArrayList;
 
 import DB.ElasticSearchService;
-import PCN.Neighbors;
+import PCN.Vertex;
 import PCN.Node;
 import ParallelBFS.NodeBFS;
 import ParallelBFS.ParallelBFS;
@@ -49,9 +49,9 @@ public class ParallelBFSThread extends Thread
 		}
 	}
 	
-	private ArrayList<Neighbors> get_unrecorded_neighbors()
+	private ArrayList<Vertex> get_unrecorded_neighbors()
 	{
-		ArrayList<Neighbors> neighbors = neighborsReaderClient.SearchForNeighborsInPCN(current.getNeighbors().getProteinIndex(), current.getNeighbors().getFragmentIndex());
+		ArrayList<Vertex> neighbors = neighborsReaderClient.SearchForNeighborsInPCN(current.getNeighbors().getProteinIndex(), current.getNeighbors().getFragmentIndex());
 		return neighbors;
 	}
 	
@@ -66,9 +66,9 @@ public class ParallelBFSThread extends Thread
 	}
 	
 	
-	private Neighbors getNode(long protein , int index)
+	private Vertex getNode(long protein , int index)
 	{
-		Neighbors neighbors = es.SearchPCNDB(protein, index);
+		Vertex neighbors = es.SearchPCNDB(protein, index);
 		if(neighbors == null)
 			return null;
 		
