@@ -30,9 +30,10 @@ public class ParallelBFS
 	private ArrayList<ParallelBFSThread> threads ; 
 	
 	public ParallelBFS(int distance_factor, ArrayList<Protein> uknownStructurePDB, ArrayList<Protein> knownStructrePDB , int OccurenceThreshold , 
-							String elastic_search_index , String elastic_search_type){
+							String elastic_search_index , String elastic_search_type, String cluster_index, String cluster_type){
+		
 		 readPcnClient = new ElasticSearchService(elastic_search_index,elastic_search_type);
-		 writeClusterClient = new ElasticSearchService("cluster","0");
+		 writeClusterClient = new ElasticSearchService(cluster_index,cluster_type);
 		 distance_threshold = distance_factor;
 		 this.uknownStructurePDB = uknownStructurePDB;
 		 this.knownStructrePDB = knownStructrePDB;
@@ -67,7 +68,6 @@ public class ParallelBFS
 		
 		
 		 queue.add(new NodeBFS(this.getRoot(root_index),0));
-		 current = queue.get(0);
 		 current = queue.remove(0);
 	     add_to_visited(current);
 	     writeToDB(current);
@@ -115,22 +115,31 @@ public class ParallelBFS
 					!check_marked(child.getNeighbors())
 					))
 		 {
-			 		marked_to_be_visited.put(getString(child.getNeighbors()),true);
+			 	//	marked_to_be_visited.put(getString(child.getNeighbors()),true);
 			 		queue.add(child);
 		 }
 	}
 	
 	private static boolean check_marked(Neighbors node)
 	{
-		boolean result ; 
-		try{
-			result = marked_to_be_visited.get(getString(node) );
-			
-			return result;
-		}catch (NullPointerException e)
-		{
+//		boolean result ; 
+//		try{
+//			result = marked_to_be_visited.get(getString(node) );
+//			
+//			return result;
+//		}catch (NullPointerException e)
+//		{
+//			return false;
+//		}
+		
+		int index = -1 ; 
+		
+		index = queue.indexOf(node);
+		
+		if(index == -1 )
 			return false;
-		}
+		
+		return true;
 	}
 	
 	private static boolean check_exist(Neighbors node)

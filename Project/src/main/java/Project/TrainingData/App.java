@@ -39,15 +39,15 @@ public class App
 //	      main.setVisible(true);
 //	   
 
-//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 
 //		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3 );
 //		bfs.runBFS();
-//		ParallelBFS bfs = new ParallelBFS(5,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
-//								"cluster","1");
-//		bfs.InitiateBFS(23056);
-//		bfs.flushBulk();
+		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
+								"cluster","0");
+		bfs.InitiateBFS(0);
+		bfs.flushBulk();
 //		PajekFormat pf = new PajekFormat("cluster", "0");
 //		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }
