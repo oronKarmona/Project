@@ -35,9 +35,14 @@ public class ParallelBFSThread extends Thread
 	
 	private void runBFS()
 	{
-		if(!add_to_visited())
-			return;
+//		if(!add_to_visited())
+//			return;
+		add_to_visited();
+		
 		current.getNeighbors().getNeighbors().addAll(this.get_unrecorded_neighbors());
+		
+		ParallelBFS.writeToDB(current);
+		
 		for(Node node : current.getNeighbors().getNeighbors())
 		{
 			 toAdd = new NodeBFS(getNode(node.getProteinIndex(),node.getFragmentIndex()),current.getDistance() + 1);

@@ -19,6 +19,7 @@ public class ParallelBFS
 	private static ElasticSearchService writeClusterClient;
 	private static ArrayList<NodeBFS> queue = new ArrayList<NodeBFS>();
 	private static Map<String , Boolean> visited = new HashMap <String , Boolean>();
+	private static Map<String , Boolean> marked_to_be_visited = new HashMap <String , Boolean>();
 	private static NodeBFS current ; 
 	private static int distance_threshold  ;
 	private ArrayList<Protein> uknownStructurePDB , knownStructrePDB;
@@ -67,23 +68,16 @@ public class ParallelBFS
 		
 		 queue.add(new NodeBFS(this.getRoot(root_index),0));
 		 current = queue.get(0);
-		 // Save cluster ? 
 		 current = queue.remove(0);
-	     visited.put(getString(current.getNeighbors()),true);
+	     add_to_visited(current);
+	     writeToDB(current);
 	     current.getNeighbors().getNeighbors().addAll(readPcnClient.SearchForNeighborsInPCN(current.getNeighbors().getProteinIndex(), 
 	    		 current.getNeighbors().getFragmentIndex()));
 	    		 
 			 for(Node n : current.getNeighbors().getNeighbors())
 			 {
 				 NodeBFS toAdd = new NodeBFS(getNode(n.getProteinIndex(),n.getFragmentIndex()),current.getDistance() + 1);
-				 
-				 if(toAdd != null &&
-						 toAdd.getNeighbors() != null  &&
-				   !visited.containsKey(getString(toAdd.getNeighbors()))&& 
-					check_repeates(toAdd) &&
-					check_complete_correspondence(current, toAdd)
-					)
-					 	queue.add(new NodeBFS(toAdd));
+				 add_to_queue(current, toAdd);
 
 			 }
 			 
@@ -99,16 +93,16 @@ public class ParallelBFS
 	}
 	public static synchronized boolean add_to_visited(NodeBFS node)
 	{
-		if(node.getNeighbors().getProteinIndex() == 321076)
-			System.out.println();
-		
-		if(check_exist(node.getNeighbors()))
-			return false;
 		
 		visited.put(getString(node.getNeighbors()),true);
-		writeClusterClient.addToBulk(node.getNeighbors());
+		
 		System.out.println(node.getDistance());
 		return true;
+	}
+	
+	public static synchronized void writeToDB(NodeBFS node)
+	{
+		writeClusterClient.addToBulk(node.getNeighbors());
 	}
 	
 	public static synchronized void add_to_queue(NodeBFS father ,NodeBFS child )
@@ -117,11 +111,26 @@ public class ParallelBFS
 		 if(child != null && child.getNeighbors() != null  &&
 				   (!check_exist(child.getNeighbors())&& 
 					check_repeates(child) &&
-					!check_complete_correspondence(father, child)
+					!check_complete_correspondence(father, child) &&
+					!check_marked(child.getNeighbors())
 					))
 		 {
+			 		marked_to_be_visited.put(getString(child.getNeighbors()),true);
 			 		queue.add(child);
 		 }
+	}
+	
+	private static boolean check_marked(Neighbors node)
+	{
+		boolean result ; 
+		try{
+			result = marked_to_be_visited.get(getString(node) );
+			
+			return result;
+		}catch (NullPointerException e)
+		{
+			return false;
+		}
 	}
 	
 	private static boolean check_exist(Neighbors node)
@@ -138,7 +147,7 @@ public class ParallelBFS
 	}
 	public static synchronized NodeBFS get_from_queue()
 	{
-		if(queue.isEmpty() || (queue.get(0).getDistance()>= distance_threshold) )
+		if(queue.isEmpty() || (queue.get(0).getDistance()> distance_threshold) )
 			return null;
 	
 		
