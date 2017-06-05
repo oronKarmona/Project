@@ -71,8 +71,7 @@ public class ParallelBFS
 		 current = queue.remove(0);
 	     add_to_visited(current);
 	     writeToDB(current);
-	     current.getNeighbors().getNeighbors().addAll(readPcnClient.SearchForNeighborsInPCN(current.getNeighbors().getProteinIndex(), 
-	    		 current.getNeighbors().getFragmentIndex()));
+	     current.getNeighbors().getNeighbors().addAll(return_unrecoreded_neighbors(current));
 	    		 
 			 for(Node n : current.getNeighbors().getNeighbors())
 			 {
@@ -86,6 +85,13 @@ public class ParallelBFS
 			 
 			 
 		
+	}
+	
+	private ArrayList<Neighbors>  return_unrecoreded_neighbors(NodeBFS node)
+	{	
+		
+		return readPcnClient.SearchForNeighborsInPCN(node.getNeighbors().getProteinIndex(), 
+									node.getNeighbors().getFragmentIndex());
 	}
 	public void flushBulk()
 	{
