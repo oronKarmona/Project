@@ -32,8 +32,8 @@ public class App
 		
 	//	WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"second_pcn","data",false);
 	//	pcn2db.flushBulk();
-		WritePCNtoDB pcn2db2 = new WritePCNtoDB("pcn//pcn~",50,"second_pcn","data",true);
-		pcn2db2.flushBulk();
+//		WritePCNtoDB pcn2db2 = new WritePCNtoDB("pcn//pcn~",50,"second_pcn","data",true);
+//		pcn2db2.flushBulk();
 		//	      Main main = new Main();
 //	      main.setBounds(200, 100, 700, 550);
 //	      main.setVisible(true);
