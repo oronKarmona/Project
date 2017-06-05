@@ -64,23 +64,31 @@ public class ParallelBFS
 				e.printStackTrace();
 			}
 	}
-	public void InitiateBFS(int root_index){
+	public void startBFS(int root_index)
+	{
+		NodeBFS childNode  ;
+		
+		queue.add(new NodeBFS(this.getRoot(root_index),0));
+		current = queue.get(0); // get the root without removing from queue
+		 
+		while(current.getDistance() <= distance_threshold && !queue.isEmpty())
+		{
+				 current = queue.remove(0);
+			     add_to_visited(current);
+			     writeToDB(current);
+			     
+			     current.getNeighbors().getNeighbors().addAll(return_unrecoreded_neighbors(current));
+			    		 
+					 for(Node node : current.getNeighbors().getNeighbors())
+					 {
+						 childNode = new NodeBFS(getNode(node.getProteinIndex(),node.getFragmentIndex()),current.getDistance() + 1);
+						 add_to_queue(current, childNode);
+		
+					 }
+		}
 		
 		
-		 queue.add(new NodeBFS(this.getRoot(root_index),0));
-		 current = queue.remove(0);
-	     add_to_visited(current);
-	     writeToDB(current);
-	     current.getNeighbors().getNeighbors().addAll(return_unrecoreded_neighbors(current));
-	    		 
-			 for(Node n : current.getNeighbors().getNeighbors())
-			 {
-				 NodeBFS toAdd = new NodeBFS(getNode(n.getProteinIndex(),n.getFragmentIndex()),current.getDistance() + 1);
-				 add_to_queue(current, toAdd);
-
-			 }
-			 
-			 startThreads();
+//			 startThreads();
 			 
 			 
 			 
@@ -121,31 +129,31 @@ public class ParallelBFS
 					!check_marked(child.getNeighbors())
 					))
 		 {
-			 	//	marked_to_be_visited.put(getString(child.getNeighbors()),true);
+			 		marked_to_be_visited.put(getString(child.getNeighbors()),true);
 			 		queue.add(child);
 		 }
 	}
 	
 	private static boolean check_marked(Vertex node)
 	{
-//		boolean result ; 
-//		try{
-//			result = marked_to_be_visited.get(getString(node) );
-//			
-//			return result;
-//		}catch (NullPointerException e)
-//		{
-//			return false;
-//		}
-		
-		int index = -1 ; 
-		
-		index = queue.indexOf(node);
-		
-		if(index == -1 )
+		boolean result ; 
+		try{
+			result = marked_to_be_visited.get(getString(node) );
+			
+			return result;
+		}catch (NullPointerException e)
+		{
 			return false;
+		}
 		
-		return true;
+//		int index = -1 ; 
+//		
+//		index = queue.indexOf(node);
+//		
+//		if(index == -1 )
+//			return false;
+//		
+//		return true;
 	}
 	
 	private static boolean check_exist(Vertex node)
