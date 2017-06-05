@@ -54,14 +54,14 @@ public class BFS {
 		 while(!(queue.isEmpty()) && current.getDistance() <= factor ) 
 		 {
 			 current = queue.poll();
-			 visited.put(this.getString(current.getNeighbors()),true);
-			  writeClusterClient.add(current.getNeighbors()); 
-			 for(Node n : current.getNeighbors().getNeighbors())
+			 visited.put(this.getString(current.getVertex()),true);
+			  writeClusterClient.add(current.getVertex()); 
+			 for(Node n : current.getVertex().getNeighbors())
 			 {
 				 NodeBFS toAdd = new NodeBFS(getNode(n.getProteinIndex(),n.getFragmentIndex()),current.getDistance() + 1);
 				 
-				 if(toAdd.getNeighbors() != null  &&
-				   !visited.containsKey(this.getString(toAdd.getNeighbors()))&& 
+				 if(toAdd.getVertex() != null  &&
+				   !visited.containsKey(this.getString(toAdd.getVertex()))&& 
 					this.check_repeates(toAdd) &&
 					this.check_complete_correspondence(current, toAdd)
 					)
@@ -102,7 +102,7 @@ public class BFS {
 	
 	private boolean check_repeates(NodeBFS bfs_node )
 	{
-		Vertex node = bfs_node.getNeighbors();
+		Vertex node = bfs_node.getVertex();
 		int protein_index = (int)node.getProteinIndex();
 		int fragment_index = node.getFragmentIndex();
 		
@@ -118,10 +118,10 @@ public class BFS {
 	
 	private boolean check_complete_correspondence(NodeBFS current_node , NodeBFS child_node)
 	{
-		Vertex father_node = current_node.getNeighbors();
+		Vertex father_node = current_node.getVertex();
 		int father_protein_index = (int)father_node.getProteinIndex();
 		
-		Vertex son_node = child_node.getNeighbors();
+		Vertex son_node = child_node.getVertex();
 		int son_protein_index = (int)son_node.getProteinIndex();
 		
 		if(father_protein_index > 320571)

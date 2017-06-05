@@ -77,9 +77,9 @@ public class ParallelBFS
 			     add_to_visited(current);
 			     writeToDB(current);
 			     
-			     current.getNeighbors().getNeighbors().addAll(return_unrecoreded_neighbors(current));
+			     current.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(current));
 			    		 
-					 for(Node node : current.getNeighbors().getNeighbors())
+					 for(Node node : current.getVertex().getNeighbors())
 					 {
 						 childNode = new NodeBFS(getNode(node.getProteinIndex(),node.getFragmentIndex()),current.getDistance() + 1);
 						 add_to_queue(current, childNode);
@@ -98,8 +98,8 @@ public class ParallelBFS
 	private ArrayList<Vertex>  return_unrecoreded_neighbors(NodeBFS node)
 	{	
 		
-		return readPcnClient.SearchForNeighborsInPCN(node.getNeighbors().getProteinIndex(), 
-									node.getNeighbors().getFragmentIndex());
+		return readPcnClient.SearchForNeighborsInPCN(node.getVertex().getProteinIndex(), 
+									node.getVertex().getFragmentIndex());
 	}
 	public void flushBulk()
 	{
@@ -108,7 +108,7 @@ public class ParallelBFS
 	public static synchronized boolean add_to_visited(NodeBFS node)
 	{
 		
-		visited.put(getString(node.getNeighbors()),true);
+		visited.put(getString(node.getVertex()),true);
 		
 		System.out.println(node.getDistance());
 		return true;
@@ -116,20 +116,20 @@ public class ParallelBFS
 	
 	public static synchronized void writeToDB(NodeBFS node)
 	{
-		writeClusterClient.addToBulk(node.getNeighbors());
+		writeClusterClient.addToBulk(node.getVertex());
 	}
 	
 	public static synchronized void add_to_queue(NodeBFS father ,NodeBFS child )
 	{
 		
-		 if(child != null && child.getNeighbors() != null  &&
-				   (!check_exist(child.getNeighbors())&& 
+		 if(child != null && child.getVertex() != null  &&
+				   (!check_exist(child.getVertex())&& 
 					check_repeates(child) &&
 					!check_complete_correspondence(father, child) &&
-					!check_marked(child.getNeighbors())
+					!check_marked(child.getVertex())
 					))
 		 {
-			 		marked_to_be_visited.put(getString(child.getNeighbors()),true);
+			 		marked_to_be_visited.put(getString(child.getVertex()),true);
 			 		queue.add(child);
 		 }
 	}
@@ -203,7 +203,7 @@ public class ParallelBFS
 	
 	private static boolean check_repeates(NodeBFS bfs_node )
 	{
-		Vertex node = bfs_node.getNeighbors();
+		Vertex node = bfs_node.getVertex();
 		int protein_index = (int)node.getProteinIndex();
 		int fragment_index = node.getFragmentIndex();
 		
@@ -219,10 +219,10 @@ public class ParallelBFS
 	
 	private static boolean check_complete_correspondence(NodeBFS current_node , NodeBFS child_node)
 	{
-		Vertex father_node = current_node.getNeighbors();
+		Vertex father_node = current_node.getVertex();
 		int father_protein_index = (int)father_node.getProteinIndex();
 		
-		Vertex son_node = child_node.getNeighbors();
+		Vertex son_node = child_node.getVertex();
 		int son_protein_index = (int)son_node.getProteinIndex();
 		
 		father_protein_index = protein_index_corrector(father_protein_index);

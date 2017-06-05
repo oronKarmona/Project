@@ -19,7 +19,7 @@ public class NodeBFS{
 
 	public NodeBFS(NodeBFS current) {
 
-		this(current.getNeighbors() , current.getDistance());
+		this(current.getVertex() , current.getDistance());
 	}
 
 
@@ -30,7 +30,7 @@ public class NodeBFS{
 	public void setDistance(int distance) {
 		this.distance = distance;
 	}
-	public Vertex getNeighbors() {
+	public Vertex getVertex() {
 		return neighbors;
 	}
 	public void setNeighbors(Vertex neighbors) {
