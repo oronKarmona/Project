@@ -59,10 +59,19 @@ public class WritePCNToDBThread extends Thread
 	        {
 	        if(!line.isEmpty())
 	        {
+	        	long number ;
 	        	if(line.charAt(0) == '#')
 	        	{
 	        		words = line.split("#");
-	        		currentNode.setProteinIndex(Long.parseLong(words[1]));
+	        		try{
+	        			number = Long.parseLong(words[1]);
+	        			
+	        		}catch(Exception e)
+	        		{
+	        			number = Long.parseLong(words[1].split(" ")[1]);
+	        		}
+	        		
+	        		currentNode.setProteinIndex(number);
 	        	}
 	        	if(line.charAt(0) == '>')
 	        	{

@@ -14,14 +14,15 @@ public class WritePCNtoDB
 	private int NumberOfThreads = Runtime.getRuntime().availableProcessors();
 	private ArrayList<WritePCNToDBThread> threads ; 
 	
-	public WritePCNtoDB(String pcn_file_name , int  numberOfFiles , String index , String type)
+	public WritePCNtoDB(String pcn_file_name , int  numberOfFiles , String index , String type,
+			boolean startFromLast)
 	{
 		this.pcn_file_name = pcn_file_name;
 		this.numberOfFiles = numberOfFiles;
 		threads = new ArrayList<WritePCNToDBThread>();
 		es = new ElasticSearchService(index, type);
-		
-		
+		if(startFromLast)
+			es.setID(es.getCountOfDocInType() - 1);
 		this.CreateThreads();
 		
 		try {
@@ -32,7 +33,10 @@ public class WritePCNtoDB
 			e.printStackTrace();
 		}
 	}
-	
+	public void flushBulk()
+	{
+		es.bulkProcessor.flush();
+	}
 	private void CreateThreads()
 	{
 		for(int i = 0 ; i < NumberOfThreads ; i ++)

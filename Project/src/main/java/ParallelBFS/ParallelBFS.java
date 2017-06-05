@@ -67,11 +67,12 @@ public class ParallelBFS
 		
 		
 		 queue.add(new NodeBFS(this.getRoot(root_index),0));
+		 current = queue.get(0);
 		 current = queue.remove(0);
 	     add_to_visited(current);
 	     writeToDB(current);
-	     
-	     current.getNeighbors().getNeighbors().addAll(return_unrecorded_neighbors(current));
+	     current.getNeighbors().getNeighbors().addAll(readPcnClient.SearchForNeighborsInPCN(current.getNeighbors().getProteinIndex(), 
+	    		 current.getNeighbors().getFragmentIndex()));
 	    		 
 			 for(Node n : current.getNeighbors().getNeighbors())
 			 {
@@ -85,12 +86,6 @@ public class ParallelBFS
 			 
 			 
 		
-	}
-	
-	public ArrayList<Neighbors> return_unrecorded_neighbors(NodeBFS node)
-	{
-		return	readPcnClient.SearchForNeighborsInPCN(node.getNeighbors().getProteinIndex(), 
-															node.getNeighbors().getFragmentIndex());
 	}
 	public void flushBulk()
 	{
@@ -120,33 +115,22 @@ public class ParallelBFS
 					!check_marked(child.getNeighbors())
 					))
 		 {
-			 		//marked_to_be_visited.put(getString(child.getNeighbors()),true);
+			 		marked_to_be_visited.put(getString(child.getNeighbors()),true);
 			 		queue.add(child);
 		 }
 	}
 	
-
 	private static boolean check_marked(Neighbors node)
 	{
-//		boolean result ; 
-//		try{
-//			result = marked_to_be_visited.get(getString(node) );
-//			
-//			return result;
-//		}catch (NullPointerException e)
-//		{
-//			return false;
-//		}
-		
-		int index = -1 ; 
-		
-		index = queue.indexOf(node);
-		
-		if(index == -1 )
+		boolean result ; 
+		try{
+			result = marked_to_be_visited.get(getString(node) );
+			
+			return result;
+		}catch (NullPointerException e)
+		{
 			return false;
-		
-		return true;
-		
+		}
 	}
 	
 	private static boolean check_exist(Neighbors node)

@@ -35,11 +35,10 @@ public class ParallelBFSThread extends Thread
 	
 	private void runBFS()
 	{
-//		if(!add_to_visited())
-//			return;
+
 		add_to_visited();
 		
-		current.getNeighbors().getNeighbors().addAll(this.get_unrecorded_neighbors());
+	//	current.getNeighbors().getNeighbors().addAll(this.get_unrecorded_neighbors());
 		
 		ParallelBFS.writeToDB(current);
 		
@@ -55,10 +54,12 @@ public class ParallelBFSThread extends Thread
 		ArrayList<Neighbors> neighbors = neighborsReaderClient.SearchForNeighborsInPCN(current.getNeighbors().getProteinIndex(), current.getNeighbors().getFragmentIndex());
 		return neighbors;
 	}
+	
 	private void add_to_queue()
 	{
 		ParallelBFS.add_to_queue(current , toAdd);
 	}
+	
 	private boolean  add_to_visited()
 	{
 		return ParallelBFS.add_to_visited(current);
