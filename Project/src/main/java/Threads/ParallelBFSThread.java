@@ -39,7 +39,7 @@ public class ParallelBFSThread extends Thread
 		add_to_visited();
 		current.getVertex().getNeighbors().addAll(this.get_unrecorded_neighbors(current));
 		
-	    current.getVertex().setNeighbors(correctNeighbors(current)); 
+	  //  current.getVertex().setNeighbors(correctNeighbors(current)); 
 	    
 		ParallelBFS.writeToDB(current);
 		
