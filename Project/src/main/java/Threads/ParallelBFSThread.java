@@ -38,20 +38,27 @@ public class ParallelBFSThread extends Thread
 
 		add_to_visited();
 		
-	//	current.getNeighbors().getNeighbors().addAll(this.get_unrecorded_neighbors());
+		current.getVertex().getNeighbors().addAll(this.get_unrecorded_neighbors(current));
 		
 		ParallelBFS.writeToDB(current);
 		
 		for(Node node : current.getVertex().getNeighbors())
 		{
 			 toAdd = new NodeBFS(getNode(node.getProteinIndex(),node.getFragmentIndex()),current.getDistance() + 1);
+			 
+			 if(toAdd.getVertex() == null)
+			 {
+				 toAdd = new NodeBFS(new Vertex(node.getProteinIndex(),node.getFragmentIndex()) , current.getDistance() + 1);
+				 toAdd.getVertex().getNeighbors().addAll(this.get_unrecorded_neighbors(toAdd));
+			 }
+			 
 			 add_to_queue();
 		}
 	}
 	
-	private ArrayList<Vertex> get_unrecorded_neighbors()
+	private ArrayList<Vertex> get_unrecorded_neighbors(NodeBFS node)
 	{
-		ArrayList<Vertex> neighbors = neighborsReaderClient.SearchForNeighborsInPCN(current.getVertex().getProteinIndex(), current.getVertex().getFragmentIndex());
+		ArrayList<Vertex> neighbors = neighborsReaderClient.SearchForNeighborsInPCN(node.getVertex().getProteinIndex(), node.getVertex().getFragmentIndex());
 		return neighbors;
 	}
 	
