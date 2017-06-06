@@ -45,25 +45,6 @@ public class ParallelBFS
 		 createThreads();
 	}
 	
-	private void createThreads()
-	{
-		threads = new ArrayList<ParallelBFSThread>();
-		for(int i = 0 ; i < Amount_of_threads ; i ++)
-			threads.add( new ParallelBFSThread(readPcnClient));
-	}
-	
-	private void startThreads()
-	{
-		for(ParallelBFSThread t : threads)
-			t.start();
-		
-		for(ParallelBFSThread t : threads)
-			try {
-				t.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-	}
 	public void startBFS(int root_index)
 	{
 		NodeBFS childNode  ;
@@ -85,18 +66,42 @@ public class ParallelBFS
 					 for(Node node : neighbors)
 					 {
 						 childNode = new NodeBFS(getNode(node.getProteinIndex(),node.getFragmentIndex()),current.getDistance() + 1);
+						 
+						 if(childNode.getVertex() == null)
+						 {
+							 childNode = new NodeBFS(new Vertex(node.getProteinIndex(),node.getFragmentIndex()) , current.getDistance() + 1);
+							 childNode.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(childNode));
+						 }
+						 
 						 add_to_queue(current, childNode);
 		
 					 }
 		//}
 		
 		
-			 startThreads();
-			 
-			 
-			 
-		
+			 startThreads();		
 	}
+	
+	private void createThreads()
+	{
+		threads = new ArrayList<ParallelBFSThread>();
+		for(int i = 0 ; i < Amount_of_threads ; i ++)
+			threads.add( new ParallelBFSThread(readPcnClient));
+	}
+	
+	private void startThreads()
+	{
+		for(ParallelBFSThread t : threads)
+			t.start();
+		
+		for(ParallelBFSThread t : threads)
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+	}
+	
 	
 	private ArrayList<Vertex>  return_unrecoreded_neighbors(NodeBFS node)
 	{	
