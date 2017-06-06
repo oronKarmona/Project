@@ -56,10 +56,12 @@ public class ParallelBFS
 //		{
 				 current = queue.remove(0);
 				 add_to_visited(current);
+				 current.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(current));
+				 
 			     current.getVertex().setNeighbors(correctNeighbors(current)); 
 			     writeToDB(current);
 			     
-			     current.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(current));
+			     
 			     
 			     neighbors = current.getVertex().getNeighbors();
 			     
@@ -119,7 +121,7 @@ public class ParallelBFS
 		 return neighbors;
 	}
 	
-	private static boolean check_conditions(NodeBFS father , NodeBFS child)
+	public synchronized static boolean check_conditions(NodeBFS father , NodeBFS child)
 	{
 		if(child != null && child.getVertex() != null  &&
 				   (!check_exist(child.getVertex())&& 

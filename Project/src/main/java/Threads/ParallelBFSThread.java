@@ -37,9 +37,10 @@ public class ParallelBFSThread extends Thread
 	{
 
 		add_to_visited();
-		
 		current.getVertex().getNeighbors().addAll(this.get_unrecorded_neighbors(current));
 		
+	    current.getVertex().setNeighbors(correctNeighbors(current)); 
+	    
 		ParallelBFS.writeToDB(current);
 		
 		for(Node node : current.getVertex().getNeighbors())
@@ -56,6 +57,23 @@ public class ParallelBFSThread extends Thread
 		}
 	}
 	
+	private ArrayList<Node> correctNeighbors(NodeBFS node)
+	{
+		 ArrayList<Node> neighbors = node.getVertex().getNeighbors();
+		 ArrayList<Node> nodes_toRemove = new ArrayList<Node>();
+		 
+		 for(Node n : neighbors)
+		 {
+			 if(ParallelBFS.check_conditions(node, new NodeBFS(new Vertex(n.getProteinIndex(),n.getFragmentIndex()),0)))
+				 nodes_toRemove.add(n);
+		 }
+		 
+		 for(Node n : nodes_toRemove)
+			 neighbors.remove(n);
+		 
+		 return neighbors;
+	}
+
 	private ArrayList<Vertex> get_unrecorded_neighbors(NodeBFS node)
 	{
 		ArrayList<Vertex> neighbors = neighborsReaderClient.SearchForNeighborsInPCN(node.getVertex().getProteinIndex(), node.getVertex().getFragmentIndex());
