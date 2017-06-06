@@ -111,7 +111,7 @@ public class ParallelBFS
 		 
 		 for(Node n : neighbors)
 		 {
-			 if(check_conditions(node, new NodeBFS(new Vertex(n.getProteinIndex(),n.getFragmentIndex()),0)))
+			 if(!check_conditions(node, new NodeBFS(new Vertex(n.getProteinIndex(),n.getFragmentIndex()),0)))
 				 nodes_toRemove.add(n);
 		 }
 		 

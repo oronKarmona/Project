@@ -64,7 +64,7 @@ public class ParallelBFSThread extends Thread
 		 
 		 for(Node n : neighbors)
 		 {
-			 if(ParallelBFS.check_conditions(node, new NodeBFS(new Vertex(n.getProteinIndex(),n.getFragmentIndex()),0)))
+			 if(!ParallelBFS.check_conditions(node, new NodeBFS(new Vertex(n.getProteinIndex(),n.getFragmentIndex()),0)))
 				 nodes_toRemove.add(n);
 		 }
 		 
