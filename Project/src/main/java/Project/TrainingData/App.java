@@ -47,7 +47,7 @@ public class App
 
 //		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3 );
 //		bfs.runBFS();
-		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
+		ParallelBFS bfs = new ParallelBFS(5,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
 								"cluster","0");
 		bfs.startBFS(0);
 		bfs.flushBulk();
