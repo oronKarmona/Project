@@ -11,6 +11,7 @@ import Helpers.FileParser;
 import Helpers.JSONhelper;
 import Helpers.PCNpdbParser;
 import Helpers.PajekFormat;
+import PCN.Vertex;
 import PCN.WritePCNtoDB;
 import ParallelBFS.ParallelBFS;
 
@@ -28,23 +29,30 @@ public class App
 	public static void main( String[] args )
     {
 		ArrayList<Protein> uknownStructurePDB,knownStructrePDB;
+		long startTime = System.currentTimeMillis();
 		
-
-//	      Main main = new Main();
+	//	WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"second_pcn","data",false);
+	//	pcn2db.flushBulk();
+//		WritePCNtoDB pcn2db2 = new WritePCNtoDB("missingNode~",1,"second_pcn","data",true);
+//		pcn2db2.flushBulk();
+		//	      Main main = new Main();
 //	      main.setBounds(200, 100, 700, 550);
 //	      main.setVisible(true);
 //	   
-
+//		ElasticSearchService es = new ElasticSearchService("second_pcn", "data");
+//		Vertex one = es.SearchPCNDB(205679,1);
+		//Vertex two = es.SearchPCNDB(320769, 0);
 		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 
-		long startTime = System.currentTimeMillis();
+//		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3 );
+//		bfs.runBFS();
 		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
 								"cluster","0");
 		bfs.startBFS(0);
 		bfs.flushBulk();
-		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
 		PajekFormat pf = new PajekFormat("cluster", "0");
+		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }
 	
 	

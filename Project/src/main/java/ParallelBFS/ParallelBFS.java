@@ -67,28 +67,31 @@ public class ParallelBFS
 	public void startBFS(int root_index)
 	{
 		NodeBFS childNode  ;
-		
+		ArrayList<Node> neighbors;
 		queue.add(new NodeBFS(this.getRoot(root_index),0));
 		current = queue.get(0); // get the root without removing from queue
 		 
-		while(current.getDistance() <= distance_threshold && !queue.isEmpty())
-		{
+//		while(current.getDistance() <= distance_threshold && !queue.isEmpty())
+//		{
 				 current = queue.remove(0);
 			     add_to_visited(current);
+			     
 			     writeToDB(current);
 			     
 			     current.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(current));
-			    		 
-					 for(Node node : current.getVertex().getNeighbors())
+			     
+			     neighbors = current.getVertex().getNeighbors();
+			     
+					 for(Node node : neighbors)
 					 {
 						 childNode = new NodeBFS(getNode(node.getProteinIndex(),node.getFragmentIndex()),current.getDistance() + 1);
 						 add_to_queue(current, childNode);
 		
 					 }
-		}
+		//}
 		
 		
-//			 startThreads();
+			 startThreads();
 			 
 			 
 			 
@@ -207,7 +210,7 @@ public class ParallelBFS
 		int protein_index = (int)node.getProteinIndex();
 		int fragment_index = node.getFragmentIndex();
 		
-		protein_index = protein_index_corrector(protein_index);
+		//protein_index = protein_index_corrector(protein_index);
 		
 		Protein node_protein = protein_map.get(protein_index);
 		CharacterOccurrence co = new CharacterOccurrence(OThreshold);
@@ -225,8 +228,8 @@ public class ParallelBFS
 		Vertex son_node = child_node.getVertex();
 		int son_protein_index = (int)son_node.getProteinIndex();
 		
-		father_protein_index = protein_index_corrector(father_protein_index);
-		son_protein_index = protein_index_corrector(son_protein_index);
+	///	father_protein_index = protein_index_corrector(father_protein_index);
+	//	son_protein_index = protein_index_corrector(son_protein_index);
 	
 		Protein current_protein =  protein_map.get(father_protein_index);
 		Protein son_protein =  protein_map.get(son_protein_index);
@@ -251,7 +254,7 @@ public class ParallelBFS
 		for(Protein p : uknownStructurePDB)
 			protein_map.put(p.getProteinIndex(),p);
 		for(int i = 0 ; i < knownStructrePDB.size() ; i++)
-			protein_map.put(i, knownStructrePDB.get(i));
+			protein_map.put(i + 320572, knownStructrePDB.get(i)); //320572
 //		for(Protein p : knownStructrePDB)
 //			protein_map.put(p.getProteinIndex(), p);
 	}
