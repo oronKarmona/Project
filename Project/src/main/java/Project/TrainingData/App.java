@@ -49,7 +49,7 @@ public class App
 //		bfs.runBFS();
 		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
 								"cluster","0");
-		bfs.startBFS(5000000);
+		bfs.startBFS(0);
 		bfs.flushBulk();
 		PajekFormat pf = new PajekFormat("cluster", "0");
 		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));

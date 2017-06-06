@@ -55,8 +55,8 @@ public class ParallelBFS
 //		while(current.getDistance() <= distance_threshold && !queue.isEmpty())
 //		{
 				 current = queue.remove(0);
-			     add_to_visited(current);
-			     
+				 add_to_visited(current);
+			     current.getVertex().setNeighbors(correctNeighbors(current)); 
 			     writeToDB(current);
 			     
 			     current.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(current));
@@ -102,7 +102,35 @@ public class ParallelBFS
 			}
 	}
 	
+	private ArrayList<Node> correctNeighbors(NodeBFS node)
+	{
+		 ArrayList<Node> neighbors = node.getVertex().getNeighbors();
+		 ArrayList<Node> nodes_toRemove = new ArrayList<Node>();
+		 
+		 for(Node n : neighbors)
+		 {
+			 if(check_conditions(node, new NodeBFS(new Vertex(n.getProteinIndex(),n.getFragmentIndex()),0)))
+				 nodes_toRemove.add(n);
+		 }
+		 
+		 for(Node n : nodes_toRemove)
+			 neighbors.remove(n);
+		 
+		 return neighbors;
+	}
 	
+	private static boolean check_conditions(NodeBFS father , NodeBFS child)
+	{
+		if(child != null && child.getVertex() != null  &&
+				   (!check_exist(child.getVertex())&& 
+					check_repeates(child) &&
+					!check_complete_correspondence(father, child) &&
+					!check_marked(child.getVertex())
+					))
+			return true;
+		
+		return false;
+	}
 	private ArrayList<Vertex>  return_unrecoreded_neighbors(NodeBFS node)
 	{	
 		
@@ -130,12 +158,7 @@ public class ParallelBFS
 	public static synchronized void add_to_queue(NodeBFS father ,NodeBFS child )
 	{
 		
-		 if(child != null && child.getVertex() != null  &&
-				   (!check_exist(child.getVertex())&& 
-					check_repeates(child) &&
-					!check_complete_correspondence(father, child) &&
-					!check_marked(child.getVertex())
-					))
+		 if(check_conditions(father , child))
 		 {
 			 		marked_to_be_visited.put(getString(child.getVertex()),true);
 			 		queue.add(child);
@@ -154,14 +177,7 @@ public class ParallelBFS
 			return false;
 		}
 		
-//		int index = -1 ; 
-//		
-//		index = queue.indexOf(node);
-//		
-//		if(index == -1 )
-//			return false;
-//		
-//		return true;
+
 	}
 	
 	private static boolean check_exist(Vertex node)
