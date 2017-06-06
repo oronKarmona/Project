@@ -20,7 +20,7 @@ public class PajekFormat
 		private Map<String,Integer> vertexMap ;
 		public PajekFormat(String cluster_es_index , String cluster_es_type)
 		{
-			fileName = cluster_es_index+cluster_es_type+".net";
+			fileName = "clusters//"+cluster_es_index+cluster_es_type+".net";
 			this.es = new ElasticSearchService(cluster_es_index, cluster_es_type);
 			graph = new ArrayList<Vertex>();
 			vertexMap = new HashMap<String,Integer>();
