@@ -56,7 +56,7 @@ public class ParallelBFS
 		{
 				 current = queue.remove(0);
 				 add_to_visited(current);
-				 
+				 current.getVertex().setNeighbors(correctNeighbors(current));
 			     writeToDB(current);
 			     
 				 current.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(current));
@@ -121,12 +121,9 @@ public class ParallelBFS
 	
 	public synchronized static boolean check_conditions(NodeBFS father , NodeBFS child)
 	{
-		if(child != null && child.getVertex() != null  &&
-				   (!check_exist(child.getVertex())&& 
+		if(child != null && child.getVertex() != null  && 
 					check_repeates(child) &&
-					!check_complete_correspondence(father, child) &&
-					!check_marked(child.getVertex())
-					))
+					!check_complete_correspondence(father, child) )
 			return true;
 		
 		return false;
@@ -158,7 +155,7 @@ public class ParallelBFS
 	public static synchronized void add_to_queue(NodeBFS father ,NodeBFS child )
 	{
 		
-		 if(check_conditions(father , child))
+		 if(check_conditions(father , child) && !check_marked(child.getVertex()) && !check_exist(child.getVertex()) )
 		 {
 			 		marked_to_be_visited.put(getString(child.getVertex()),true);
 			 		queue.add(child);
