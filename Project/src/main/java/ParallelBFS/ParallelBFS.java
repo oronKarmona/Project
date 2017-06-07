@@ -56,9 +56,8 @@ public class ParallelBFS
 		{
 				 current = queue.remove(0);
 				 add_to_visited(current);
-	//			 current.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(current));
+				 current.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(current));
 				 
-			     current.getVertex().setNeighbors(correctNeighbors(current)); 
 			     writeToDB(current);
 			     
 			     
