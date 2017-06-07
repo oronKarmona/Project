@@ -52,7 +52,7 @@ public class ParallelBFS
 		queue.add(new NodeBFS(this.getRoot(root_index),0));
 		current = queue.get(0); // get the root without removing from queue
 		 
-		while(current.getDistance() <= distance_threshold && !queue.isEmpty())
+		while(!queue.isEmpty() && queue.get(0).getDistance() < distance_threshold )
 		{
 				 current = queue.remove(0);
 				 add_to_visited(current);
