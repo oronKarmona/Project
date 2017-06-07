@@ -60,7 +60,6 @@ public class ParallelBFS
 			     writeToDB(current);
 			     
 				 current.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(current));
-
 			     
 			     neighbors = current.getVertex().getNeighbors();
 			     
