@@ -48,14 +48,13 @@ public class App
 //		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3 );
 //		bfs.runBFS();
 		
-		for(int i = 0 ; i < 1000 ; i ++)
-		{
+		
 		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
-								"cluster",i+"");
-		bfs.startBFS(i);
+								"cluster","3");
+		bfs.startBFS(3);
 		bfs.flushBulk();
-		PajekFormat pf = new PajekFormat("cluster", i+"");
-		}
+		PajekFormat pf = new PajekFormat("cluster", "3");
+		
 		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }
 	
