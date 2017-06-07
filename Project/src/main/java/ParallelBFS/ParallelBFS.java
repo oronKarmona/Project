@@ -52,8 +52,8 @@ public class ParallelBFS
 		queue.add(new NodeBFS(this.getRoot(root_index),0));
 		current = queue.get(0); // get the root without removing from queue
 		 
-//		while(current.getDistance() <= distance_threshold && !queue.isEmpty())
-//		{
+		while(current.getDistance() <= distance_threshold && !queue.isEmpty())
+		{
 				 current = queue.remove(0);
 				 add_to_visited(current);
 	//			 current.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(current));
@@ -78,10 +78,10 @@ public class ParallelBFS
 						 add_to_queue(current, childNode);
 		
 					 }
-		//}
+	}
 		
 		
-			 startThreads();		
+		//	 startThreads();		
 	}
 	
 	private void createThreads()
