@@ -52,31 +52,31 @@ public class ParallelBFS
 		queue.add(new NodeBFS(this.getRoot(root_index),0));
 		current = queue.get(0); // get the root without removing from queue
 		 
-		while(!queue.isEmpty() && queue.get(0).getDistance() < distance_threshold )
-		{
-				 current = queue.remove(0);
-				 add_to_visited(current);
-				 current.getVertex().setNeighbors(correctNeighbors(current));
-			     writeToDB(current);
-			     
-				 current.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(current));
-			     
-			     neighbors = current.getVertex().getNeighbors();
-			     
-					 for(Node node : neighbors)
-					 {
-						 childNode = new NodeBFS(getNode(node.getProteinIndex(),node.getFragmentIndex()),current.getDistance() + 1);
-						 
-						 if(childNode.getVertex() == null)
-						 {
-							 childNode = new NodeBFS(new Vertex(node.getProteinIndex(),node.getFragmentIndex()) , current.getDistance() + 1);
-							 childNode.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(childNode));
-						 }
-						 
-						 add_to_queue(current, childNode);
-		
-					 }
-	}
+					while(!queue.isEmpty() && queue.get(0).getDistance() < distance_threshold )
+					{
+							 current = queue.remove(0);
+							 add_to_visited(current);
+							 current.getVertex().setNeighbors(correctNeighbors(current));
+						     writeToDB(current);
+						     
+							 current.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(current));
+						     
+						     neighbors = current.getVertex().getNeighbors();
+						     
+								 for(Node node : neighbors)
+								 {
+									 childNode = new NodeBFS(getNode(node.getProteinIndex(),node.getFragmentIndex()),current.getDistance() + 1);
+											 
+											 if(childNode.getVertex() == null)
+											 {
+												 childNode = new NodeBFS(new Vertex(node.getProteinIndex(),node.getFragmentIndex()) , current.getDistance() + 1);
+												 childNode.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(childNode));
+											 }
+									 
+									 add_to_queue(current, childNode);
+					
+								 }
+					}
 		
 		
 		//	 startThreads();		
