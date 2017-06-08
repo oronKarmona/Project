@@ -5,12 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import BFS.BFS;
+import Calculation.PolynomialRegression;
 import DB.ElasticSearchService;
 import GUI.Main;
 import Helpers.FileParser;
 import Helpers.JSONhelper;
 import Helpers.PCNpdbParser;
 import Helpers.PajekFormat;
+import Jama.Matrix;
 import PCN.Vertex;
 import PCN.WritePCNtoDB;
 import ParallelBFS.ParallelBFS;
@@ -25,35 +27,34 @@ import ParallelBFS.ParallelBFS;
  */
 public class App 
 {
+	private static Matrix beta;
 	
 	public static void main( String[] args )
     {
 		ArrayList<Protein> uknownStructurePDB,knownStructrePDB;
 		long startTime = System.currentTimeMillis();
-		
-	//	WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"second_pcn","data",false);
-	//	pcn2db.flushBulk();
-//		WritePCNtoDB pcn2db2 = new WritePCNtoDB("missingNode~",1,"second_pcn","data",true);
-//		pcn2db2.flushBulk();
+
+
 		//	      Main main = new Main();
 //	      main.setBounds(200, 100, 700, 550);
 //	      main.setVisible(true);
 //	   
-//		ElasticSearchService es = new ElasticSearchService("second_pcn", "data");
-//		Vertex one = es.SearchPCNDB(205679,1);
-		//Vertex two = es.SearchPCNDB(320769, 0);
+
 		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
-
-//		BFS bfs = new BFS(3,uknownStructurePDB , knownStructrePDB, 20/3 );
-//		bfs.runBFS();
 		
 		
-		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
-								"cluster","3");
-		bfs.startBFS(3);
-		bfs.flushBulk();
-		PajekFormat pf = new PajekFormat("cluster", "3");
+        double[] x = { 10, 20, 40, 80, 160, 200 };
+        double[] y = { 100, 350, 1500, 6700, 20160, 40000 };
+        PolynomialRegression regression = new PolynomialRegression(x, y, 3);
+        beta = regression.getBeta();
+		
+//		
+//		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
+//								"cluster","3");
+//		bfs.startBFS(3);
+//		bfs.flushBulk();
+//		PajekFormat pf = new PajekFormat("cluster", "3");
 		
 		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }
