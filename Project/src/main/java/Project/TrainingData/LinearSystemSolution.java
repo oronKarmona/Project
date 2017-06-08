@@ -58,7 +58,8 @@ public class LinearSystemSolution {
 	public static synchronized long getNextIndex()
 	{
 		index++;
-		
+		if(index%1000 == 0)
+			System.out.println("index " + index  );
 		if(index == sizeofTrainingData)
 			return -1 ; 
 		
