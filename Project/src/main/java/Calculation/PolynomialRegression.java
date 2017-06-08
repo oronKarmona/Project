@@ -12,30 +12,13 @@ package Calculation;
 import Jama.Matrix;
 import Jama.QRDecomposition;
 
-/**
- *  The {@code PolynomialRegression} class performs a polynomial regression
- *  on an set of <em>N</em> data points (<em>y<sub>i</sub></em>, <em>x<sub>i</sub></em>).
- *  That is, it fits a polynomial
- *  <em>y</em> = &beta;<sub>0</sub> +  &beta;<sub>1</sub> <em>x</em> +
- *  &beta;<sub>2</sub> <em>x</em><sup>2</sup> + ... +
- *  &beta;<sub><em>d</em></sub> <em>x</em><sup><em>d</em></sup>
- *  (where <em>y</em> is the response variable, <em>x</em> is the predictor variable,
- *  and the &beta;<sub><em>i</em></sub> are the regression coefficients)
- *  that minimizes the sum of squared residuals of the multiple regression model.
- *  It also computes associated the coefficient of determination <em>R</em><sup>2</sup>.
- *  <p>
- *  This implementation performs a QR-decomposition of the underlying
- *  Vandermonde matrix, so it is not the fastest or most numerically
- *  stable way to perform the polynomial regression.
- *
- *  @author Robert Sedgewick
- *  @author Kevin Wayne
- */
+
 public class PolynomialRegression {
     private final String variableName;  // name of the predictor variable
     private int degree;                 // degree of the polynomial regression
     private Matrix beta;                // the polynomial regression coefficients
-    private double sse;                 // sum of squares due to error
+
+	private double sse;                 // sum of squares due to error
     private double sst;                 // total sum of squares
 
 
@@ -187,16 +170,15 @@ public class PolynomialRegression {
         s = s.append("  (R^2 = " + String.format("%.3f", R2()) + ")");
         return s.toString();
     }
+    
+    public Matrix getBeta() {
+		return beta;
+	}
 
-   /**
-     * Unit tests the {@code PolynomialRegression} data type.
-     *
-     * @param args the command-line arguments
-     */
-    public static void main(String[] args) {
-        double[] x = { 10, 20, 40, 80, 160, 200 };
-        double[] y = { 100, 350, 1500, 6700, 20160, 40000 };
-        PolynomialRegression regression = new PolynomialRegression(x, y, 3);
-        System.out.println(regression);
-    }
+	public void setBeta(Matrix beta) {
+		this.beta = beta;
+	}
+
+
+ 
 }
