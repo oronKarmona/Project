@@ -183,7 +183,7 @@ public class ElasticSearchService
 			client.update(updateRequest).get();
 		}
 		
-		public synchronized Map<String, Object> getProtein(long ProteinIndex )
+		public synchronized Map<String, Object> getProtein(int ProteinIndex )
 		{
 			 QueryBuilder qb = QueryBuilders.boolQuery()
 		                .must(QueryBuilders.matchQuery("ProteinIndex", ProteinIndex));
