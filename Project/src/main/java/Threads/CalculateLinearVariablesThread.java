@@ -18,7 +18,7 @@ public class CalculateLinearVariablesThread extends Thread{
 	private int firstProteinIndex , secondProteinIndex ,fragmentHammingDistance , contextHammingDistance; 
 	private Protein firstProtein , secondProtein;
 	private int firstProteinFragment , secondProteinFragment;
-	
+	private String firstContext = null, secondContext = null;
 	public CalculateLinearVariablesThread( ElasticSearchService trainingDataClient, ElasticSearchService proteinsDataClient, 
 											ElasticSearchService linearDataClient) {
 		
@@ -60,7 +60,9 @@ public class CalculateLinearVariablesThread extends Thread{
 		firstProtein = getProteinFromDB(firstProteinIndex) ; 
 		secondProtein = getProteinFromDB(secondProteinIndex);
 		
-		String firstContext , secondContext;
+		firstContext = null;
+		secondContext = null;
+		
 		firstContext = firstProtein.GetContext((int)firstProteinFragment);
 		secondContext = secondProtein.GetContext((int)secondProteinFragment);
 		
