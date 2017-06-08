@@ -41,13 +41,14 @@ public class App
 //	   
 
 		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 		
+		App.writeProteinsToDB("proteins","known_structure", knownStructrePDB);
 		
-        double[] x = { 10, 20, 40, 80, 160, 200 };
-        double[] y = { 100, 350, 1500, 6700, 20160, 40000 };
-        PolynomialRegression regression = new PolynomialRegression(x, y, 3);
-        beta = regression.getBeta();
+//        double[] x = { 10, 20, 40, 80, 160, 200 };
+//        double[] y = { 100, 350, 1500, 6700, 20160, 40000 };
+//        PolynomialRegression regression = new PolynomialRegression(x, y, 3);
+//        beta = regression.getBeta();
 		
 //		
 //		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
@@ -76,6 +77,13 @@ public class App
 	}
 	
 	
+	public static void writeProteinsToDB(String index , String type , ArrayList<Protein> proteinDB)
+	{
+		ElasticSearchService es = new ElasticSearchService(index , type );
+		for(Protein p  : proteinDB)
+			es.add(p);
+		es.clientClose();
+	}
 	
 	public static ArrayList<Protein> read_Whole_ASTRAL_and_structural_data()
 	{
