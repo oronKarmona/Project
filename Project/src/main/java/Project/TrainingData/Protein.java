@@ -142,7 +142,7 @@ public class Protein implements Serializable{
 	
 	public String GetContext(int index)
 	{
-		if(index < 10 || index > this.aminoAcids.length() - 10 )
+		if(index < 10 || index > this.aminoAcids.length() - 31 )
 			return null;
 		
 		return aminoAcids.substring(index - 10 ,index+20 + 10);

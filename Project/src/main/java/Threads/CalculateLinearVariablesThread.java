@@ -15,10 +15,10 @@ public class CalculateLinearVariablesThread extends Thread{
 	private ElasticSearchService linearDataClient ;
 	private Map<String,Object> trainingDataRecord , proteinAsMap;
 	private HammingCalculation m_hammingCalculation;
-	private long firstProteinIndex , secondProteinIndex ,fragmentHammingDistance , contextHammingDistance; 
+	private int firstProteinIndex , secondProteinIndex ,fragmentHammingDistance , contextHammingDistance; 
 	private Protein firstProtein , secondProtein;
-	private long firstProteinFragment , secondProteinFragment;
-	
+	private int firstProteinFragment , secondProteinFragment;
+	private String firstContext = null, secondContext = null;
 	public CalculateLinearVariablesThread( ElasticSearchService trainingDataClient, ElasticSearchService proteinsDataClient, 
 											ElasticSearchService linearDataClient) {
 		
@@ -50,17 +50,19 @@ public class CalculateLinearVariablesThread extends Thread{
 	{
 		trainingDataRecord = trainingDataClient.get((int)index);
 		
-		firstProteinIndex = (long) trainingDataRecord.get("firstProteinIndex");
-		secondProteinIndex = (long) trainingDataRecord.get("secondProteinIndex");
+		firstProteinIndex = (int) trainingDataRecord.get("firstProteinIndex");
+		secondProteinIndex = (int) trainingDataRecord.get("secondProteinIndex");
 		firstProteinFragment  = (int) trainingDataRecord.get("firstFragmentIndex");
 		secondProteinFragment = (int) trainingDataRecord.get("secondFragmentIndex");
 		
-		fragmentHammingDistance = (long)trainingDataRecord.get("HammingDistance");
+		fragmentHammingDistance = (int)trainingDataRecord.get("HammingDistance");
 		
 		firstProtein = getProteinFromDB(firstProteinIndex) ; 
 		secondProtein = getProteinFromDB(secondProteinIndex);
 		
-		String firstContext , secondContext;
+		firstContext = null;
+		secondContext = null;
+		
 		firstContext = firstProtein.GetContext((int)firstProteinFragment);
 		secondContext = secondProtein.GetContext((int)secondProteinFragment);
 		
@@ -76,7 +78,7 @@ public class CalculateLinearVariablesThread extends Thread{
 	
 	
 	
-	private Protein getProteinFromDB(long index )
+	private Protein getProteinFromDB(int index )
 	{
 		proteinAsMap = proteinsDataClient.getProtein(index);
 		
