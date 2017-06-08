@@ -40,8 +40,8 @@ public class App
 //	      main.setVisible(true);
 //	   
 
-		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+		//knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+		//uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 		
 		
         double[] x = { 10, 20, 40, 80, 160, 200 };
