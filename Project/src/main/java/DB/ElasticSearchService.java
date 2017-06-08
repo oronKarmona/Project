@@ -38,6 +38,7 @@ import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
+import Helpers.LinearTableValues;
 import PCN.Vertex;
 import PCN.Node;
 import ProGAL.proteins.ProteinComplex;
@@ -182,8 +183,34 @@ public class ElasticSearchService
 			client.update(updateRequest).get();
 		}
 		
-		
-		public Map<String, Object> get(int id)
+		public synchronized Map<String, Object> getProtein(long ProteinIndex )
+		{
+			 QueryBuilder qb = QueryBuilders.boolQuery()
+		                .must(QueryBuilders.matchQuery("firstProteinIndex", ProteinIndex));
+ 
+			 SearchResponse r = client.prepareSearch(this.index)
+					 				  .setTypes(this.type)
+					 				  .setQuery(qb)
+					 				  .execute().actionGet();
+			 
+			 
+			 SearchHit[]  results = r.getHits().getHits();
+			 
+			 try{
+					if( results[0].getSource() != null)
+					{
+						return (results[0].getSource());
+					}
+					
+					
+					 }catch(ArrayIndexOutOfBoundsException e)
+					 {
+						 System.out.println(String.format("Protein Index: %d IS NOT FOUND!", ProteinIndex ));
+					 }
+						
+					 return null;
+		}
+		public synchronized Map<String, Object> get(int id)
 		{
 			Map<String, Object> map = null;
 			try{
@@ -210,6 +237,14 @@ public class ElasticSearchService
 			id++;
 			bulkProcessor.add(new IndexRequest(index, type, id+"")
 			 .source(gson.toJson(pcnEntry)));		
+		}
+		
+		public synchronized void addToBulk(LinearTableValues values)
+		{
+
+			id++;
+			bulkProcessor.add(new IndexRequest(index, type, id+"")
+			 .source(gson.toJson(values)));		
 		}
 		
 	

@@ -139,6 +139,15 @@ public class Protein implements Serializable{
 			return aminoAcids.substring(index,index+20);
 		return null;
 	}
+	
+	public String GetContext(int index)
+	{
+		if(index < 10 || index > this.aminoAcids.length() - 10 )
+			return null;
+		
+		return aminoAcids.substring(index - 10 ,index+20 + 10);
+	}
+	
 	/***
 	 * Returns the structural data of the aa Fragment
 	 * @param index - index of the Fragment
