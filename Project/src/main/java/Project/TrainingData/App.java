@@ -40,10 +40,11 @@ public class App
 //	      main.setVisible(true);
 //	   
 
-		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 //		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 		
-		App.writeProteinsToDB("proteins","known_structure", knownStructrePDB);
+		LinearSystemSolution xy = new LinearSystemSolution();
+	
 		
 //        double[] x = { 10, 20, 40, 80, 160, 200 };
 //        double[] y = { 100, 350, 1500, 6700, 20160, 40000 };
