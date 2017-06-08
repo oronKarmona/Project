@@ -20,7 +20,7 @@ import ParallelBFS.ParallelBFS;
 //WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
 //MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
 // TrainingData trainingData = new TrainingData(proteinsDB);
-/***
+/*
  * Main class
  * @author oron
  *
@@ -40,14 +40,15 @@ public class App
 //	      main.setVisible(true);
 //	   
 
-		//knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-		//uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 		
+		App.writeProteinsToDB("proteins","known_structure", knownStructrePDB);
 		
-        double[] x = { 10, 20, 40, 80, 160, 200 };
-        double[] y = { 100, 350, 1500, 6700, 20160, 40000 };
-        PolynomialRegression regression = new PolynomialRegression(x, y, 3);
-        beta = regression.getBeta();
+//        double[] x = { 10, 20, 40, 80, 160, 200 };
+//        double[] y = { 100, 350, 1500, 6700, 20160, 40000 };
+//        PolynomialRegression regression = new PolynomialRegression(x, y, 3);
+//        beta = regression.getBeta();
 		
 //		
 //		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
@@ -76,6 +77,13 @@ public class App
 	}
 	
 	
+	public static void writeProteinsToDB(String index , String type , ArrayList<Protein> proteinDB)
+	{
+		ElasticSearchService es = new ElasticSearchService(index , type );
+		for(Protein p  : proteinDB)
+			es.add(p);
+		es.clientClose();
+	}
 	
 	public static ArrayList<Protein> read_Whole_ASTRAL_and_structural_data()
 	{
@@ -111,7 +119,7 @@ public class App
 		   
 		   return proteinDB;
 	}
-	/***
+	/*
 	 * This method checks the number of classifications there are among the proteins data
 	 * @param proteins - arrayList of proteins
 	 * @return number of classifications available 
@@ -129,7 +137,7 @@ public class App
     	return classes.size();
   
 	}
-    /***
+    /*
      * Showing percentage animation through the console
      * @param status - message to be shown 
      * @param currentPosition - current position from 0 to total 
@@ -145,7 +153,7 @@ public class App
 
 		   
 	}
-	/***
+	/*
 	 * This method confirms that the amino acids String is identical to the structural list
 	 * @param aminoAcids - String of amino acids
 	 * @param struct - ArrayList of the structural data 
@@ -207,7 +215,7 @@ public class App
     }
     
     
-    /***
+    /*
      * Verifying the amino acid to its structure
      * @param proteinsDB
      */
@@ -238,5 +246,3 @@ public class App
 		System.out.println("Mismatch in size " +notEqual);
     }
 }
-
-
