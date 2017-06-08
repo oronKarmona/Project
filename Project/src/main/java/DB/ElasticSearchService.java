@@ -183,10 +183,10 @@ public class ElasticSearchService
 			client.update(updateRequest).get();
 		}
 		
-		public synchronized Map<String, Object> getProtein(long ProteinIndex )
+		public synchronized Map<String, Object> getProtein(int ProteinIndex )
 		{
 			 QueryBuilder qb = QueryBuilders.boolQuery()
-		                .must(QueryBuilders.matchQuery("firstProteinIndex", ProteinIndex));
+		                .must(QueryBuilders.matchQuery("ProteinIndex", ProteinIndex));
  
 			 SearchResponse r = client.prepareSearch(this.index)
 					 				  .setTypes(this.type)
@@ -206,6 +206,34 @@ public class ElasticSearchService
 					 }catch(ArrayIndexOutOfBoundsException e)
 					 {
 						 System.out.println(String.format("Protein Index: %d IS NOT FOUND!", ProteinIndex ));
+					 }
+						
+					 return null;
+		}
+		
+		public synchronized Map<String, Object> getProtein(String AstralID )
+		{
+			 QueryBuilder qb = QueryBuilders.boolQuery()
+		                .must(QueryBuilders.matchQuery("astralID", AstralID));
+ 
+			 SearchResponse r = client.prepareSearch(this.index)
+					 				  .setTypes(this.type)
+					 				  .setQuery(qb)
+					 				  .execute().actionGet();
+			 
+			 
+			 SearchHit[]  results = r.getHits().getHits();
+			 
+			 try{
+					if( results[0].getSource() != null)
+					{
+						return (results[0].getSource());
+					}
+					
+					
+					 }catch(ArrayIndexOutOfBoundsException e)
+					 {
+						 System.out.println(String.format("Protein: %s IS NOT FOUND!", AstralID ));
 					 }
 						
 					 return null;
