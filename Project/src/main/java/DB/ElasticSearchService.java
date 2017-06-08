@@ -159,7 +159,6 @@ public class ElasticSearchService
 	     id++;
 	}
 	
-
 	
 		public void updateDocument(int hamming,int index) throws IOException, InterruptedException, ExecutionException
 		{
