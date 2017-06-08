@@ -22,8 +22,8 @@ public class CalculateLinearVariablesThread extends Thread{
 	public CalculateLinearVariablesThread( ElasticSearchService trainingDataClient, ElasticSearchService proteinsDataClient, 
 											ElasticSearchService linearDataClient) {
 		
-		this.proteinsDataClient = proteinsDataClient;
-		this.trainingDataClient = trainingDataClient;
+		this.trainingDataClient = new ElasticSearchService("project" , "trainingdata");
+		this.proteinsDataClient = new ElasticSearchService("proteins", "known_structure");
 		this.linearDataClient = linearDataClient;
 		
 		try {
