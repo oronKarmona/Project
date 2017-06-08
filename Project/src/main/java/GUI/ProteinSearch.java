@@ -27,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public class ProteinSearch extends JPanel{
 
@@ -222,13 +223,17 @@ private void setActions(){
 
 			//openProtein.setEnabled(true);
 			
-			//elasticSearchService.
 			try {
 				Desktop.getDesktop().open(new File(searchedFile));
-				//TODO reat string from DB
-				proteinName.setText("Leishmania major");
-				proteinString.setText("nipgailhslaelqdglnamidpswravrsldnwalaitmestelldsypwkwwknlnatpdlanvrielvdifhfslsgamqmrstpddeipaaslkplkevmttflpakectsdpygfvffpltdtqnaiasfrniiqlanayrfdviieciiyaaedlgfnlvayyiakhtlncirqlsgykdgsyvkvnngvednsllhncikdvsldevldadkyvqawnsimanvyeafqikesdrkdaerwfalakenrla");
-
+				Map<String, Object> map =elasticSearchService.getProtein(proteinIDtextField.getText());
+				if(map == null){
+					indexErrorLabel.setVisible(false);
+					errorLabel.setVisible(false);
+				}
+				else{
+					proteinName.setText(map.get("name").toString());
+					proteinString.setText(map.get("aminoAcids").toString());
+				}
 				repaint();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
@@ -252,15 +257,17 @@ private void setActions(){
 			}
 			else
 			{
-				//TODO search index in db	
-				//if(retrun = found){
-				indexErrorLabel.setVisible(false);
-				errorLabel.setVisible(false);
-
-				//else
-				proteinName.setText("Leishmania major");
-				proteinString.setText("nipgailhslaelqdglnamidpswravrsldnwalaitmestelldsypwkwwknlnatpdlanvrielvdifhfslsgamqmrstpddeipaaslkplkevmttflpakectsdpygfvffpltdtqnaiasfrniiqlanayrfdviieciiyaaedlgfnlvayyiakhtlncirqlsgykdgsyvkvnngvednsllhncikdvsldevldadkyvqawnsimanvyeafqikesdrkdaerwfalakenrla");
-
+				
+				Map<String, Object> map =elasticSearchService.getProtein(Integer.parseInt(proteinIndextextField.getText()));
+				if(map == null){
+					indexErrorLabel.setVisible(false);
+					errorLabel.setVisible(false);
+				}
+				else{
+					proteinName.setText(map.get("name").toString());
+					proteinString.setText(map.get("aminoAcids").toString());
+				}
+				
 				repaint();
 			}
 			

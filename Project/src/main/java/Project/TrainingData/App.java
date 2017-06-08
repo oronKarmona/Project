@@ -35,15 +35,17 @@ public class App
 		long startTime = System.currentTimeMillis();
 
 
-		//	      Main main = new Main();
-//	      main.setBounds(200, 100, 700, 550);
-//	      main.setVisible(true);
+			      Main main = new Main();
+	      main.setBounds(200, 100, 700, 550);
+	      main.setVisible(true);
 //	   
 
-//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+		//knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+		
+	//	writeProteinsToDB("proteins","known_structure",knownStructrePDB);
 //		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 		
-		LinearSystemSolution xy = new LinearSystemSolution();
+		//LinearSystemSolution xy = new LinearSystemSolution();
 	
 		
 //        double[] x = { 10, 20, 40, 80, 160, 200 };
