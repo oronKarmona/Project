@@ -72,8 +72,8 @@ public class CalculateLinearVariablesThread extends Thread{
 		 m_hammingCalculation.Calculate(firstContext, secondContext);
 		 contextHammingDistance = m_hammingCalculation.getHammingDistance();
 		 
-		 linearDataClient.addToBulk(new LinearTableValues((int)fragmentHammingDistance, (int)contextHammingDistance));
-		
+		// linearDataClient.addToBulk(new LinearTableValues((int)fragmentHammingDistance, (int)contextHammingDistance));
+		LinearSystemSolution.save_to_file(new LinearTableValues((int)fragmentHammingDistance, (int)contextHammingDistance));
 	}
 	
 	

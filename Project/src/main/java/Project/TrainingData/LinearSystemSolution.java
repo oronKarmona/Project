@@ -1,9 +1,14 @@
 package Project.TrainingData;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import Threads.CalculateLinearVariablesThread;
 import DB.ElasticSearchService;
+import Helpers.LinearTableValues;
 
 public class LinearSystemSolution {
 	private static long sizeofTrainingData;
@@ -67,5 +72,15 @@ public class LinearSystemSolution {
 		
 	}
 	
+	public static synchronized void save_to_file(LinearTableValues xy)
+	{
+		try {
+		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("xyValues.txt", true)));
+		    out.println(xy.getX()+" "+xy.getY());
+		    out.close();
+		} catch (IOException e) {
+					e.printStackTrace();
+		}
+	}
 	
 }
