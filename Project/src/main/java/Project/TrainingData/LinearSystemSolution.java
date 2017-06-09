@@ -75,7 +75,7 @@ public class LinearSystemSolution {
 	public static synchronized void save_to_file(LinearTableValues xy)
 	{
 		try {
-		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("xyValues.txt", true)));
+		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("xyValues", true)));
 		    out.println(xy.getX()+" "+xy.getY());
 		    out.close();
 		} catch (IOException e) {
