@@ -23,7 +23,7 @@ public class LinearSystemSolution {
 		proteinsDataClient = new ElasticSearchService("proteins", "known_structure");
 		linearDataClient = new ElasticSearchService("linear_reg","xy_values");
 		
-		sizeofTrainingData = trainingDataClient.getCountOfDocInType();
+		sizeofTrainingData = trainingDataClient.getCountOfDocInType() - 1;
 		
 		threads = new ArrayList<CalculateLinearVariablesThread>();
 		numberOfThreads = Runtime.getRuntime().availableProcessors();
