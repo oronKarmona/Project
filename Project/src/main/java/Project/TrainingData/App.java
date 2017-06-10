@@ -12,6 +12,7 @@ import Helpers.FileParser;
 import Helpers.JSONhelper;
 import Helpers.PCNpdbParser;
 import Helpers.PajekFormat;
+import Helpers.ReadXYregression;
 import Jama.Matrix;
 import PCN.Vertex;
 import PCN.WritePCNtoDB;
@@ -43,14 +44,12 @@ public class App
 //		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 //		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 		
-		LinearSystemSolution xy = new LinearSystemSolution();
-	
-		
-//        double[] x = { 10, 20, 40, 80, 160, 200 };
-//        double[] y = { 100, 350, 1500, 6700, 20160, 40000 };
-//        PolynomialRegression regression = new PolynomialRegression(x, y, 3);
-//        beta = regression.getBeta();
-		
+//		LinearSystemSolution xy = new LinearSystemSolution();
+//	
+		ReadXYregression rxy = new ReadXYregression("xyValues");
+        PolynomialRegression regression = new PolynomialRegression(rxy.getX(), rxy.getY(), 4);
+        beta = regression.getBeta();
+		JSONhelper.writeCoefficientsRegression(beta, "regression_coefficients");
 //		
 //		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
 //								"cluster","3");
