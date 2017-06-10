@@ -21,6 +21,7 @@ public class ReadXYregression
 	@SuppressWarnings("resource")
 	private void readFile(String file_name)
 	{
+		System.out.println("Strating to read file...");
 		Scanner input;
 		String input_line;
 		try {
@@ -36,6 +37,8 @@ public class ReadXYregression
 			
 			e.printStackTrace();
 		}
+		
+		System.out.println("Finished to read file...");
 	}
 	
 	

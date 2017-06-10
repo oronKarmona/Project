@@ -47,8 +47,10 @@ public class App
 //		LinearSystemSolution xy = new LinearSystemSolution();
 //	
 		ReadXYregression rxy = new ReadXYregression("xyValues");
+		System.out.println("Calculating regression...");
         PolynomialRegression regression = new PolynomialRegression(rxy.getX(), rxy.getY(), 4);
         beta = regression.getBeta();
+        System.out.println("Saving to file...");
 		JSONhelper.writeCoefficientsRegression(beta, "regression_coefficients");
 //		
 //		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
