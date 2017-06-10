@@ -15,6 +15,7 @@ public class ReadXYregression
 	{
 		x = new ArrayList<Double>();
 		y = new ArrayList<Double>();
+		this.readFile(file_name);
 	}
 	
 	@SuppressWarnings("resource")
