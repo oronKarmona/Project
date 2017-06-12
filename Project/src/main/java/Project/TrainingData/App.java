@@ -56,7 +56,7 @@ public class App
 		JSONhelper.writeCoefficientsRegression(beta, "regression_coefficients");
 //		
 //		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
-//								"cluster","3");
+//								"cluster","3",95);
 //		bfs.startBFS(3);
 //		bfs.flushBulk();
 //		PajekFormat pf = new PajekFormat("cluster", "3");

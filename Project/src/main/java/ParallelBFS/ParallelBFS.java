@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import Calculation.CharacterOccurrence;
+import Calculation.HammingCalculation;
 import DB.ElasticSearchService;
 import PCN.Vertex;
 import PCN.Node;
@@ -21,6 +22,7 @@ public class ParallelBFS
 	private static Map<String , Boolean> visited = new HashMap <String , Boolean>();
 	private static Map<String , Boolean> marked_to_be_visited = new HashMap <String , Boolean>();
 	private static NodeBFS current ; 
+	private static HammingCalculation hamming;
 	private static int distance_threshold  ;
 	private ArrayList<Protein> uknownStructurePDB , knownStructrePDB;
 	private static Map<Integer , Protein> protein_map  = new HashMap<Integer , Protein>();
@@ -30,7 +32,7 @@ public class ParallelBFS
 	private ArrayList<ParallelBFSThread> threads ; 
 	
 	public ParallelBFS(int distance_factor, ArrayList<Protein> uknownStructurePDB, ArrayList<Protein> knownStructrePDB , int OccurenceThreshold , 
-							String elastic_search_index , String elastic_search_type, String cluster_index, String cluster_type){
+							String elastic_search_index , String elastic_search_type, String cluster_index, String cluster_type, double threshold){
 		
 		 readPcnClient = new ElasticSearchService(elastic_search_index,elastic_search_type);
 		 writeClusterClient = new ElasticSearchService(cluster_index,cluster_type);
@@ -41,7 +43,11 @@ public class ParallelBFS
 		 this.setProteinsMap();
 		 Amount_of_threads = Runtime.getRuntime().availableProcessors();
 		 barrier = Amount_of_threads;
-		
+		 try {
+			hamming = new HammingCalculation(threshold);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		 createThreads();
 	}
 	
@@ -252,9 +258,12 @@ public class ParallelBFS
 		Protein current_protein =  protein_map.get(father_protein_index);
 		Protein son_protein =  protein_map.get(son_protein_index);
 
-		boolean result = current_protein.getAminoAcids().equals(son_protein.getAminoAcids());
+		//boolean result = current_protein.getAminoAcids().equals(son_protein.getAminoAcids());
 		
+		hamming.Calculate(current_protein.getAminoAcids(), son_protein.getAminoAcids());
 		
+		boolean result = hamming.checkSimilarity();
+		hamming.setHammingDistance(0); // initialise again
 		return  result;
 	}
 	
