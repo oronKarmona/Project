@@ -18,6 +18,7 @@ public class CalculateLinearVariablesThread extends Thread{
 	private int firstProteinIndex , secondProteinIndex ,fragmentHammingDistance , contextHammingDistance; 
 	private Protein firstProtein , secondProtein;
 	private int firstProteinFragment , secondProteinFragment;
+	private double rmsd ; 
 	private String firstContext = null, secondContext = null;
 	public CalculateLinearVariablesThread( ElasticSearchService trainingDataClient, ElasticSearchService proteinsDataClient, 
 											ElasticSearchService linearDataClient) {
@@ -56,7 +57,7 @@ public class CalculateLinearVariablesThread extends Thread{
 		secondProteinFragment = (int) trainingDataRecord.get("secondFragmentIndex");
 		
 		fragmentHammingDistance = (int)trainingDataRecord.get("HammingDistance");
-		
+		rmsd = (double)trainingDataRecord.get("RMSDResult");
 		firstProtein = getProteinFromDB(firstProteinIndex) ; 
 		secondProtein = getProteinFromDB(secondProteinIndex);
 		
@@ -65,7 +66,7 @@ public class CalculateLinearVariablesThread extends Thread{
 		
 		firstContext = firstProtein.GetContext((int)firstProteinFragment);
 		secondContext = secondProtein.GetContext((int)secondProteinFragment);
-		
+	
 		if(firstContext == null || secondContext == null)
 			return;
 		
@@ -73,7 +74,7 @@ public class CalculateLinearVariablesThread extends Thread{
 		 contextHammingDistance = m_hammingCalculation.getHammingDistance();
 		 
 		// linearDataClient.addToBulk(new LinearTableValues((int)fragmentHammingDistance, (int)contextHammingDistance));
-		LinearSystemSolution.save_to_file(new LinearTableValues((int)fragmentHammingDistance, (int)contextHammingDistance));
+		LinearSystemSolution.save_to_file(new LinearTableValues((int)fragmentHammingDistance, (int)contextHammingDistance , (double) rmsd));
 	}
 	
 	

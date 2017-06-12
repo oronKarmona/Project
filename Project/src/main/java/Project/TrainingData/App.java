@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import BFS.BFS;
+import Calculation.MultipleLinearRegression;
 import Calculation.PolynomialRegression;
 import DB.ElasticSearchService;
 import GUI.Main;
@@ -44,11 +45,12 @@ public class App
 //		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 //		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 		
-//		LinearSystemSolution xy = new LinearSystemSolution();
+		LinearSystemSolution xy = new LinearSystemSolution();
 //	
 		ReadXYregression rxy = new ReadXYregression("xyValues");
 		System.out.println("Calculating regression...");
-        PolynomialRegression regression = new PolynomialRegression(rxy.getX(), rxy.getY(), 4);
+		MultipleLinearRegression regression = new MultipleLinearRegression(rxy.getMatrixX() , rxy.getRMSD());
+//        PolynomialRegression regression = new PolynomialRegression(rxy.getX(), rxy.getY(), 4);
         beta = regression.getBeta();
         System.out.println("Saving to file...");
 		JSONhelper.writeCoefficientsRegression(beta, "regression_coefficients");

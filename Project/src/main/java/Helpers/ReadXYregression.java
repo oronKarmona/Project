@@ -9,11 +9,13 @@ import Project.TrainingData.Protein;
 
 public class ReadXYregression
 {
-	private ArrayList<Double> x  , y; 
+	private ArrayList<Double> x  , y , rmsd; 
 	
 	public ReadXYregression(String file_name)
 	{
+		
 		x = new ArrayList<Double>();
+		rmsd = new ArrayList<Double>();
 		y = new ArrayList<Double>();
 		this.readFile(file_name);
 	}
@@ -21,7 +23,7 @@ public class ReadXYregression
 	@SuppressWarnings("resource")
 	private void readFile(String file_name)
 	{
-		System.out.println("Strating to read file...");
+		System.out.println("Starting to read file...");
 		Scanner input;
 		String input_line;
 		try {
@@ -30,7 +32,8 @@ public class ReadXYregression
 				{
 	                input_line = input.nextLine();
 	                x.add((double)Double.parseDouble(input_line.split(" ")[0]));
-	                y.add((double)Double.parseDouble(input_line.split(" ")[1]));	                	
+	                y.add((double)Double.parseDouble(input_line.split(" ")[1]));
+	                rmsd.add((double)Double.parseDouble(input_line.split(" ")[2]));
 	            }
 	            input.close();
 		} catch (FileNotFoundException e) {
@@ -53,7 +56,23 @@ public class ReadXYregression
 		return this.fromArrayListtoArray(y);
 
 	}
-	
+	public double[][] getMatrixX()
+	{
+		double[][] matrix = new double[x.size()][2];
+		for(int i=0;i<x.size();i++){
+			matrix[i][0] = x.get(i);
+			matrix[i][1] = y.get(i);
+		}
+		
+		return matrix;
+		
+		
+	}
+
+	public double[] getRMSD()
+	{
+		return fromArrayListtoArray(rmsd);
+	}
 	private double[] fromArrayListtoArray(ArrayList<Double> list)
 	{
 		if(list == null)

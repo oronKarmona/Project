@@ -65,7 +65,7 @@ public class LinearSystemSolution {
 		index++;
 		if(index%1000 == 0)
 			System.out.println("index " + index  );
-		if(index == sizeofTrainingData)
+		if(index >= sizeofTrainingData)
 			return -1 ; 
 		
 		return index;
@@ -76,7 +76,7 @@ public class LinearSystemSolution {
 	{
 		try {
 		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("xyValues", true)));
-		    out.println(xy.getX()+" "+xy.getY());
+		    out.println(xy.toString());
 		    out.close();
 		} catch (IOException e) {
 					e.printStackTrace();
