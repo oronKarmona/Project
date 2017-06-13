@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import BFS.BFS;
+import Calculation.MultipleLinearRegression;
 import Calculation.PolynomialRegression;
 import DB.ElasticSearchService;
 import GUI.Main;
@@ -12,6 +13,7 @@ import Helpers.FileParser;
 import Helpers.JSONhelper;
 import Helpers.PCNpdbParser;
 import Helpers.PajekFormat;
+import Helpers.ReadXYregression;
 import Jama.Matrix;
 import PCN.Vertex;
 import PCN.WritePCNtoDB;
@@ -45,6 +47,7 @@ public class App
 	//	writeProteinsToDB("proteins","known_structure",knownStructrePDB);
 //		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 		
+
 		//LinearSystemSolution xy = new LinearSystemSolution();
 	
 		
@@ -53,9 +56,19 @@ public class App
 //        PolynomialRegression regression = new PolynomialRegression(x, y, 3);
 //        beta = regression.getBeta();
 		
+
+		LinearSystemSolution xy = new LinearSystemSolution();
+//	
+		ReadXYregression rxy = new ReadXYregression("xyValues");
+		System.out.println("Calculating regression...");
+		MultipleLinearRegression regression = new MultipleLinearRegression(rxy.getMatrixX() , rxy.getRMSD());
+//        PolynomialRegression regression = new PolynomialRegression(rxy.getX(), rxy.getY(), 4);
+        beta = regression.getBeta();
+        System.out.println("Saving to file...");
+		JSONhelper.writeCoefficientsRegression(beta, "regression_coefficients");
 //		
 //		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
-//								"cluster","3");
+//								"cluster","3",95);
 //		bfs.startBFS(3);
 //		bfs.flushBulk();
 //		PajekFormat pf = new PajekFormat("cluster", "3");

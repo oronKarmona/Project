@@ -18,12 +18,13 @@ public class CalculateLinearVariablesThread extends Thread{
 	private int firstProteinIndex , secondProteinIndex ,fragmentHammingDistance , contextHammingDistance; 
 	private Protein firstProtein , secondProtein;
 	private int firstProteinFragment , secondProteinFragment;
+	private double rmsd ; 
 	private String firstContext = null, secondContext = null;
 	public CalculateLinearVariablesThread( ElasticSearchService trainingDataClient, ElasticSearchService proteinsDataClient, 
 											ElasticSearchService linearDataClient) {
 		
-		this.proteinsDataClient = proteinsDataClient;
-		this.trainingDataClient = trainingDataClient;
+		this.trainingDataClient = new ElasticSearchService("project" , "trainingdata");
+		this.proteinsDataClient = new ElasticSearchService("proteins", "known_structure");
 		this.linearDataClient = linearDataClient;
 		
 		try {
@@ -56,7 +57,7 @@ public class CalculateLinearVariablesThread extends Thread{
 		secondProteinFragment = (int) trainingDataRecord.get("secondFragmentIndex");
 		
 		fragmentHammingDistance = (int)trainingDataRecord.get("HammingDistance");
-		
+		rmsd = (double)trainingDataRecord.get("RMSDResult");
 		firstProtein = getProteinFromDB(firstProteinIndex) ; 
 		secondProtein = getProteinFromDB(secondProteinIndex);
 		
@@ -65,15 +66,15 @@ public class CalculateLinearVariablesThread extends Thread{
 		
 		firstContext = firstProtein.GetContext((int)firstProteinFragment);
 		secondContext = secondProtein.GetContext((int)secondProteinFragment);
-		
+	
 		if(firstContext == null || secondContext == null)
 			return;
 		
 		 m_hammingCalculation.Calculate(firstContext, secondContext);
 		 contextHammingDistance = m_hammingCalculation.getHammingDistance();
 		 
-		 linearDataClient.addToBulk(new LinearTableValues((int)fragmentHammingDistance, (int)contextHammingDistance));
-		
+		// linearDataClient.addToBulk(new LinearTableValues((int)fragmentHammingDistance, (int)contextHammingDistance));
+		LinearSystemSolution.save_to_file(new LinearTableValues((int)fragmentHammingDistance, (int)contextHammingDistance , (double) rmsd));
 	}
 	
 	

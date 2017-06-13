@@ -1,9 +1,14 @@
 package Project.TrainingData;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import Threads.CalculateLinearVariablesThread;
 import DB.ElasticSearchService;
+import Helpers.LinearTableValues;
 
 public class LinearSystemSolution {
 	private static long sizeofTrainingData;
@@ -18,7 +23,7 @@ public class LinearSystemSolution {
 		proteinsDataClient = new ElasticSearchService("proteins", "known_structure");
 		linearDataClient = new ElasticSearchService("linear_reg","xy_values");
 		
-		sizeofTrainingData = trainingDataClient.getCountOfDocInType();
+		sizeofTrainingData = trainingDataClient.getCountOfDocInType() - 1;
 		
 		threads = new ArrayList<CalculateLinearVariablesThread>();
 		numberOfThreads = Runtime.getRuntime().availableProcessors();
@@ -60,12 +65,22 @@ public class LinearSystemSolution {
 		index++;
 		if(index%1000 == 0)
 			System.out.println("index " + index  );
-		if(index == sizeofTrainingData)
+		if(index >= sizeofTrainingData)
 			return -1 ; 
 		
 		return index;
 		
 	}
 	
+	public static synchronized void save_to_file(LinearTableValues xy)
+	{
+		try {
+		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("xyValues", true)));
+		    out.println(xy.toString());
+		    out.close();
+		} catch (IOException e) {
+					e.printStackTrace();
+		}
+	}
 	
 }

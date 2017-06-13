@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import Jama.Matrix;
 import Project.TrainingData.App;
 import Project.TrainingData.Protein;
 
@@ -94,6 +95,46 @@ public class JSONhelper
 			{
 				e.printStackTrace();
 			}
+	}
+	
+	
+	public static void writeCoefficientsRegression(Matrix a, String file_name)
+	{
+		try (Writer writer = new FileWriter(file_name+".json")) 
+		{
+		    Gson gson = new GsonBuilder().create();
+		    gson.toJson(a, writer);
+		    
+		  
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@SuppressWarnings("resource")
+	public static Matrix readCoefficientsRegression(String file_name)
+	{
+		JSONParser parser = new JSONParser();
+		 Matrix a = null;
+	        try {
+	        	
+	        
+		            @SuppressWarnings("resource")
+					Object obj = parser.parse(new FileReader(file_name+".json"));
+		 
+		            JSONArray jsonArray = (JSONArray) obj;
+		            
+		             a = new Gson().fromJson(jsonArray.toJSONString(),new TypeToken<Matrix>(){}.getType())  ;
+	        
+		           
+	            
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	       
+	        return a;
 	}
 	
 	

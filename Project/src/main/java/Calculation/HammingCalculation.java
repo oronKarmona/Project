@@ -90,6 +90,19 @@ public class HammingCalculation implements Cloneable
 	}
 	
 	/***
+	 * Checking the Similarity of 2 fragments
+	 * @param hammingDistance - result of the calculation
+	 * @return - true if legal and false otherwise
+	 */
+	public boolean checkSimilarity() {
+		if(getHammingDistance() <= m_error){
+			return false;
+		}
+		return true;
+	}
+	
+	
+	/***
 	 * Cloning the object
 	 */
 	public Object clone() throws CloneNotSupportedException {
