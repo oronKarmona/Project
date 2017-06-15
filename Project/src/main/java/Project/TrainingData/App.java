@@ -1,4 +1,5 @@
 package Project.TrainingData;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import Jama.Matrix;
 import PCN.Vertex;
 import PCN.WritePCNtoDB;
 import ParallelBFS.ParallelBFS;
+import Table.TrainingData;
 
 //WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
 //MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
@@ -37,36 +39,41 @@ public class App
 		long startTime = System.currentTimeMillis();
 
 
-			      Main main = new Main();
-	      main.setBounds(200, 100, 700, 550);
-	      main.setVisible(true);
+//		 Main main = new Main();
+//	      main.setBounds(200, 100, 700, 550);
+//	      main.setVisible(true);
 //	   
 
-		//knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 		
-	//	writeProteinsToDB("proteins","known_structure",knownStructrePDB);
-//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
-		
-
-		//LinearSystemSolution xy = new LinearSystemSolution();
-	
-		
+//		writeProteinsToDB("proteins","known_structure",knownStructrePDB);
+////		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+//		
+//	      TrainingData training = new TrainingData(knownStructrePDB);
+//		//LinearSystemSolution xy = new LinearSystemSolution();
+//	
+//		
 //        double[] x = { 10, 20, 40, 80, 160, 200 };
 //        double[] y = { 100, 350, 1500, 6700, 20160, 40000 };
 //        PolynomialRegression regression = new PolynomialRegression(x, y, 3);
 //        beta = regression.getBeta();
 		
 
-		LinearSystemSolution xy = new LinearSystemSolution();
-//	
-		ReadXYregression rxy = new ReadXYregression("xyValues");
-		System.out.println("Calculating regression...");
-		MultipleLinearRegression regression = new MultipleLinearRegression(rxy.getMatrixX() , rxy.getRMSD());
-//        PolynomialRegression regression = new PolynomialRegression(rxy.getX(), rxy.getY(), 4);
-        beta = regression.getBeta();
-        System.out.println("Saving to file...");
-		JSONhelper.writeCoefficientsRegression(beta, "regression_coefficients");
-//		
+		try {
+			LinearSystemSolution xy = new LinearSystemSolution();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+////	
+//		ReadXYregression rxy = new ReadXYregression("xyValues");
+//		System.out.println("Calculating regression...");
+//		MultipleLinearRegression regression = new MultipleLinearRegression(rxy.getMatrixX() , rxy.getRMSD());
+////        PolynomialRegression regression = new PolynomialRegression(rxy.getX(), rxy.getY(), 4);
+//        beta = regression.getBeta();
+//        System.out.println("Saving to file...");
+//		JSONhelper.writeCoefficientsRegression(beta, "regression_coefficients");
+////		
 //		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
 //								"cluster","3",95);
 //		bfs.startBFS(3);

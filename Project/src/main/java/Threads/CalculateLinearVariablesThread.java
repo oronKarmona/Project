@@ -50,8 +50,12 @@ public class CalculateLinearVariablesThread extends Thread{
 	private void calculateVariables(long index)
 	{
 		trainingDataRecord = trainingDataClient.get((int)index);
-		
+		try{
 		firstProteinIndex = (int) trainingDataRecord.get("firstProteinIndex");
+		}catch(NullPointerException e)
+		{
+			e.printStackTrace();
+		}
 		secondProteinIndex = (int) trainingDataRecord.get("secondProteinIndex");
 		firstProteinFragment  = (int) trainingDataRecord.get("firstFragmentIndex");
 		secondProteinFragment = (int) trainingDataRecord.get("secondFragmentIndex");
@@ -74,7 +78,7 @@ public class CalculateLinearVariablesThread extends Thread{
 		 contextHammingDistance = m_hammingCalculation.getHammingDistance();
 		 
 		// linearDataClient.addToBulk(new LinearTableValues((int)fragmentHammingDistance, (int)contextHammingDistance));
-		LinearSystemSolution.save_to_file(new LinearTableValues((int)fragmentHammingDistance, (int)contextHammingDistance , (double) rmsd, 3));
+		LinearSystemSolution.save_to_file(new LinearTableValues((int)fragmentHammingDistance, (int)contextHammingDistance , (double) rmsd, 4));
 	}
 	
 	

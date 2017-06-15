@@ -68,7 +68,7 @@ public class TrainingData {
 
 	private void initDB() {
 
-		elasticSearchService = new ElasticSearchService("proteins" , "trainingdata");
+		elasticSearchService = new ElasticSearchService("project" , "trainingdata");
 	}
 
 	/***

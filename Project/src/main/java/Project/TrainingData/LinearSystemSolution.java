@@ -16,8 +16,10 @@ public class LinearSystemSolution {
 	private static long index = -1; 
 	private ElasticSearchService trainingDataClient ,proteinsDataClient , linearDataClient;
 	private ArrayList<CalculateLinearVariablesThread> threads ; 
+	private static PrintWriter out;
+	private static boolean firstLine = true;
 	
-	public LinearSystemSolution()
+	public LinearSystemSolution() throws IOException
 	{
 		trainingDataClient = new ElasticSearchService("project" , "trainingdata");
 		proteinsDataClient = new ElasticSearchService("proteins", "known_structure");
@@ -28,9 +30,10 @@ public class LinearSystemSolution {
 		threads = new ArrayList<CalculateLinearVariablesThread>();
 		numberOfThreads = Runtime.getRuntime().availableProcessors();
 		
+		out = new PrintWriter(new BufferedWriter(new FileWriter("xyValues", true)));
 		createThreads();
 		startThreads();
-		
+		out.close();
 		this.closeClients();
 	}
 	
@@ -65,6 +68,7 @@ public class LinearSystemSolution {
 		index++;
 		if(index%1000 == 0)
 			System.out.println("index " + index  );
+		
 		if(index >= sizeofTrainingData)
 			return -1 ; 
 		
@@ -74,13 +78,13 @@ public class LinearSystemSolution {
 	
 	public static synchronized void save_to_file(LinearTableValues xy)
 	{
-		try {
-		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("xyValues", true)));
-		    out.println(xy.toString());
-		    out.close();
-		} catch (IOException e) {
-					e.printStackTrace();
+		if(firstLine)
+		{
+			firstLine = false;
+			out.println(xy.getColumnsNames());
 		}
+		out.println(xy.toString());
+		
 	}
 	
 }
