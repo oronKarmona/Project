@@ -10,7 +10,7 @@ import DB.ElasticSearchService;
 import PCN.NodePCN;
 import PCN.Node;
 
-public class PajekFormat 
+public class PajekFormatHelper 
 {
 		private ElasticSearchService es ; 
 		private ArrayList<NodePCN> graph;
@@ -18,7 +18,7 @@ public class PajekFormat
 		private String pajekFile = "" , fileName;
 		private String edgesPart = "";
 		private Map<String,Integer> vertexMap ;
-		public PajekFormat(String cluster_es_index , String cluster_es_type)
+		public PajekFormatHelper(String cluster_es_index , String cluster_es_type)
 		{
 			fileName = cluster_es_index+cluster_es_type+".net";
 			this.es = new ElasticSearchService(cluster_es_index, cluster_es_type);
