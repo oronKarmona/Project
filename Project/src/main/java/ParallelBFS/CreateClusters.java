@@ -126,7 +126,7 @@ public class CreateClusters
 		
 		visited.put(getString(node.getVertex()),true);
 		
-		System.out.println(node.getDistance());
+		//System.out.println(node.getDistance());
 		return true;
 	}
 	
