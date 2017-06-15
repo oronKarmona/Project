@@ -17,13 +17,9 @@ import Helpers.ReadXYregression;
 import Jama.Matrix;
 import PCN.NodePCN;
 import PCN.WritePCNtoDB;
-<<<<<<< HEAD
-import ParallelBFS.ParallelBFS;
 import Table.TrainingData;
-=======
 import ParallelBFS.CreateClusters;
 import ToRemove.BFS;
->>>>>>> branch 'master' of https://github.com/oronKarmona/Project.git
 
 //WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
 //MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
@@ -63,16 +59,16 @@ public class App
 //        beta = regression.getBeta();
 		
 
-		try {
-			LinearSystemSolution xy = new LinearSystemSolution();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-////	
-//		ReadXYregression rxy = new ReadXYregression("xyValues");
-//		System.out.println("Calculating regression...");
-//		MultipleLinearRegression regression = new MultipleLinearRegression(rxy.getMatrixX() , rxy.getRMSD());
+//		try {
+//			LinearSystemSolution xy = new LinearSystemSolution();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+	
+	ReadXYregression rxy = new ReadXYregression("xyValues");
+////		System.out.println("Calculating regression...");
+		MultipleLinearRegression regression = new MultipleLinearRegression(rxy.getMatrixX() , rxy.getRMSD());
 ////        PolynomialRegression regression = new PolynomialRegression(rxy.getX(), rxy.getY(), 4);
 //        beta = regression.getBeta();
 //        System.out.println("Saving to file...");
