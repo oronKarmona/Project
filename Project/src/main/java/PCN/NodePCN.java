@@ -2,7 +2,7 @@ package PCN;
 
 import java.util.ArrayList;
 
-public class Vertex extends Node {
+public class NodePCN extends Node {
 
 	public ArrayList<Node> neighbors;
 	
@@ -12,15 +12,15 @@ public class Vertex extends Node {
 	public void setNeighbors(ArrayList<Node> neighbors) {
 		this.neighbors = neighbors;
 	}
-	public Vertex(){
+	public NodePCN(){
 		neighbors = new ArrayList<Node>();
 
 	}
-	public Vertex(long protein,int index){
+	public NodePCN(long protein,int index){
 		super(protein, index);
 		neighbors = new ArrayList<Node>();
 	}
-	public Vertex(Vertex node) {
+	public NodePCN(NodePCN node) {
 		this(node.getProteinIndex() , node.getFragmentIndex());
 		neighbors = node.getNeighbors();
 	}

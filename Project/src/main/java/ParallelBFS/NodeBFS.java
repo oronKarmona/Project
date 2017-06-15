@@ -1,17 +1,17 @@
 package ParallelBFS;
 
-import PCN.Vertex;
+import PCN.NodePCN;
 
 public class NodeBFS{
 	
 	private int distance;
-	private Vertex neighbors ;
+	private NodePCN vertex ;
 	
 	
-	public NodeBFS(Vertex n, int distance ){
+	public NodeBFS(NodePCN n, int distance ){
 	
-		neighbors = new Vertex();
-		neighbors = n;
+		vertex = new NodePCN();
+		vertex = n;
 		this.distance = distance;
 	}
 	
@@ -30,11 +30,11 @@ public class NodeBFS{
 	public void setDistance(int distance) {
 		this.distance = distance;
 	}
-	public Vertex getVertex() {
-		return neighbors;
+	public NodePCN getVertex() {
+		return vertex;
 	}
-	public void setNeighbors(Vertex neighbors) {
-		this.neighbors = neighbors;
+	public void setNeighbors(NodePCN neighbors) {
+		this.vertex = neighbors;
 	}
 	
 

@@ -3,10 +3,10 @@ package Threads;
 import java.util.ArrayList;
 
 import DB.ElasticSearchService;
-import PCN.Vertex;
+import PCN.NodePCN;
 import PCN.Node;
 import ParallelBFS.NodeBFS;
-import ParallelBFS.ParallelBFS;
+import ParallelBFS.CreateClusters;
 
 public class ParallelBFSThread extends Thread
 {
@@ -24,12 +24,12 @@ public class ParallelBFSThread extends Thread
 	@Override
 	public void run()
 	{
-		while( (current  = ParallelBFS.get_from_queue()) != null)
+		while( (current  = CreateClusters.get_from_queue()) != null)
 		{
 			runBFS();
 		}
 		
-		ParallelBFS.update_barrier();
+		CreateClusters.update_barrier();
 	}
 	
 	
@@ -41,7 +41,7 @@ public class ParallelBFSThread extends Thread
 		
 	  //  current.getVertex().setNeighbors(correctNeighbors(current)); 
 	    
-		ParallelBFS.writeToDB(current);
+		CreateClusters.writeToDB(current);
 		
 		for(Node node : current.getVertex().getNeighbors())
 		{
@@ -49,7 +49,7 @@ public class ParallelBFSThread extends Thread
 			 
 			 if(toAdd.getVertex() == null)
 			 {
-				 toAdd = new NodeBFS(new Vertex(node.getProteinIndex(),node.getFragmentIndex()) , current.getDistance() + 1);
+				 toAdd = new NodeBFS(new NodePCN(node.getProteinIndex(),node.getFragmentIndex()) , current.getDistance() + 1);
 				 toAdd.getVertex().getNeighbors().addAll(this.get_unrecorded_neighbors(toAdd));
 			 }
 			 
@@ -64,7 +64,7 @@ public class ParallelBFSThread extends Thread
 		 
 		 for(Node n : neighbors)
 		 {
-			 if(!ParallelBFS.check_conditions(node, new NodeBFS(new Vertex(n.getProteinIndex(),n.getFragmentIndex()),0)))
+			 if(!CreateClusters.check_conditions(node, new NodeBFS(new NodePCN(n.getProteinIndex(),n.getFragmentIndex()),0)))
 				 nodes_toRemove.add(n);
 		 }
 		 
@@ -74,26 +74,26 @@ public class ParallelBFSThread extends Thread
 		 return neighbors;
 	}
 
-	private ArrayList<Vertex> get_unrecorded_neighbors(NodeBFS node)
+	private ArrayList<NodePCN> get_unrecorded_neighbors(NodeBFS node)
 	{
-		ArrayList<Vertex> neighbors = neighborsReaderClient.SearchForNeighborsInPCN(node.getVertex().getProteinIndex(), node.getVertex().getFragmentIndex());
+		ArrayList<NodePCN> neighbors = neighborsReaderClient.SearchForNeighborsInPCN(node.getVertex().getProteinIndex(), node.getVertex().getFragmentIndex());
 		return neighbors;
 	}
 	
 	private void add_to_queue()
 	{
-		ParallelBFS.add_to_queue(current , toAdd);
+		CreateClusters.add_to_queue(current , toAdd);
 	}
 	
 	private boolean  add_to_visited()
 	{
-		return ParallelBFS.add_to_visited(current);
+		return CreateClusters.add_to_visited(current);
 	}
 	
 	
-	private Vertex getNode(long protein , int index)
+	private NodePCN getNode(long protein , int index)
 	{
-		Vertex neighbors = es.SearchPCNDB(protein, index);
+		NodePCN neighbors = es.SearchPCNDB(protein, index);
 		if(neighbors == null)
 			return null;
 		

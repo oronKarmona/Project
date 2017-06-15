@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import BFS.BFS;
 import Calculation.MultipleLinearRegression;
 import Calculation.PolynomialRegression;
 import DB.ElasticSearchService;
@@ -16,10 +15,15 @@ import Helpers.PCNpdbParser;
 import Helpers.PajekFormat;
 import Helpers.ReadXYregression;
 import Jama.Matrix;
-import PCN.Vertex;
+import PCN.NodePCN;
 import PCN.WritePCNtoDB;
+<<<<<<< HEAD
 import ParallelBFS.ParallelBFS;
 import Table.TrainingData;
+=======
+import ParallelBFS.CreateClusters;
+import ToRemove.BFS;
+>>>>>>> branch 'master' of https://github.com/oronKarmona/Project.git
 
 //WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
 //MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
