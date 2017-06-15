@@ -17,13 +17,10 @@ import Helpers.ReadXYregression;
 import Jama.Matrix;
 import PCN.NodePCN;
 import PCN.WritePCNtoDB;
-<<<<<<< HEAD
-import ParallelBFS.ParallelBFS;
+
 import Table.TrainingData;
-=======
 import ParallelBFS.CreateClusters;
 import ToRemove.BFS;
->>>>>>> branch 'master' of https://github.com/oronKarmona/Project.git
 
 //WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");
 //MeanRMSD m = new MeanRMSD("proteins","trainingdata",8);
