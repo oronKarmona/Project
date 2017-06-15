@@ -37,14 +37,26 @@ public class App
 		long startTime = System.currentTimeMillis();
 
 
-		//	      Main main = new Main();
-//	      main.setBounds(200, 100, 700, 550);
-//	      main.setVisible(true);
+			      Main main = new Main();
+	      main.setBounds(200, 100, 700, 550);
+	      main.setVisible(true);
 //	   
 
-//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+		//knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+		
+	//	writeProteinsToDB("proteins","known_structure",knownStructrePDB);
 //		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 		
+
+		//LinearSystemSolution xy = new LinearSystemSolution();
+	
+		
+//        double[] x = { 10, 20, 40, 80, 160, 200 };
+//        double[] y = { 100, 350, 1500, 6700, 20160, 40000 };
+//        PolynomialRegression regression = new PolynomialRegression(x, y, 3);
+//        beta = regression.getBeta();
+		
+
 		LinearSystemSolution xy = new LinearSystemSolution();
 //	
 		ReadXYregression rxy = new ReadXYregression("xyValues");

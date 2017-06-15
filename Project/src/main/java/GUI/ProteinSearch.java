@@ -21,10 +21,13 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileSystemView;
 
+import DB.ElasticSearchService;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public class ProteinSearch extends JPanel{
 
@@ -42,19 +45,26 @@ public class ProteinSearch extends JPanel{
 	private final String DBFile = "C:\\pdbstyle-2.06\\";
 	private String searchedFile;
 	private JTextField proteinIndextextField;
-	
+	private ElasticSearchService elasticSearchService;
 	public ProteinSearch(String name) {
 
 		this.setName(name);
 		initPanel();		
 		setActions();
+		elasticSearchService = new ElasticSearchService("proteins", "known_structure");
 	}
 
-
+	
 	private void initPanel() {
 
 		setLayout(new GridBagLayout());
-		
+//		try {
+//			Desktop.getDesktop().open(new File("1.net"));
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+
 	    GridBagConstraints constraints = new GridBagConstraints();
 	    constraints.fill = GridBagConstraints.HORIZONTAL;	  
 	    constraints.insets = new Insets(5, 10, 5, 5);
@@ -212,12 +222,18 @@ private void setActions(){
 			indexErrorLabel.setVisible(false);
 
 			//openProtein.setEnabled(true);
+			
 			try {
 				Desktop.getDesktop().open(new File(searchedFile));
-				//TODO reat string from DB
-				proteinName.setText("Leishmania major");
-				proteinString.setText("nipgailhslaelqdglnamidpswravrsldnwalaitmestelldsypwkwwknlnatpdlanvrielvdifhfslsgamqmrstpddeipaaslkplkevmttflpakectsdpygfvffpltdtqnaiasfrniiqlanayrfdviieciiyaaedlgfnlvayyiakhtlncirqlsgykdgsyvkvnngvednsllhncikdvsldevldadkyvqawnsimanvyeafqikesdrkdaerwfalakenrla");
-
+				Map<String, Object> map =elasticSearchService.getProtein(proteinIDtextField.getText());
+				if(map == null){
+					indexErrorLabel.setVisible(false);
+					errorLabel.setVisible(false);
+				}
+				else{
+					proteinName.setText(map.get("name").toString());
+					proteinString.setText(map.get("aminoAcids").toString());
+				}
 				repaint();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
@@ -241,15 +257,17 @@ private void setActions(){
 			}
 			else
 			{
-				//TODO search index in db	
-				//if(retrun = found){
-				indexErrorLabel.setVisible(false);
-				errorLabel.setVisible(false);
-
-				//else
-				proteinName.setText("Leishmania major");
-				proteinString.setText("nipgailhslaelqdglnamidpswravrsldnwalaitmestelldsypwkwwknlnatpdlanvrielvdifhfslsgamqmrstpddeipaaslkplkevmttflpakectsdpygfvffpltdtqnaiasfrniiqlanayrfdviieciiyaaedlgfnlvayyiakhtlncirqlsgykdgsyvkvnngvednsllhncikdvsldevldadkyvqawnsimanvyeafqikesdrkdaerwfalakenrla");
-
+				
+				Map<String, Object> map =elasticSearchService.getProtein(Integer.parseInt(proteinIndextextField.getText()));
+				if(map == null){
+					indexErrorLabel.setVisible(false);
+					errorLabel.setVisible(false);
+				}
+				else{
+					proteinName.setText(map.get("name").toString());
+					proteinString.setText(map.get("aminoAcids").toString());
+				}
+				
 				repaint();
 			}
 			

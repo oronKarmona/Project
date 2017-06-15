@@ -30,7 +30,9 @@ public class Main extends JFrame {
 	private HammingSettingsPanel m_hammingSettingsPanel ;
 	private AboutPanel m_aboutPanel;
 	private ProteinSearch m_proteinSearch;
-	   
+	private ClusterSearch m_clusterSearch;
+	//private ClusterCreate m_clusterCreate;
+
 	   public Main(){
 		  
 	      prepareGUI();
@@ -62,7 +64,9 @@ public class Main extends JFrame {
 		   
 		   //protein data
 		   m_proteinSearch = new ProteinSearch("protein search");
-		   
+		   //cluster
+		   m_clusterSearch = new ClusterSearch("cluster search");
+
 		  setLayout(new BorderLayout());
 
 		 
@@ -82,7 +86,8 @@ public class Main extends JFrame {
 	      //create menus
 		  settings();
 		  proteins();
-		  
+		  cluster();
+
 	      menuBar.add(Box.createHorizontalGlue());
 	      about();
 		  home();
@@ -106,6 +111,25 @@ public class Main extends JFrame {
 		   
 		
 	}
+	   private void cluster(){
+		   final JMenu proteinsMenu = new JMenu("Cluters"); 
+			  
+		      JMenuItem proteinSearchMenu = new JMenuItem("Find cluter");
+		      proteinSearchMenu.addActionListener(new MenuItemListener(m_clusterSearch));
+
+		     
+		      proteinsMenu.add(proteinSearchMenu);
+		      
+		      proteinSearchMenu = new JMenuItem("Create cluter");
+		    //  proteinSearchMenu.addActionListener(new MenuItemListener(m_find));
+		      proteinsMenu.add(proteinSearchMenu);
+
+		      //settingsMenu.addSeparator();
+		      
+		      menuBar.add(proteinsMenu);
+		   
+		
+	   }
 
 	private void home() {
 		   
