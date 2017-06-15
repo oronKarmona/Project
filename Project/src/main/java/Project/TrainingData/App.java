@@ -82,7 +82,7 @@ public class App
 										"cluster",i+"",95);
 				bfs.startBFS(i);
 				bfs.flushBulk();
-				PajekFormat pf = new PajekFormat("cluster", i+"");
+				PajekFormatHelper pf = new PajekFormatHelper("cluster", i+"");
 				
 		}
 		
