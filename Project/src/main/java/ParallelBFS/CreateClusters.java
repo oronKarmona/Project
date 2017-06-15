@@ -27,9 +27,7 @@ public class CreateClusters
 	private ArrayList<Protein> uknownStructurePDB , knownStructrePDB;
 	private static Map<Integer , Protein> protein_map  = new HashMap<Integer , Protein>();
 	private static double OThreshold;
-	private static int barrier ,Amount_of_threads ;
-	private static Object lock; 
-	private ArrayList<ParallelBFSThread> threads ; 
+
 	
 	public CreateClusters(int distance_factor, ArrayList<Protein> uknownStructurePDB, ArrayList<Protein> knownStructrePDB , int OccurenceThreshold , 
 							String elastic_search_index , String elastic_search_type, String cluster_index, String cluster_type, double threshold){
@@ -41,14 +39,11 @@ public class CreateClusters
 		 this.knownStructrePDB = knownStructrePDB;
 		 OThreshold = OccurenceThreshold;
 		 this.setProteinsMap();
-		 Amount_of_threads = Runtime.getRuntime().availableProcessors();
-		 barrier = Amount_of_threads;
 		 try {
 			hamming = new HammingCalculation(threshold);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		 createThreads();
 	}
 	
 	public void startBFS(int root_index)
@@ -83,30 +78,12 @@ public class CreateClusters
 					
 								 }
 					}
-		
-		
-		//	 startThreads();		
-	}
-	
-	private void createThreads()
-	{
-		threads = new ArrayList<ParallelBFSThread>();
-		for(int i = 0 ; i < Amount_of_threads ; i ++)
-			threads.add( new ParallelBFSThread(readPcnClient));
-	}
-	
-	private void startThreads()
-	{
-		for(ParallelBFSThread t : threads)
-			t.start();
-		
-		for(ParallelBFSThread t : threads)
-			try {
-				t.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+					
+					 readPcnClient.clientClose();
+					 writeClusterClient.clientClose();	
 			}
-	}
+	
+
 	
 	private ArrayList<Node> correctNeighbors(NodeBFS node)
 	{
@@ -125,7 +102,7 @@ public class CreateClusters
 		 return neighbors;
 	}
 	
-	public synchronized static boolean check_conditions(NodeBFS father , NodeBFS child)
+	private synchronized static boolean check_conditions(NodeBFS father , NodeBFS child)
 	{
 		if(child != null && child.getVertex() != null  && 
 					check_repeates(child) &&
@@ -252,13 +229,11 @@ public class CreateClusters
 		NodePCN son_node = child_node.getVertex();
 		int son_protein_index = (int)son_node.getProteinIndex();
 		
-	///	father_protein_index = protein_index_corrector(father_protein_index);
-	//	son_protein_index = protein_index_corrector(son_protein_index);
+
 	
 		Protein current_protein =  protein_map.get(father_protein_index);
 		Protein son_protein =  protein_map.get(son_protein_index);
 
-		//boolean result = current_protein.getAminoAcids().equals(son_protein.getAminoAcids());
 		
 		hamming.Calculate(current_protein.getAminoAcids(), son_protein.getAminoAcids());
 		
@@ -267,14 +242,7 @@ public class CreateClusters
 		return  result;
 	}
 	
-	private static int protein_index_corrector(int protein_index)
-	{
-		if(protein_index > 320571)
-			protein_index -= 320572;
-		
-		return protein_index;
-	}
-	
+
 	
 	private void setProteinsMap()
 	{
@@ -282,12 +250,8 @@ public class CreateClusters
 			protein_map.put(p.getProteinIndex(),p);
 		for(int i = 0 ; i < knownStructrePDB.size() ; i++)
 			protein_map.put(i + 320572, knownStructrePDB.get(i)); //320572
-//		for(Protein p : knownStructrePDB)
-//			protein_map.put(p.getProteinIndex(), p);
+
 	}
 	
-	public static synchronized void update_barrier()
-	{
-		barrier--;
-	}
+
 }
