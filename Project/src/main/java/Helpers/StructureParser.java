@@ -25,7 +25,7 @@ import Project.TrainingData.Structure;
  * @author Oron
  *
  */
-public class FileParser {
+public class StructureParser {
 	
 	/***
 	 * This enum will be used as term of simplicity in the file's parser
@@ -232,7 +232,7 @@ public class FileParser {
 		List<Protein> proteinsDB = null;
     	System.out.println("Initialising ProteinDB...");
     	try {
-    		proteinsDB = FileParser.ReadAstralDB();
+    		proteinsDB = StructureParser.ReadAstralDB();
     	}
     	catch (IOException e)
     	{
@@ -255,7 +255,7 @@ public class FileParser {
    
     		try{
     				
-    				structure = FileParser.ReadStructureDateFile(protein.getfolderIndex()+"\\"+protein.getFileName());
+    				structure = StructureParser.ReadStructureDateFile(protein.getfolderIndex()+"\\"+protein.getFileName());
     				String aa = "";
     				if(structure != null)
     				{

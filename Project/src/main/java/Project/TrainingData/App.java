@@ -1,4 +1,6 @@
 package Project.TrainingData;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -9,10 +11,10 @@ import Calculation.MultipleLinearRegression;
 import Calculation.PolynomialRegression;
 import DB.ElasticSearchService;
 import GUI.Main;
-import Helpers.FileParser;
+import Helpers.StructureParser;
 import Helpers.JSONhelper;
 import Helpers.PCNpdbParser;
-import Helpers.PajekFormat;
+import Helpers.PajekFormatHelper;
 import Helpers.ReadXYregression;
 import Jama.Matrix;
 import PCN.NodePCN;
@@ -114,7 +116,7 @@ public class App
 	
 	public static ArrayList<Protein> read_Whole_ASTRAL_and_structural_data()
 	{
-		ArrayList<Protein> proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
+		ArrayList<Protein> proteinsDB = (ArrayList<Protein>) StructureParser.ReadWholePDB();
 		
 		return proteinsDB;
 	}
