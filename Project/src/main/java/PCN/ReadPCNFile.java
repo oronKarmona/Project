@@ -21,7 +21,7 @@ public class ReadPCNFile {
 		
 		ElasticSearchService elasticSearchService = new ElasticSearchService(index,type);
 		elasticSearchService.setID(elasticSearchService.getCountOfDocInType());
-		Vertex currentNode = new Vertex();
+		NodePCN currentNode = new NodePCN();
 
 		String[] words;
 		String[] neighborsList;

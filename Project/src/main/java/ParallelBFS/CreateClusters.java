@@ -9,12 +9,12 @@ import java.util.Queue;
 import Calculation.CharacterOccurrence;
 import Calculation.HammingCalculation;
 import DB.ElasticSearchService;
-import PCN.Vertex;
+import PCN.NodePCN;
 import PCN.Node;
 import Project.TrainingData.Protein;
 import Threads.ParallelBFSThread;
 
-public class ParallelBFS 
+public class CreateClusters 
 {
 	private ElasticSearchService readPcnClient;
 	private static ElasticSearchService writeClusterClient;
@@ -31,7 +31,7 @@ public class ParallelBFS
 	private static Object lock; 
 	private ArrayList<ParallelBFSThread> threads ; 
 	
-	public ParallelBFS(int distance_factor, ArrayList<Protein> uknownStructurePDB, ArrayList<Protein> knownStructrePDB , int OccurenceThreshold , 
+	public CreateClusters(int distance_factor, ArrayList<Protein> uknownStructurePDB, ArrayList<Protein> knownStructrePDB , int OccurenceThreshold , 
 							String elastic_search_index , String elastic_search_type, String cluster_index, String cluster_type, double threshold){
 		
 		 readPcnClient = new ElasticSearchService(elastic_search_index,elastic_search_type);
@@ -75,7 +75,7 @@ public class ParallelBFS
 											 
 											 if(childNode.getVertex() == null)
 											 {
-												 childNode = new NodeBFS(new Vertex(node.getProteinIndex(),node.getFragmentIndex()) , current.getDistance() + 1);
+												 childNode = new NodeBFS(new NodePCN(node.getProteinIndex(),node.getFragmentIndex()) , current.getDistance() + 1);
 												 childNode.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(childNode));
 											 }
 									 
@@ -115,7 +115,7 @@ public class ParallelBFS
 		 
 		 for(Node n : neighbors)
 		 {
-			 if(!check_conditions(node, new NodeBFS(new Vertex(n.getProteinIndex(),n.getFragmentIndex()),0)))
+			 if(!check_conditions(node, new NodeBFS(new NodePCN(n.getProteinIndex(),n.getFragmentIndex()),0)))
 				 nodes_toRemove.add(n);
 		 }
 		 
@@ -134,7 +134,7 @@ public class ParallelBFS
 		
 		return false;
 	}
-	private ArrayList<Vertex>  return_unrecoreded_neighbors(NodeBFS node)
+	private ArrayList<NodePCN>  return_unrecoreded_neighbors(NodeBFS node)
 	{	
 		
 		return readPcnClient.SearchForNeighborsInPCN(node.getVertex().getProteinIndex(), 
@@ -168,7 +168,7 @@ public class ParallelBFS
 		 }
 	}
 	
-	private static boolean check_marked(Vertex node)
+	private static boolean check_marked(NodePCN node)
 	{
 		boolean result ; 
 		try{
@@ -183,7 +183,7 @@ public class ParallelBFS
 
 	}
 	
-	private static boolean check_exist(Vertex node)
+	private static boolean check_exist(NodePCN node)
 	{
 		boolean result ; 
 		try{
@@ -203,7 +203,7 @@ public class ParallelBFS
 		
 			return queue.remove(0);
 	}
-	private static String getString(Vertex n )
+	private static String getString(NodePCN n )
 	{
 		return n.getProteinIndex()+"_"+n.getFragmentIndex();
 	}
@@ -212,16 +212,16 @@ public class ParallelBFS
 	 * Get the root node 
 	 * @return root node
 	 */
-	private Vertex getRoot(int index)
+	private NodePCN getRoot(int index)
 	{
-		Vertex neighbors = readPcnClient.getVertexAt(index);		
+		NodePCN neighbors = readPcnClient.getVertexAt(index);		
 		return neighbors;
 	}
 
 	
-	private Vertex getNode(long protein , int index)
+	private NodePCN getNode(long protein , int index)
 	{
-		Vertex neighbors = readPcnClient.SearchPCNDB(protein, index);
+		NodePCN neighbors = readPcnClient.SearchPCNDB(protein, index);
 		if(neighbors == null)
 			return null;
 		
@@ -230,7 +230,7 @@ public class ParallelBFS
 	
 	private static boolean check_repeates(NodeBFS bfs_node )
 	{
-		Vertex node = bfs_node.getVertex();
+		NodePCN node = bfs_node.getVertex();
 		int protein_index = (int)node.getProteinIndex();
 		int fragment_index = node.getFragmentIndex();
 		
@@ -246,10 +246,10 @@ public class ParallelBFS
 	
 	private static boolean check_complete_correspondence(NodeBFS current_node , NodeBFS child_node)
 	{
-		Vertex father_node = current_node.getVertex();
+		NodePCN father_node = current_node.getVertex();
 		int father_protein_index = (int)father_node.getProteinIndex();
 		
-		Vertex son_node = child_node.getVertex();
+		NodePCN son_node = child_node.getVertex();
 		int son_protein_index = (int)son_node.getProteinIndex();
 		
 	///	father_protein_index = protein_index_corrector(father_protein_index);

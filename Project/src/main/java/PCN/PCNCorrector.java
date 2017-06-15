@@ -21,7 +21,7 @@ public class PCNCorrector
 	
 	public void startCorrection()
 	{
-		Vertex main_node , child_node; 
+		NodePCN main_node , child_node; 
 		ArrayList<Node> child_neighbors  ;
 		String id_toCorrect ; 
 		
@@ -36,9 +36,9 @@ public class PCNCorrector
 		
 	}
 	
-	private void check_neighbors(Vertex main_node)
+	private void check_neighbors(NodePCN main_node)
 	{
-		Vertex  child_node; 
+		NodePCN  child_node; 
 		ArrayList<Node> child_neighbors  ;
 		String id_toCorrect ; 
 		
@@ -55,7 +55,7 @@ public class PCNCorrector
 		}
 	}
 	
-	private boolean check_if_father_is_Neighbor(ArrayList<Node> child_neighbors , Vertex main_node)
+	private boolean check_if_father_is_Neighbor(ArrayList<Node> child_neighbors , NodePCN main_node)
 	{
 		for(Node node : child_neighbors)
 			if(node.getFragmentIndex() == main_node.getFragmentIndex() && node.getProteinIndex() == main_node.getProteinIndex())
@@ -64,7 +64,7 @@ public class PCNCorrector
 		return false;
 	}
 	
-	private void UpdateDoc(ArrayList<Node> child_neighbors ,Vertex main_node , String id_toCorrect  )
+	private void UpdateDoc(ArrayList<Node> child_neighbors ,NodePCN main_node , String id_toCorrect  )
 	{
 		child_neighbors.add(new Node(main_node.getProteinIndex(),main_node.getFragmentIndex()));
 		

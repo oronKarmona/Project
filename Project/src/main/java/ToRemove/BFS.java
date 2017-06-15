@@ -1,4 +1,4 @@
-package BFS;
+package ToRemove;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import org.apache.lucene.search.BooleanClause.Occur;
 
 import Calculation.CharacterOccurrence;
 import DB.ElasticSearchService;
-import PCN.Vertex;
+import PCN.NodePCN;
 import PCN.Node;
 import ParallelBFS.NodeBFS;
 import Project.TrainingData.Protein;
@@ -75,7 +75,7 @@ public class BFS {
 	}
 	
 	
-	private String getString(Vertex n )
+	private String getString(NodePCN n )
 	{
 		return n.getProteinIndex()+" "+n.getFragmentIndex();
 	}
@@ -83,16 +83,16 @@ public class BFS {
 	 * Get the root node 
 	 * @return root node
 	 */
-	private Vertex getRoot(int index)
+	private NodePCN getRoot(int index)
 	{
-		Vertex neighbors = elasticSearchService.getVertexAt(index);		
+		NodePCN neighbors = elasticSearchService.getVertexAt(index);		
 		return neighbors;
 	}
 
 	
-	private Vertex getNode(long protein , int index)
+	private NodePCN getNode(long protein , int index)
 	{
-		Vertex neighbors = elasticSearchService.SearchPCNDB(protein, index);
+		NodePCN neighbors = elasticSearchService.SearchPCNDB(protein, index);
 		if(neighbors == null)
 			return null;
 	//	neighbors.setNeighbors(fromMapToNeighbors(neighbors));
@@ -102,7 +102,7 @@ public class BFS {
 	
 	private boolean check_repeates(NodeBFS bfs_node )
 	{
-		Vertex node = bfs_node.getVertex();
+		NodePCN node = bfs_node.getVertex();
 		int protein_index = (int)node.getProteinIndex();
 		int fragment_index = node.getFragmentIndex();
 		
@@ -118,10 +118,10 @@ public class BFS {
 	
 	private boolean check_complete_correspondence(NodeBFS current_node , NodeBFS child_node)
 	{
-		Vertex father_node = current_node.getVertex();
+		NodePCN father_node = current_node.getVertex();
 		int father_protein_index = (int)father_node.getProteinIndex();
 		
-		Vertex son_node = child_node.getVertex();
+		NodePCN son_node = child_node.getVertex();
 		int son_protein_index = (int)son_node.getProteinIndex();
 		
 		if(father_protein_index > 320571)

@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import DB.ElasticSearchService;
-import PCN.Vertex;
+import PCN.NodePCN;
 import PCN.Node;
 
 public class PajekFormat 
 {
 		private ElasticSearchService es ; 
-		private ArrayList<Vertex> graph;
+		private ArrayList<NodePCN> graph;
 		private long number_of_edges = 0 , number_of_vertex;
 		private String pajekFile = "" , fileName;
 		private String edgesPart = "";
@@ -22,7 +22,7 @@ public class PajekFormat
 		{
 			fileName = cluster_es_index+cluster_es_type+".net";
 			this.es = new ElasticSearchService(cluster_es_index, cluster_es_type);
-			graph = new ArrayList<Vertex>();
+			graph = new ArrayList<NodePCN>();
 			vertexMap = new HashMap<String,Integer>();
 			this.retreive_graph();
 		}
@@ -56,7 +56,7 @@ public class PajekFormat
 			
 			
 			
-			for(Vertex node : graph)
+			for(NodePCN node : graph)
 			{
 				pajekFile += addVertexLine(node);
 				
@@ -89,7 +89,7 @@ public class PajekFormat
 				e.printStackTrace();
 			}
 		}
-		private String addVertexLine(Vertex node)
+		private String addVertexLine(NodePCN node)
 		{
 			String node_as_string = node_toString(node);
 			String line = vertexMap.get(node_as_string)+"";
@@ -97,7 +97,7 @@ public class PajekFormat
 
 			return line;
 		}
-		private String node_toString(Vertex node)
+		private String node_toString(NodePCN node)
 		{
 			return node.getProteinIndex()+"_"+node.getFragmentIndex();
 		}
