@@ -10,6 +10,8 @@ import Project.TrainingData.Protein;
 public class ReadXYregression
 {
 	private ArrayList<Double> x  , y , rmsd; 
+	private ArrayList<Double> values;
+	private int number_of_colomns;
 	
 	public ReadXYregression(String file_name)
 	{
@@ -17,23 +19,39 @@ public class ReadXYregression
 		x = new ArrayList<Double>();
 		rmsd = new ArrayList<Double>();
 		y = new ArrayList<Double>();
+		values = new ArrayList<Double>();
 		this.readFile(file_name);
 	}
 	
 	@SuppressWarnings("resource")
 	private void readFile(String file_name)
 	{
+		String[] split_result ; 
 		System.out.println("Starting to read file...");
 		Scanner input;
 		String input_line;
 		try {
 			 input = new Scanner(new File(file_name));
+			 input.nextLine(); // skip first line 
+			 
 			 while (input.hasNextLine())
 				{
 	                input_line = input.nextLine();
-	                x.add((double)Double.parseDouble(input_line.split(" ")[0]));
-	                y.add((double)Double.parseDouble(input_line.split(" ")[1]));
-	                rmsd.add((double)Double.parseDouble(input_line.split(" ")[2]));
+	                split_result = input_line.split(" ");
+	                for(int i = 1 ; i < split_result.length ; i++)
+	                {	
+	                	if(i == split_result.length - 1 )
+	                	{
+	                		rmsd.add((double)Double.parseDouble(split_result[i]));
+	                		break;
+	                	}
+	                	
+	                	values.add((double)Double.parseDouble(split_result[i]));
+	                	
+	                }
+	                number_of_colomns = split_result.length - 2 ; // minus RMSD
+	                
+
 	            }
 	            input.close();
 		} catch (FileNotFoundException e) {
@@ -58,12 +76,17 @@ public class ReadXYregression
 	}
 	public double[][] getMatrixX()
 	{
-		double[][] matrix = new double[x.size()][2];
-		for(int i=0;i<x.size();i++){
-			matrix[i][0] = x.get(i);
-			matrix[i][1] = y.get(i);
-		}
+		double[][] matrix = new double[rmsd.size()][number_of_colomns];
+//		for(int i=0;i<x.size();i++){
+//			matrix[i][0] = x.get(i);
+//			matrix[i][1] = y.get(i);
+//		}
 		
+		for(int i = 0 ; i < values.size() ; i++)
+		{
+			for(int j = 0 ; j< number_of_colomns ; j++)
+				matrix[i][j] = values.get(i*number_of_colomns + j);
+		}
 		return matrix;
 		
 		

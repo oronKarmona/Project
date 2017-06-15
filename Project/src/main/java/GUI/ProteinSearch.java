@@ -13,7 +13,9 @@ import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -21,10 +23,14 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileSystemView;
 
+import org.elasticsearch.client.transport.TransportClient;
+
 import DB.ElasticSearchService;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -235,10 +241,23 @@ private void setActions(){
 					proteinString.setText(map.get("aminoAcids").toString());
 				}
 				repaint();
+
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}
+			}catch (Throwable e2) {
+
+
+				int optionPane = JOptionPane.showOptionDialog(null, "Hello World", "The title", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+
+				if(optionPane == JOptionPane.OK_OPTION)
+				{
+
+				}
+				else{
+					
+				}
+				}
 		}
 		}
 	});

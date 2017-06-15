@@ -1,4 +1,6 @@
 package Project.TrainingData;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -9,10 +11,10 @@ import Calculation.MultipleLinearRegression;
 import Calculation.PolynomialRegression;
 import DB.ElasticSearchService;
 import GUI.Main;
-import Helpers.FileParser;
+import Helpers.StructureParser;
 import Helpers.JSONhelper;
 import Helpers.PCNpdbParser;
-import Helpers.PajekFormat;
+import Helpers.PajekFormatHelper;
 import Helpers.ReadXYregression;
 import Jama.Matrix;
 import PCN.NodePCN;
@@ -45,10 +47,10 @@ public class App
 //	      main.setVisible(true);
 //	   
 
-//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 		
 //		writeProteinsToDB("proteins","known_structure",knownStructrePDB);
-////		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 //		
 //	      TrainingData training = new TrainingData(knownStructrePDB);
 //		//LinearSystemSolution xy = new LinearSystemSolution();
@@ -60,26 +62,30 @@ public class App
 //        beta = regression.getBeta();
 		
 
-		try {
-			LinearSystemSolution xy = new LinearSystemSolution();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-////	
-//		ReadXYregression rxy = new ReadXYregression("xyValues");
-//		System.out.println("Calculating regression...");
-//		MultipleLinearRegression regression = new MultipleLinearRegression(rxy.getMatrixX() , rxy.getRMSD());
+//		try {
+//			LinearSystemSolution xy = new LinearSystemSolution();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+	
+	ReadXYregression rxy = new ReadXYregression("xyValues");
+////		System.out.println("Calculating regression...");
+		MultipleLinearRegression regression = new MultipleLinearRegression(rxy.getMatrixX() , rxy.getRMSD());
 ////        PolynomialRegression regression = new PolynomialRegression(rxy.getX(), rxy.getY(), 4);
-//        beta = regression.getBeta();
-//        System.out.println("Saving to file...");
-//		JSONhelper.writeCoefficientsRegression(beta, "regression_coefficients");
-////		
-//		ParallelBFS bfs = new ParallelBFS(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
-//								"cluster","3",95);
-//		bfs.startBFS(3);
-//		bfs.flushBulk();
-//		PajekFormat pf = new PajekFormat("cluster", "3");
+        beta = regression.getBeta();
+        System.out.println("Saving to file...");
+		JSONhelper.writeCoefficientsRegression(beta, "regression_coefficients");
+		for(int i = 0 ; i <= 1000 ; i++)
+		{
+			System.out.println("Cluster " + i);
+			CreateClusters bfs = new CreateClusters(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
+										"cluster",i+"",95);
+				bfs.startBFS(i);
+				bfs.flushBulk();
+				PajekFormatHelper pf = new PajekFormatHelper("cluster", i+"");
+				
+		}
 		
 		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }
@@ -111,7 +117,7 @@ public class App
 	
 	public static ArrayList<Protein> read_Whole_ASTRAL_and_structural_data()
 	{
-		ArrayList<Protein> proteinsDB = (ArrayList<Protein>) FileParser.ReadWholePDB();
+		ArrayList<Protein> proteinsDB = (ArrayList<Protein>) StructureParser.ReadWholePDB();
 		
 		return proteinsDB;
 	}
