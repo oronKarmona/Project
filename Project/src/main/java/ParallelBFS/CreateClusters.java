@@ -230,13 +230,12 @@ public class CreateClusters
 		NodePCN son_node = child_node.getVertex();
 		int son_protein_index = (int)son_node.getProteinIndex();
 		
-
 	
 		Protein current_protein =  protein_map.get(father_protein_index);
 		Protein son_protein =  protein_map.get(son_protein_index);
 
 		
-		hamming.Calculate(current_protein.getAminoAcids(), son_protein.getAminoAcids());
+		hamming.Calculate(current_protein.GetFragments(father_node.getFragmentIndex()), son_protein.GetFragments(son_node.getFragmentIndex()));
 		
 		boolean result = hamming.checkSimilarity();
 		hamming.setHammingDistance(0); // initialise again

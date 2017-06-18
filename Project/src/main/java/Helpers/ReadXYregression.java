@@ -27,6 +27,7 @@ public class ReadXYregression
 	private void readFile(String file_name)
 	{
 		String[] split_result ; 
+		int line_number = 0 ;
 		System.out.println("Starting to read file...");
 		Scanner input;
 		String input_line;
@@ -37,6 +38,9 @@ public class ReadXYregression
 			 while (input.hasNextLine())
 				{
 	                input_line = input.nextLine();
+	                line_number++;
+	                if(line_number%100 == 0)
+	                	System.out.println(line_number);
 	                split_result = input_line.split(" ");
 	                for(int i = 1 ; i < split_result.length ; i++)
 	                {	
