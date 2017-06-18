@@ -29,7 +29,6 @@ public class ParallelBFSThread extends Thread
 			runBFS();
 		}
 		
-		CreateClusters.update_barrier();
 	}
 	
 	
@@ -62,12 +61,12 @@ public class ParallelBFSThread extends Thread
 		 ArrayList<Node> neighbors = node.getVertex().getNeighbors();
 		 ArrayList<Node> nodes_toRemove = new ArrayList<Node>();
 		 
-		 for(Node n : neighbors)
+	/*	 for(Node n : neighbors)
 		 {
 			 if(!CreateClusters.check_conditions(node, new NodeBFS(new NodePCN(n.getProteinIndex(),n.getFragmentIndex()),0)))
 				 nodes_toRemove.add(n);
 		 }
-		 
+	*/	 
 		 for(Node n : nodes_toRemove)
 			 neighbors.remove(n);
 		 
