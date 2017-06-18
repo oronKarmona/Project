@@ -82,7 +82,7 @@ public class PajekFormatHelper
 		
 		private void saveToFile()
 		{
-			try(  PrintWriter out = new PrintWriter( this.fileName)  ){
+			try(  PrintWriter out = new PrintWriter( "cluster\\"+this.fileName)  ){
 			    out.println( pajekFile );
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
