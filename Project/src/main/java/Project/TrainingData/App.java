@@ -46,10 +46,10 @@ public class App
 //	      main.setVisible(true);
 //	   
 
-		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-		
-//		writeProteinsToDB("proteins","known_structure",knownStructrePDB);
-		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+//		
+////		writeProteinsToDB("proteins","known_structure",knownStructrePDB);
+//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 //		
 //	      TrainingData training = new TrainingData(knownStructrePDB);
 //		//LinearSystemSolution xy = new LinearSystemSolution();
@@ -75,16 +75,16 @@ public class App
         beta = regression.getBeta();
         System.out.println("Saving to file...");
 		JSONhelper.writeCoefficientsRegression(beta, "regression_coefficients");
-		for(int i = 0 ; i <= 1000 ; i++)
-		{
-			System.out.println("Cluster " + i);
-			CreateClusters bfs = new CreateClusters(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
-										"cluster",i+"",95);
-				bfs.startBFS(i);
-				bfs.flushBulk();
-				PajekFormatHelper pf = new PajekFormatHelper("cluster", i+"");
-				
-		}
+//		for(int i = 0 ; i <= 1000 ; i++)
+//		{
+//			System.out.println("Cluster " + i);
+//			CreateClusters bfs = new CreateClusters(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
+//										"cluster",i+"",95);
+//				bfs.startBFS(i);
+////				bfs.flushBulk();
+//				PajekFormatHelper pf = new PajekFormatHelper("cluster", i+"");
+//				
+//		}
 		
 		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }

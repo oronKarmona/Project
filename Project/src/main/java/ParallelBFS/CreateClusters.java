@@ -132,7 +132,8 @@ public class CreateClusters
 	
 	public static synchronized void writeToDB(NodeBFS node)
 	{
-		writeClusterClient.addToBulk(node.getVertex());
+		//writeClusterClient.addToBulk(node.getVertex());
+		writeClusterClient.add(node.getVertex());
 	}
 	
 	public static synchronized void add_to_queue(NodeBFS father ,NodeBFS child )
