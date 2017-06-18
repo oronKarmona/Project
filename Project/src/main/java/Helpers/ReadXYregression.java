@@ -86,10 +86,15 @@ public class ReadXYregression
 //			matrix[i][1] = y.get(i);
 //		}
 		
-		for(int i = 0 ; i < values.size() ; i++)
+		for(int i = 0 ; i < values.size()/number_of_colomns ; i++)
 		{
 			for(int j = 0 ; j< number_of_colomns ; j++)
-				matrix[i][j] = values.get(i*number_of_colomns + j);
+				try{
+				matrix[i][j] = values.get(i*number_of_colomns + j); }
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
 		}
 		return matrix;
 		
