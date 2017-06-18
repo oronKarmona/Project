@@ -48,13 +48,9 @@ public class App
 //	   
 
 //		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-<<<<<<< HEAD
-		
+
 //		writeProteinsToDB("proteins","known_structure",knownStructrePDB);
-=======
-//		
-////		writeProteinsToDB("proteins","known_structure",knownStructrePDB);
->>>>>>> branch 'master' of https://github.com/oronKarmona/Project.git
+
 //		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 //		
 //	      TrainingData training = new TrainingData(knownStructrePDB);
@@ -88,11 +84,8 @@ public class App
 //										"cluster",i+"",95);
 //				bfs.startBFS(i);
 ////				bfs.flushBulk();
-<<<<<<< HEAD
 ////				PajekFormatHelper pf = new PajekFormatHelper("cluster", i+"");
-=======
-//				PajekFormatHelper pf = new PajekFormatHelper("cluster", i+"");
->>>>>>> branch 'master' of https://github.com/oronKarmona/Project.git
+
 //				
 //		}
 		
