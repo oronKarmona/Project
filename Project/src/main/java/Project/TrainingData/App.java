@@ -13,6 +13,7 @@ import DB.ElasticSearchService;
 import GUI.Main;
 import Helpers.StructureParser;
 import Helpers.JSONhelper;
+import Helpers.LinearRegressionUpdateHelper;
 import Helpers.PCNpdbParser;
 import Helpers.PajekFormatHelper;
 import Helpers.ReadXYregression;
@@ -47,11 +48,12 @@ public class App
 //	      main.setVisible(true);
 //	   
 
-//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 
 //		writeProteinsToDB("proteins","known_structure",knownStructrePDB);
 
-//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+		LinearRegressionUpdateHelper helper = new LinearRegressionUpdateHelper("cluster", 1, 4, 60, uknownStructurePDB, knownStructrePDB);
 //		
 //	      TrainingData training = new TrainingData(knownStructrePDB);
 //		//LinearSystemSolution xy = new LinearSystemSolution();

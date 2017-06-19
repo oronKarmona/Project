@@ -10,7 +10,7 @@ public class MeanRMSD
 	private double m_sum;
 	private double[] beta;
 	
-	public MeanRMSD( int x,int y , int power, double[] beta)
+	public void setMeanRMSD( int x,int y , int power, double[] beta)
 	{
 		this.x = x ;
 		this.y = y; 
@@ -64,6 +64,11 @@ public class MeanRMSD
 			m_sum+=total.get(i)*m_beta[i];
 		}
 
+	}
+	
+	public double getMeanRmsd() {
+		return m_sum;
+		
 	}
 
 }

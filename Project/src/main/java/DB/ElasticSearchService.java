@@ -172,7 +172,7 @@ public class ElasticSearchService
 			client.update(updateRequest).get();
 		}
 		
-		public void updateDocument(double[] meanRmsd , int index)
+		public void updateDocument(Double[] meanRmsd , int index)
 		{
 			UpdateRequest updateRequest;
 			try {

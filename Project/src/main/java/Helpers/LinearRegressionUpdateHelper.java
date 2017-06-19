@@ -60,7 +60,7 @@ public class LinearRegressionUpdateHelper {
 		Protein current_protein, son_protein;
 		String contextNode, contextNeighbor;
 		ArrayList<Double> meanRmsd = new ArrayList<Double>(); 
-		double[] meanRmsdArray;
+		Double[] meanRmsdArray;
 		
 		for(int i=0 ; i < m_numOfIndex; i++){
 		 
@@ -93,13 +93,14 @@ public class LinearRegressionUpdateHelper {
 					m_humming.Calculate(contextNode,contextNeighbor);
 					y = m_humming.getHammingDistance();
 				}
-				m_meanRMSD.SetMeanRMSD(x, y, m_power, m_beta);
-				meanRmsd.add(m_meanRMSD.getSum());	
+				m_meanRMSD.setMeanRMSD(x, y, m_power, m_beta);
+				meanRmsd.add(m_meanRMSD.getMeanRmsd());	
 				
 				}//root of cluster
 			//update to DB
 			
-			meanRmsdArray = meanRmsd.toArray(new double[meanRmsd.size());
+			meanRmsdArray = meanRmsd.toArray(new Double[meanRmsd.size()]);
+			readClustersClient.updateDocument(meanRmsdArray, j);
 			}
 		}
 		}

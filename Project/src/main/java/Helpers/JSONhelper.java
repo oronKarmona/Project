@@ -124,9 +124,9 @@ public class JSONhelper
 		            @SuppressWarnings("resource")
 					Object obj = parser.parse(new FileReader(file_name+".json"));
 		 
-		            JSONArray jsonArray = (JSONArray) obj;
+		            JSONObject jsonobject = (JSONObject) obj;
 		            
-		            matrixBeta = new Gson().fromJson(jsonArray.toJSONString(),new TypeToken<Matrix>(){}.getType())  ;
+		            matrixBeta = new Gson().fromJson(jsonobject.toJSONString(),new TypeToken<Matrix>(){}.getType())  ;
 	        
 		           
 	            
