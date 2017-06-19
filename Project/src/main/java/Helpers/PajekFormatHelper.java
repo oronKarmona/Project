@@ -25,14 +25,13 @@ public class PajekFormatHelper
 			graph = new ArrayList<NodePCN>();
 			vertexMap = new HashMap<String,Integer>();
 			this.retreive_graph();
-			System.out.println();
 		}
 		
 		
 		
 		private void retreive_graph()
 		{
-			number_of_vertex = es.getCountOfDocInType() - 4;
+			number_of_vertex = es.getCountOfDocInType() ;
 			
 			for(int i = 0 ; i < number_of_vertex ; i++)
 			{

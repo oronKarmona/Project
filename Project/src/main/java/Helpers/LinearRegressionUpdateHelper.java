@@ -60,7 +60,8 @@ public class LinearRegressionUpdateHelper {
 		Protein current_protein, son_protein;
 		String contextNode, contextNeighbor;
 		ArrayList<Double> meanRmsd = new ArrayList<Double>(); 
-
+		double[] meanRmsdArray;
+		
 		for(int i=0 ; i < m_numOfIndex; i++){
 		 
 			readClustersClient = new ElasticSearchService(m_elastic_search_index,i+"");
@@ -98,7 +99,7 @@ public class LinearRegressionUpdateHelper {
 				}//root of cluster
 			//update to DB
 			
-			
+			meanRmsdArray = meanRmsd.toArray(new double[meanRmsd.size());
 			}
 		}
 		}

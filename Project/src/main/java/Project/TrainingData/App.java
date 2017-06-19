@@ -13,7 +13,6 @@ import DB.ElasticSearchService;
 import GUI.Main;
 import Helpers.StructureParser;
 import Helpers.JSONhelper;
-import Helpers.LinearRegressionUpdateHelper;
 import Helpers.PCNpdbParser;
 import Helpers.PajekFormatHelper;
 import Helpers.ReadXYregression;
@@ -42,16 +41,17 @@ public class App
 		ArrayList<Protein> uknownStructurePDB,knownStructrePDB;
 		long startTime = System.currentTimeMillis();
 
+
 //		 Main main = new Main();
 //	      main.setBounds(200, 100, 700, 550);
 //	      main.setVisible(true);
 //	   
 
-		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 
 //		writeProteinsToDB("proteins","known_structure",knownStructrePDB);
 
-		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 //		
 //	      TrainingData training = new TrainingData(knownStructrePDB);
 //		//LinearSystemSolution xy = new LinearSystemSolution();
@@ -62,7 +62,7 @@ public class App
 //        PolynomialRegression regression = new PolynomialRegression(x, y, 3);
 //        beta = regression.getBeta();
 		
-		LinearRegressionUpdateHelper helper = new LinearRegressionUpdateHelper("cluster", 1 , 4, 60 , uknownStructurePDB, knownStructrePDB);
+
 	
 //		for(int i = 0 ; i <= 1000 ; i++)
 //		{

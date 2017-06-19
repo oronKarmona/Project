@@ -41,8 +41,6 @@ public class ReadXYregression
 	                line_number++;
 	                if(line_number%100 == 0)
 	                	System.out.println(line_number);
-	                if(line_number == 6000000)
-	                	break;
 	                split_result = input_line.split(" ");
 	                for(int i = 1 ; i < split_result.length ; i++)
 	                {	

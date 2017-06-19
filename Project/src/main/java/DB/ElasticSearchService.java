@@ -172,6 +172,30 @@ public class ElasticSearchService
 			client.update(updateRequest).get();
 		}
 		
+		public void updateDocument(double[] meanRmsd , int index)
+		{
+			UpdateRequest updateRequest;
+			try {
+				updateRequest = new UpdateRequest(this.index, type,index + "")
+				.doc(jsonBuilder()
+				    .startObject()
+				        .field("mean_rmsd", meanRmsd)
+				    .endObject());
+				
+				client.update(updateRequest).get();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}             
+	
+		}
 		public void updateDocument(ArrayList<Node> neighbors,String id) throws IOException, InterruptedException, ExecutionException
 		{
 	
