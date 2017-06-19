@@ -63,20 +63,7 @@ public class App
 //        beta = regression.getBeta();
 		
 
-//		try {
-//			LinearSystemSolution xy = new LinearSystemSolution();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	
-	ReadXYregression rxy = new ReadXYregression("xyValues");
-		System.out.println("Calculating regression...");
-		MultipleLinearRegression regression = new MultipleLinearRegression(rxy.getMatrixX() , rxy.getRMSD());
-////        PolynomialRegression regression = new PolynomialRegression(rxy.getX(), rxy.getY(), 4);
-        beta = regression.getBeta();
-        System.out.println("Saving to file...");
-		JSONhelper.writeCoefficientsRegression(beta, "regression_coefficients");
 //		for(int i = 0 ; i <= 1000 ; i++)
 //		{
 //			System.out.println("Cluster " + i);
@@ -89,10 +76,27 @@ public class App
 //				
 //		}
 		
+		
+		
 		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }
 	
+	public void calculateBetaLinearRegression()
+	{
+		try {
+			LinearSystemSolution xy = new LinearSystemSolution();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	
+		ReadXYregression rxy = new ReadXYregression("xyValues");
+		System.out.println("Calculating regression...");
+		MultipleLinearRegression regression = new MultipleLinearRegression(rxy.getMatrixX() , rxy.getRMSD());
+        beta = regression.getBeta();
+        System.out.println("Saving to file...");
+		JSONhelper.writeCoefficientsRegression(beta, "regression_coefficients");
+	}
 	
 	public static Protein fromMapToProtein(Map<String, Object> map)
 	{
