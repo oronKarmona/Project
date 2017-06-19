@@ -131,7 +131,7 @@ public class JSONhelper
 	        for (int i= 0; i<matrixBeta.getRowDimension();i++ ) {
 	        	matrixToArray[i] = matrixBeta.get(i, 0);
 			}
-	     return matrixToArray;
+	     return matrixToArray; 
 	}
 	
 	
