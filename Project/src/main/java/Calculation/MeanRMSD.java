@@ -7,7 +7,7 @@ public class MeanRMSD
 	private int x , y , power;
 	private ArrayList<Double> power_of_x  , power_of_y , power_of_xy, total ; 
 	private double[] m_beta;
-	private double m_sum = 0;
+	private double m_sum;
 	
 	
 	public void SetMeanRMSD( int x,int y , int power, double[] beta)
@@ -16,6 +16,8 @@ public class MeanRMSD
 		this.y = y; 
 		this.power = power;
 		m_beta = beta;
+		m_sum = 0;
+		
 		
 		power_of_x = new ArrayList<>();
 		power_of_y = new ArrayList<>();
@@ -28,7 +30,7 @@ public class MeanRMSD
 	
 	private void calculate_pows()
 	{
-		for(int i = 0 ; i <= power ; i++)
+		for(int i = 1 ; i <= power ; i++)
 		{
 			power_of_x.add(Math.pow(x,i));
 			power_of_y.add(Math.pow(y,i));
@@ -58,8 +60,8 @@ public class MeanRMSD
 	
 	private void calculate_meanRmsd(){
 		
-		for(int i=0 ;i<= total.size();i++){
-			m_sum+=total.get(i)+m_beta[i];
+		for(int i=0 ;i< total.size();i++){
+			m_sum+=total.get(i)*m_beta[i];
 		}
 	}
 
