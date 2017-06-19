@@ -116,14 +116,20 @@ public class JSONhelper
 	public static double[] readCoefficientsRegression(String file_name)
 	{
 		JSONParser parser = new JSONParser();
-		Matrix matrixBeta = null;
-		double[] matrixToArray;
-		
+		 Matrix matrixBeta = null;
+		 double[] matrixToArray;
 	        try {
-	        	Object obj = parser.parse(new FileReader(file_name+".json"));
-	        	JSONObject jsonObject =  (JSONObject) obj ;
-	        	matrixBeta = new Gson().fromJson(jsonObject.toJSONString(),new TypeToken<Matrix>(){}.getType())  ;
 	        	
+	        
+		            @SuppressWarnings("resource")
+					Object obj = parser.parse(new FileReader(file_name+".json"));
+		 
+		            JSONArray jsonArray = (JSONArray) obj;
+		            
+		            matrixBeta = new Gson().fromJson(jsonArray.toJSONString(),new TypeToken<Matrix>(){}.getType())  ;
+	        
+		           
+	            
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
@@ -132,6 +138,7 @@ public class JSONhelper
 	        	matrixToArray[i] = matrixBeta.get(i, 0);
 			}
 	     return matrixToArray; 
+	       
 	}
 	
 	
