@@ -2,7 +2,7 @@ package Threads;
 
 import java.util.Map;
 
-import Calculation.MeanRMSD;
+import Calculation.AverageRMSD;
 import DB.ElasticSearchService;
 import Helpers.MeanRMSDHelper;
 
@@ -39,7 +39,7 @@ public class MeanRMSDThread extends Thread
 	public void run()
 	{
 		int id_of_document;
-		while(( id_of_document = MeanRMSD.getNextIndex() )!= -1 )
+		while(( id_of_document = AverageRMSD.getNextIndex() )!= -1 )
 			getData_UpdateArray(id_of_document);
 		
 		this.calculateAVGarray();

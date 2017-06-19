@@ -13,6 +13,7 @@ import DB.ElasticSearchService;
 import GUI.Main;
 import Helpers.StructureParser;
 import Helpers.JSONhelper;
+import Helpers.LinearRegressionUpdateHelper;
 import Helpers.PCNpdbParser;
 import Helpers.PajekFormatHelper;
 import Helpers.ReadXYregression;
@@ -41,21 +42,16 @@ public class App
 		ArrayList<Protein> uknownStructurePDB,knownStructrePDB;
 		long startTime = System.currentTimeMillis();
 
-
 //		 Main main = new Main();
 //	      main.setBounds(200, 100, 700, 550);
 //	      main.setVisible(true);
 //	   
 
-//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-<<<<<<< HEAD
-		
+		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+
 //		writeProteinsToDB("proteins","known_structure",knownStructrePDB);
-=======
-//		
-////		writeProteinsToDB("proteins","known_structure",knownStructrePDB);
->>>>>>> branch 'master' of https://github.com/oronKarmona/Project.git
-//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+
+		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 //		
 //	      TrainingData training = new TrainingData(knownStructrePDB);
 //		//LinearSystemSolution xy = new LinearSystemSolution();
@@ -66,21 +62,8 @@ public class App
 //        PolynomialRegression regression = new PolynomialRegression(x, y, 3);
 //        beta = regression.getBeta();
 		
-
-//		try {
-//			LinearSystemSolution xy = new LinearSystemSolution();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		LinearRegressionUpdateHelper helper = new LinearRegressionUpdateHelper("cluster", 1 , 4, 60 , uknownStructurePDB, knownStructrePDB);
 	
-	ReadXYregression rxy = new ReadXYregression("xyValues");
-		System.out.println("Calculating regression...");
-		MultipleLinearRegression regression = new MultipleLinearRegression(rxy.getMatrixX() , rxy.getRMSD());
-////        PolynomialRegression regression = new PolynomialRegression(rxy.getX(), rxy.getY(), 4);
-        beta = regression.getBeta();
-        System.out.println("Saving to file...");
-		JSONhelper.writeCoefficientsRegression(beta, "regression_coefficients");
 //		for(int i = 0 ; i <= 1000 ; i++)
 //		{
 //			System.out.println("Cluster " + i);
@@ -88,18 +71,32 @@ public class App
 //										"cluster",i+"",95);
 //				bfs.startBFS(i);
 ////				bfs.flushBulk();
-<<<<<<< HEAD
 ////				PajekFormatHelper pf = new PajekFormatHelper("cluster", i+"");
-=======
-//				PajekFormatHelper pf = new PajekFormatHelper("cluster", i+"");
->>>>>>> branch 'master' of https://github.com/oronKarmona/Project.git
+
 //				
 //		}
+		
+		
 		
 		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }
 	
+	public void calculateBetaLinearRegression()
+	{
+		try {
+			LinearSystemSolution xy = new LinearSystemSolution();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	
+		ReadXYregression rxy = new ReadXYregression("xyValues");
+		System.out.println("Calculating regression...");
+		MultipleLinearRegression regression = new MultipleLinearRegression(rxy.getMatrixX() , rxy.getRMSD());
+        beta = regression.getBeta();
+        System.out.println("Saving to file...");
+		JSONhelper.writeCoefficientsRegression(beta, "regression_coefficients");
+	}
 	
 	public static Protein fromMapToProtein(Map<String, Object> map)
 	{
