@@ -194,7 +194,7 @@ public class ProteinSearch extends JPanel{
 		
 
 	}
-
+	
 private void setActions(){
 	searchButton.addActionListener(new ActionListener() {
 		
@@ -330,6 +330,24 @@ private void cleanResults() {
 
     }
 	
+	/***
+	 * Update for test purpose
+	 * @param txt
+	 */
+	public void update_TextField(String txt)
+	{
+		proteinIDtextField.setText(txt);
+	}
+	
+	public void pressButton()
+	{
+		this.searchButton.doClick();
+	}
+	
+	public String getErrorLabel()
+	{
+		return this.errorLabel.getText();
+	}
 //	public class FileChooser {
 //
 //		public FileChooser(String path) {
