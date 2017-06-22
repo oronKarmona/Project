@@ -233,12 +233,13 @@ public class CreateClusters
 	
 		Protein current_protein =  protein_map.get(father_protein_index);
 		Protein son_protein =  protein_map.get(son_protein_index);
-
 		
-		hamming.Calculate(current_protein.GetFragments(father_node.getFragmentIndex()), son_protein.GetFragments(son_node.getFragmentIndex()));
-		
-		boolean result = hamming.checkSimilarity();
-		hamming.setHammingDistance(0); // initialise again
+		boolean result ;
+		result = current_protein.GetFragments(current_node.getVertex().getFragmentIndex()).equals(son_protein.GetFragments(child_node.getVertex().getFragmentIndex()));
+//		hamming.Calculate(current_protein.GetFragments(father_node.getFragmentIndex()), son_protein.GetFragments(son_node.getFragmentIndex()));
+//		
+//		boolean result = hamming.checkSimilarity();
+//		hamming.setHammingDistance(0); // initialise again
 		return  result;
 	}
 	
