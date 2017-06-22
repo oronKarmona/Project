@@ -339,7 +339,7 @@ public class ElasticSearchService
 			if( results[0].getSource() != null)
 			{
 				this.setLastDocID(results[0].getId());
-				return fromMaptoNeighbors(results[0].getSource());
+				return fromMapToVertex(results[0].getSource());
 			}
 			
 			
@@ -373,7 +373,7 @@ public class ElasticSearchService
 			for(SearchHit hit :  results)
 			{
 				this.setLastDocID(hit.getId());
-				node =  fromMaptoNeighbors(hit.getSource());
+				node =  fromMapToVertex(hit.getSource());
 				if(check_exist(ProteinIndex, fragmentIndex, node))
 					neighbors.add(new NodePCN(node));
 				
@@ -403,38 +403,46 @@ public class ElasticSearchService
 		public NodePCN getVertexAt(int index)
 		{ 
 			Map<String, Object> map = get(index);
-			NodePCN vertex = fromMaptoNeighbors(map);
+			NodePCN vertex = fromMapToVertex(map);
 			
 			return vertex;		 
 		}
 		
 		
-		private NodePCN fromMaptoNeighbors(Map<String, Object> map )
+		private NodePCN fromMapToVertex(Map<String, Object> map )
 		{
-
+			ArrayList<Double> mean_rmsd = new ArrayList<Double>();
+			
 			 NodePCN neighbors = new NodePCN();
 			 
 			 neighbors.setProteinIndex((Integer)map.get("m_protein"));
 			 neighbors.setFragmentIndex((Integer)map.get("m_index"));
 			 neighbors.setNeighbors((ArrayList<Node>)map.get("neighbors"));
-			 neighbors.setNeighbors(this.fromMapToNeighbors(neighbors));
+			 try{
+			 mean_rmsd = (ArrayList<Double>)map.get("mean_rmsd");
+			 }catch(Exception e )
+			 {
+				 
+			 }
+			 neighbors.setNeighbors(this.fromMapToNeighbors(neighbors, mean_rmsd));
 			 
 			 return neighbors;
 		}
 		
 		
 		@SuppressWarnings("unchecked")
-		private ArrayList<Node> fromMapToNeighbors(NodePCN neighbors)
+		private ArrayList<Node> fromMapToNeighbors(NodePCN neighbors, ArrayList<Double> mean_rmsd)
 		{
-			Map<String, Object> nmap;
+			Map<String, Object> nmap , rmap;
 			ArrayList<Node> nodes = new ArrayList<Node>();
-			
 			for(int i = 0 ; i < neighbors.getNeighbors().size() ; i++)
 			{
 				nmap = (Map<String, Object>) neighbors.getNeighbors().get(i);
 				if(nmap == null)
 					return null;
 				nodes.add(new Node( (Integer)nmap.get("m_protein"),(Integer)nmap.get("m_index")));
+				if(!mean_rmsd.isEmpty())
+					nodes.get(i).setMeanRmsd(mean_rmsd.get(i));
 			}
 			
 			return nodes;
