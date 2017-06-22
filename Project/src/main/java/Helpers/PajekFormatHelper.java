@@ -31,7 +31,7 @@ public class PajekFormatHelper
 		
 		private void retreive_graph()
 		{
-			number_of_vertex = es.getCountOfDocInType() ;
+			number_of_vertex = es.getCountOfDocInType() - 2 ;
 			
 			for(int i = 0 ; i < number_of_vertex ; i++)
 			{
