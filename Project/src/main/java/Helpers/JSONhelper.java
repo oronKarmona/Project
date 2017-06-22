@@ -119,17 +119,10 @@ public class JSONhelper
 		 Matrix matrixBeta = null;
 		 double[] matrixToArray;
 	        try {
-	        	
+	        	Object obj = parser.parse(new FileReader(file_name+".json"));
+		        JSONObject jsonobject = (JSONObject) obj;
+		        matrixBeta = new Gson().fromJson(jsonobject.toJSONString(),new TypeToken<Matrix>(){}.getType())  ;
 	        
-		            @SuppressWarnings("resource")
-					Object obj = parser.parse(new FileReader(file_name+".json"));
-		 
-		            JSONObject jsonobject = (JSONObject) obj;
-		            
-		            matrixBeta = new Gson().fromJson(jsonobject.toJSONString(),new TypeToken<Matrix>(){}.getType())  ;
-	        
-		           
-	            
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
