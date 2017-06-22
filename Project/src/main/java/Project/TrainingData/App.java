@@ -41,6 +41,12 @@ public class App
     {
 		ArrayList<Protein> uknownStructurePDB,knownStructrePDB;
 		long startTime = System.currentTimeMillis();
+
+//		 Main main = new Main();
+//	      main.setBounds(200, 100, 700, 550);
+//	      main.setVisible(true);
+//	   
+
 		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 
 		writeProteinsToDB("proteins" , "known_structure",knownStructrePDB);
@@ -50,12 +56,9 @@ public class App
 	      main.setVisible(true);
 	   
 
-//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
-//		LinearRegressionUpdateHelper helper = new LinearRegressionUpdateHelper("cluster", 1, 4, 60, uknownStructurePDB, knownStructrePDB);
-//		
 
-		
+		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+		LinearRegressionUpdateHelper helper = new LinearRegressionUpdateHelper("cluster", 1, 4, 60, uknownStructurePDB, knownStructrePDB);
 
 	
 //		for(int i = 0 ; i <= 0 ; i++)
@@ -70,7 +73,7 @@ public class App
 //				
 //		}
 //		
-		
+
 		
 		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }
