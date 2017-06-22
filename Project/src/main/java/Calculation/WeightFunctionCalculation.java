@@ -24,13 +24,14 @@ public class WeightFunctionCalculation {
 		NodePCN node = new NodePCN();
 		
 		int count =(int) (m_cluterClient.getCountOfDocInType() -2); 
-		
+		double weight = 0;
+		int sum = 0;
 		for(int i=0;i<count;i++){
 			
 			node = m_cluterClient.getVertexAt(i);
 			
 			for (Node neighbor : node.getNeighbors()) {
-				
+				sum = neighbor.getMeanRmsd()
 			}
 			
 		}
