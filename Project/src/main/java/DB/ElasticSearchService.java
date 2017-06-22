@@ -403,9 +403,9 @@ public class ElasticSearchService
 		public NodePCN getVertexAt(int index)
 		{ 
 			Map<String, Object> map = get(index);
-			NodePCN neighbors = fromMaptoNeighbors(map);
+			NodePCN vertex = fromMaptoNeighbors(map);
 			
-			return neighbors;		 
+			return vertex;		 
 		}
 		
 		
