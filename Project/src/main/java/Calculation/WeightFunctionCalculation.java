@@ -31,7 +31,7 @@ public class WeightFunctionCalculation {
 			node = m_cluterClient.getVertexAt(i);
 			
 			for (Node neighbor : node.getNeighbors()) {
-				sum = neighbor.getMeanRmsd()
+				sum += neighbor.getMeanRmsd();
 			}
 			
 		}
