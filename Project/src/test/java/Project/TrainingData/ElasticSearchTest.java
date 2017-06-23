@@ -18,7 +18,7 @@ public class ElasticSearchTest
 		 * expected - Map<String , Object > diffrent then null
 		 */
 		@Test
-		public void getProteinTrueTest()
+		public void RetreiveExistDocumentTest()
 		{
 			Map<String, Object> result ; 
 			es = new ElasticSearchService("proteins","known_structure");
@@ -35,7 +35,7 @@ public class ElasticSearchTest
 		 * expected -  null
 		 */
 		@Test
-		public void getProteinFalseTest()
+		public void RetreiveNotExistDocumentTest()
 		{
 			Map<String, Object> result ; 
 			es = new ElasticSearchService("proteins","known_structure");
