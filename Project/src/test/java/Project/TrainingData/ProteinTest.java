@@ -13,7 +13,7 @@ public class ProteinTest
 	 * expected result - count of fragments =  size of aa string - 20 
 	 */
 	@Test
-	public void testGoodFragmentCount()
+	public void CorrectFragmentCountTest()
 	{
 		Protein p = new Protein();
 		p.setAminoAcids("mkfetinqesiaklmeifyekvrkdkdlgpifnnaigtsdeewkehkakignfwagmllgegdyngqplkkhldlppfpqeffeiwlklfeeslnivyneemknvilqraqmiashfqnmlykyggh");
@@ -28,7 +28,7 @@ public class ProteinTest
 	 * expected result - count of fragments = 0 
 	 */
 	@Test
-	public void testBadFragmentCount()
+	public void ZeroFragmentCountTest()
 	{
 		Protein p = new Protein();
 		p.setAminoAcids("a");
@@ -43,7 +43,7 @@ public class ProteinTest
 	 * expected result - first fragment is equal to the first 20 aa of the aa string
 	 */
 	@Test
-	public void testGoodDivisiontoFragment()
+	public void LegalDivisiontoFragmentTest()
 	{
 		Protein p = new Protein();
 		p.setAminoAcids("mkfetinqesiaklmeifyekvrkdkdlgpifnnaigtsdeewkehkakignfwagmllgegdyngqplkkhldlppfpqeffeiwlklfeeslnivyneemknvilqraqmiashfqnmlykyggh");
@@ -55,15 +55,30 @@ public class ProteinTest
 	/***
 	 * Checking the division to 20 amino acid long by obtaining a not exist fragment
 	 * precondition - protein has aa string longer than 20 aa
-	 * expected result - first fragment is equal to the first 20 aa of the aa string
+	 * expected result - null object
 	 */
 	@Test
-	public void testBadDivisiontoFragment()
+	public void IllegalDivisiontoFragment1Test()
 	{
 		Protein p = new Protein();
 		p.setAminoAcids("mkfetinqesiaklmeifyekvrkdkdlgpifnnaigtsdeewkehkakignfwagmllgegdyngqplkkhldlppfpqeffeiwlklfeeslnivyneemknvilqraqmiashfqnmlykyggh");
 		String expected = null;
 		String result = p.GetFragments(p.getFragment_count() + 1);
+		assertTrue(expected ==  result);
+	}
+	
+	/***
+	 * Checking the division to 20 amino acid long by obtaining a not exist fragment
+	 * precondition - protein has aa string less than 20 aa
+	 * expected result - null object
+	 */
+	@Test
+	public void IllegalDivisiontoFragment2Test()
+	{
+		Protein p = new Protein();
+		p.setAminoAcids("1");
+		String expected = null;
+		String result = p.GetFragments(1);
 		assertTrue(expected ==  result);
 	}
 }

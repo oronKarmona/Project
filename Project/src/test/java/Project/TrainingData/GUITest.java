@@ -13,7 +13,7 @@ public class GUITest
 	 * Expected - error label = ""
 	 */
 	@Test 
-	public void ProteinSearchWindowsFindExistProteinTest()
+	public void FindExistProteinByIDTest()
 	{
 		String expected = "";
 		ProteinSearch p = new ProteinSearch("Test");
@@ -28,7 +28,7 @@ public class GUITest
 	 * Expected - error label = "*No protein was found"
 	 */
 	@Test 
-	public void ProteinSearchWindowsNotFindExistProteinTest()
+	public void SearchNotExistProteinTest()
 	{
 		String expected = "*No protein was found";
 		ProteinSearch p = new ProteinSearch("Test");
@@ -45,7 +45,7 @@ public class GUITest
 	 * Expected - error label =  "*ElasticSearch server is not running!"
 	 */
 	@Test
-	public void ProteinSearchWhenElasticSearchServerIsdownTest()
+	public void ElasticSearchServerIsdownTest()
 	{
 		String expected = "*ElasticSearch server is not running!";
 		ProteinSearch p = new ProteinSearch("Test");
@@ -63,7 +63,7 @@ public class GUITest
 	 * Expected - error label = "*No protein was found"
 	 */
 	@Test 
-	public void ProteinSearchWindowsIllegalSizeProteinTest()
+	public void IllegalSizeProteinIDTest()
 	{
 		String expected = "*Protein is in too short";
 		ProteinSearch p = new ProteinSearch("Test");
@@ -80,7 +80,7 @@ public class GUITest
 	 * expected - the real data of the protein  
 	 */
 	@Test
-	public void ProteinSearchWindowFindProteinByIndex()
+	public void FindProteinByIndexTest()
 	{
 		String expected = "Campylobacter jejuni mkfetinqesiaklmeifyekvrkdkdlgpifnnaigtsdeewkehkakignfwagmllgegdyngqplkkhldlppfpqeffeiwlklfeeslnivyneemknvilqraqmiashfqnmlykyggh";
 		ProteinSearch p = new ProteinSearch("Test");
@@ -95,7 +95,7 @@ public class GUITest
 	 * expected - error label  = "Index must be a number between 0 - 30874"
 	 */
 	@Test
-	public void ProteinSearchWindowFindProteinByIllegalIndex()
+	public void FindProteinByIllegalIndexTest()
 	{
 		String expected = "Index must be a number between 0 - 30874";
 		ProteinSearch p = new ProteinSearch("Test");
@@ -110,7 +110,7 @@ public class GUITest
 	 * expected - error label  = "Index must be a number between 0 - 30874"
 	 */
 	@Test
-	public void ProteinSearchWindowFindProteinByIllegalStringIndex()
+	public void FindProteinByIllegalStringIndex()
 	{
 		String expected = "Index must be a number between 0 - 30874";
 		ProteinSearch p = new ProteinSearch("Test");
@@ -125,7 +125,7 @@ public class GUITest
 	 * expected - error label  = "Index must be a number between 0 - 30874"
 	 */
 	@Test
-	public void ProteinSearchWindowFindProteinByIllegalEmptyStringIndex()
+	public void FindProteinByIllegalEmptyStringIndex()
 	{
 		String expected = "Index must be a number between 0 - 30874";
 		ProteinSearch p = new ProteinSearch("Test");

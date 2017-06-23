@@ -19,7 +19,7 @@ public class HammingCalculationTest {
 	 * Expected result is true
 	 */
 	@Test
-	public void TestGoodDistanceCheck()
+	public void GoodDistanceCheckTest()
 	{
 		String string1 = "abcdefghijklmnopq";
 		String string2 = "abcdefghijklmnopq";
@@ -38,7 +38,7 @@ public class HammingCalculationTest {
 	 * Expected result is true
 	 */
 	@Test
-	public void TestBadDistanceCheck()
+	public void BadDistanceCheckTest()
 	{
 		String string1 = "abcdefghijklmnopq";
 		String string2 = "ppppppppppppppppp";
