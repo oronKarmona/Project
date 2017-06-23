@@ -9,9 +9,11 @@ import java.util.Map;
 
 import Calculation.MultipleLinearRegression;
 import Calculation.PolynomialRegression;
+import Calculation.WeightFunctionCalculation;
 import DB.ElasticSearchService;
 import GUI.Main;
 import Helpers.StructureParser;
+import Helpers.WeightedGraphFile;
 import Helpers.JSONhelper;
 import Helpers.LinearRegressionUpdateHelper;
 import Helpers.PCNpdbParser;
@@ -41,10 +43,12 @@ public class App
     {
 		ArrayList<Protein> uknownStructurePDB,knownStructrePDB;
 		long startTime = System.currentTimeMillis();
-
-		 Main main = new Main();
-	      main.setBounds(200, 100, 700, 550);
-	      main.setVisible(true);
+	//	WeightedGraphFile w = new WeightedGraphFile("cluster",0+"");
+		WeightFunctionCalculation wf = new WeightFunctionCalculation(0,1000000);
+		WeightedGraphFile w = new WeightedGraphFile("cluster",0+"");
+//		 Main main = new Main();
+//	      main.setBounds(200, 100, 700, 550);
+//	      main.setVisible(true);
 	   
 
 //		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );

@@ -35,6 +35,7 @@ public class WeightedGraphFile {
 		
 		for(int i = 0 ; i < number_of_vertex ; i++)
 		{
+			System.out.println(i);
 			graph.add(es.getVertexAt(i));
 			vertexMap.put(this.node_toString(graph.get(graph.size() - 1)), i + 1) ;
 		}
@@ -63,10 +64,10 @@ public class WeightedGraphFile {
 			edgesPart += vertexMap.get(this.node_toString(node));
 			edgesPart+= " ";
 			
-			if(node.getFragmentIndex() < 320572 )
-				edgesPart+="U";
-			else
+			if(node.getProteinIndex() >= 320572 )
 				edgesPart+="K";
+			else
+				edgesPart+="U";
 			
 			for(Node n : node.getNeighbors())
 			{
