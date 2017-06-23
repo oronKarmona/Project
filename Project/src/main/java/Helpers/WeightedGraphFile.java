@@ -61,6 +61,12 @@ public class WeightedGraphFile {
 			pajekFile += addVertexLine(node);
 			
 			edgesPart += vertexMap.get(this.node_toString(node));
+			edgesPart+= " ";
+			
+			if(node.getFragmentIndex() < 320572 )
+				edgesPart+="U";
+			else
+				edgesPart+="K";
 			
 			for(Node n : node.getNeighbors())
 			{
