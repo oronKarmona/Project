@@ -100,7 +100,7 @@ public class LinearRegressionUpdateHelper {
 			//update to DB
 			
 			meanRmsdArray = meanRmsd.toArray(new Double[meanRmsd.size()]);
-			readClustersClient.updateDocument(meanRmsdArray, j);
+			readClustersClient.updateDocument(meanRmsdArray, j,"mean_rmsd");
 			}
 		}
 		}

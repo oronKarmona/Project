@@ -172,14 +172,14 @@ public class ElasticSearchService
 			client.update(updateRequest).get();
 		}
 		
-		public void updateDocument(Double[] meanRmsd , int index)
+		public void updateDocument(Double[] values , int index, String name)
 		{
 			UpdateRequest updateRequest;
 			try {
 				updateRequest = new UpdateRequest(this.index, type,index + "")
 				.doc(jsonBuilder()
 				    .startObject()
-				        .field("mean_rmsd", meanRmsd)
+				        .field(name, values)
 				    .endObject());
 				
 				client.update(updateRequest).get();
@@ -441,7 +441,7 @@ public class ElasticSearchService
 				if(nmap == null)
 					return null;
 				nodes.add(new Node( (Integer)nmap.get("m_protein"),(Integer)nmap.get("m_index")));
-				if(!mean_rmsd.isEmpty())
+				if(!(mean_rmsd == null))
 					nodes.get(i).setMeanRmsd(mean_rmsd.get(i));
 			}
 			
