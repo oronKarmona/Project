@@ -45,17 +45,47 @@ import ProGAL.proteins.ProteinComplex;
 import Project.TrainingData.Protein;
 import Table.TrainingDataEntry;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
+/***
+ * This class creates a client and manipulates the elastic search data base with the methods sets inside it
+ * @author Oron
+ *
+ */
 public class ElasticSearchService
 {
-	
+	/***
+	 * default document id
+	 */
 	private  Long id = (long) -1;
+	/***
+	 * client to be used for communication
+	 */
 	private static TransportClient client = null;
+	/***
+	 * Gson object for coverting objects to JSON
+	 */
 	private static Gson gson = null;
+	/***
+	 * settings object
+	 */
 	private Settings settings;
+	/***
+	 * index and type for the elastic search db 
+	 */
 	private String index , type ; 
+	/***
+	 * for asynchronous writes
+	 */
 	public  BulkProcessor bulkProcessor;
+	/***
+	 * Last doc id used - specific use inside methods
+	 */
 	private String lastDocID = null; 
 	
+	/***
+	 * constructor
+	 * @param index - index to access 
+	 * @param type - type to access
+	 */
 	public ElasticSearchService(String index , String type){
 	
 		this.index = index; 
@@ -114,7 +144,9 @@ public class ElasticSearchService
 //	public TransportClient getClient() {
 //		return client;
 //	}
-	
+	/***
+	 * close client
+	 */
 	public void clientClose()
 	{
 		this.client.close();
@@ -123,8 +155,12 @@ public class ElasticSearchService
 	
 	
 
-	@SuppressWarnings("deprecation")
+	/***
+	 * adding a document with a training data object
+	 * @param trainingDataEntry
+	 */
 	public  void add(TrainingDataEntry trainingDataEntry) {
+		id++;
 	     try 
 	     {	 
 	    	 client.prepareIndex(index, type, id+"")
@@ -132,12 +168,16 @@ public class ElasticSearchService
 		 }catch (Exception e) {
 	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");
 	     }
-	     id++;
+	     
 	}
 	
 	
-	@SuppressWarnings("deprecation")
+	/***
+	 * adding a document with proteing object
+	 * @param protein
+	 */
 	public  void add(Protein protein) {
+		 id++;
 	     try 
 	     {	 
 	    	 client.prepareIndex(index, type, id+"")
@@ -145,11 +185,15 @@ public class ElasticSearchService
 		 }catch (Exception e) {
 	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");
 	     }
-	     id++;
+	    
 	}
 	
-	@SuppressWarnings("deprecation")
+	/***
+	 * adding a document with NodePCN object
+	 * @param pcnEntry
+	 */
 	public  void add(NodePCN pcnEntry) {
+		id++;
 	     try 
 	     {	 
 	    	 client.prepareIndex(index, type, id+"")
@@ -157,14 +201,21 @@ public class ElasticSearchService
 		 }catch (Exception e) {
 	    	 throw new NoNodeAvailableException("[add]: Error occurred while creating record");
 	     }
-	     id++;
+	     
 	}
 	
-	
-		public void updateDocument(int hamming,int index) throws IOException, InterruptedException, ExecutionException
+		/***
+		 * Update exist document with new hamming distance at id_to_update
+		 * @param hamming
+		 * @param id_to_update
+		 * @throws IOException
+		 * @throws InterruptedException
+		 * @throws ExecutionException
+		 */
+		public void updateDocument(int hamming,int id_to_update) throws IOException, InterruptedException, ExecutionException
 		{
 	
-			UpdateRequest updateRequest = new UpdateRequest(this.index, type,index + "")
+			UpdateRequest updateRequest = new UpdateRequest(this.index, type,id_to_update + "")
 			        .doc(jsonBuilder()
 			            .startObject()
 			                .field("Hamming_Distance", hamming)
@@ -172,11 +223,17 @@ public class ElasticSearchService
 			client.update(updateRequest).get();
 		}
 		
-		public void updateDocument(Double[] values , int index, String name)
+		/***
+		 * update document with an array of double values such as weights 
+		 * @param values
+		 * @param id_to_update
+		 * @param name - name of the values to be shown in the document
+		 */
+		public void updateDocument(Double[] values , int id_to_update, String name)
 		{
 			UpdateRequest updateRequest;
 			try {
-				updateRequest = new UpdateRequest(this.index, type,index + "")
+				updateRequest = new UpdateRequest(this.index, type,id_to_update + "")
 				.doc(jsonBuilder()
 				    .startObject()
 				        .field(name, values)
@@ -196,6 +253,15 @@ public class ElasticSearchService
 			}             
 	
 		}
+		
+		/***
+		 * UPdate an existing document with an arrayList of nodes 
+		 * @param neighbors 
+		 * @param id
+		 * @throws IOException
+		 * @throws InterruptedException
+		 * @throws ExecutionException
+		 */
 		public void updateDocument(ArrayList<Node> neighbors,String id) throws IOException, InterruptedException, ExecutionException
 		{
 	
@@ -207,6 +273,11 @@ public class ElasticSearchService
 			client.update(updateRequest).get();
 		}
 		
+		/***
+		 * return a proteing at a given proteinIndex as saved in the type
+		 * @param ProteinIndex
+		 * @return Map<String, Object> with the protein data
+		 */
 		public synchronized Map<String, Object> getProtein(int ProteinIndex )
 		{
 			 QueryBuilder qb = QueryBuilders.boolQuery()
@@ -234,7 +305,11 @@ public class ElasticSearchService
 						
 					 return null;
 		}
-		
+		/***
+		 * return a proteing with a given AstralID as saved in the type
+		 * @param AstralID
+		 * @return Map<String, Object> with the protein data
+		 */
 		public synchronized Map<String, Object> getProtein(String AstralID )
 		{
 			 QueryBuilder qb = QueryBuilders.boolQuery()
@@ -262,6 +337,12 @@ public class ElasticSearchService
 						
 					 return null;
 		}
+		
+		/***
+		 * return document from the index - type set in this object by a given id
+		 * @param id - id to retreive 
+		 * @return Map<String, Object> with the document data
+		 */
 		public synchronized Map<String, Object> get(int id)
 		{
 			Map<String, Object> map = null;
@@ -274,7 +355,10 @@ public class ElasticSearchService
 			}
 			return map;
 		}
-		
+		/***
+		 * add to bulk for asynchronous writing
+		 * @param trainingDataEntry
+		 */
 		public synchronized void addToBulk(TrainingDataEntry trainingDataEntry)
 		{
 
@@ -282,7 +366,10 @@ public class ElasticSearchService
 			bulkProcessor.add(new IndexRequest(index, type, id+"")
 			 .source(gson.toJson(trainingDataEntry)));		
 		}
-		
+		/***
+		 * add to bulk for asynchronous writing
+		 * @param pcnEntry
+		 */
 		public synchronized void addToBulk(NodePCN pcnEntry)
 		{
 
@@ -290,7 +377,10 @@ public class ElasticSearchService
 			bulkProcessor.add(new IndexRequest(index, type, id+"")
 			 .source(gson.toJson(pcnEntry)));		
 		}
-		
+		/***
+		 * add to bulk for asynchronous writing
+		 * @param values
+		 */
 		public synchronized void addToBulk(LinearTableValues values)
 		{
 
@@ -300,7 +390,14 @@ public class ElasticSearchService
 		}
 		
 	
-		
+		/***
+		 * search for training data results with given protein and fragments
+		 * @param firstProteinIndex
+		 * @param secondProteinIndex
+		 * @param firstFragmentIndex
+		 * @param secondFragmentIndex
+		 * @return
+		 */
 		public SearchHit[] SearchTrainingDataDB(int firstProteinIndex , int  secondProteinIndex , int firstFragmentIndex , int secondFragmentIndex)
 		{
 			 QueryBuilder qb = QueryBuilders.boolQuery()
@@ -320,7 +417,12 @@ public class ElasticSearchService
 			 return results;
 			 
 		}
-		
+		/***
+		 * search the pcn with a given protein and fragment indices
+		 * @param ProteinIndex
+		 * @param fragmentIndex
+		 * @return node in the pcn of the corresponding details
+		 */
 		public NodePCN SearchPCNDB(long ProteinIndex , int  fragmentIndex )
 		{
 			 QueryBuilder qb = QueryBuilders.boolQuery()
@@ -351,7 +453,12 @@ public class ElasticSearchService
 				
 			 return null;
 		}
-		
+		/***
+		 * Searches for unlisted neighbors in the pcn of specific node given as protein index and fragment index
+		 * @param ProteinIndex
+		 * @param fragmentIndex
+		 * @return arrayList of the unlisted neighbors
+		 */
 		public ArrayList<NodePCN> SearchForNeighborsInPCN(long ProteinIndex , int  fragmentIndex )
 		{
 			ArrayList<NodePCN> neighbors = new ArrayList<NodePCN>();
@@ -387,7 +494,13 @@ public class ElasticSearchService
 				
 			 return neighbors;
 		}
-		
+		/***
+		 * checks if a protein and a fragment exist in the node's neighbors list
+		 * @param ProteinIndex
+		 * @param fragmentIndex
+		 * @param node
+		 * @return true if exist , false otherwise
+		 */
 		private boolean check_exist(long ProteinIndex , int  fragmentIndex ,NodePCN node)
 		{
 			for(Node n : node.neighbors)
@@ -399,7 +512,11 @@ public class ElasticSearchService
 			return false;
 		}
 		
-		@SuppressWarnings("unchecked")
+		/***
+		 * Retrieve a vertex at a given id 
+		 * @param index
+		 * @return NodePCN from a given id 
+		 */
 		public NodePCN getVertexAt(int index)
 		{ 
 			Map<String, Object> map = get(index);
@@ -408,7 +525,11 @@ public class ElasticSearchService
 			return vertex;		 
 		}
 		
-		
+		/***
+		 * converts the Map<String, Object> to NodePCN object
+		 * @param map
+		 * @return 
+		 */
 		private NodePCN fromMapToVertex(Map<String, Object> map )
 		{
 			ArrayList<Double> mean_rmsd = new ArrayList<Double>();
@@ -431,7 +552,13 @@ public class ElasticSearchService
 		}
 		
 		
-		@SuppressWarnings("unchecked")
+		/***
+		 * converts the Map<String , Object> to arrayList of nodes with weights
+		 * @param neighbors
+		 * @param mean_rmsd
+		 * @param weight
+		 * @return
+		 */
 		private ArrayList<Node> fromMapToNeighbors(NodePCN neighbors, ArrayList<Double> mean_rmsd,ArrayList<Double>weight)
 		{
 			Map<String, Object> nmap , rmap;
@@ -450,7 +577,10 @@ public class ElasticSearchService
 			
 			return nodes;
 		}
-		
+		/***
+		 * return count of documents in a type 
+		 * @return count of documents in a type 
+		 */
 		public long getCountOfDocInType( )
 		{
 			long ctr  = -1 ;
@@ -458,15 +588,25 @@ public class ElasticSearchService
 			ctr = searchResponse.getHits().getTotalHits();
 			return ctr;
 		}
-
+		/***
+		 * getLastDocID
+		 * @return
+		 */
 		public String getLastDocID() {
 			return lastDocID;
 		}
-
+		/***
+		 * setLastDocID
+		 * @param lastDocID
+		 */
 		public void setLastDocID(String lastDocID) {
 			this.lastDocID = lastDocID;
 		}
 		
+		/***
+		 * Set the id to start from 
+		 * @param id
+		 */
 		public void setID(long id )
 		{
 			this.id = id ;
