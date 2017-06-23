@@ -30,29 +30,42 @@ public class WeightFunctionCalculation implements IWeightFunctionCalculation {
 		int j = 0;
 		
 		for(int i=0;i<count;i++){
-			
+			System.out.println("current run index " + i + "until " + count);
 			nodeX = m_cluterClient.getVertexAt(i);
 			Double[] weight = new Double[nodeX.getNeighbors().size()];
-
+			j = 0 ; sumX = 0 ;
 			//mean(Rmsd(xi,n))
 			for (Node xiN : nodeX.getNeighbors()) {
 				sumX += xiN.getMeanRmsd();
 			}
+
+			
 			//mean(Rmsd(xj,n))
-			for (Node neighbor : nodeX.getNeighbors()) 
+			for (int index = 0 ; index < nodeX.getNeighbors().size() ; index++) 
 			{
-				nodeY = m_cluterClient.SearchPCNDB(neighbor.getProteinIndex(), neighbor.getFragmentIndex());
+				nodeY = m_cluterClient.SearchPCNDB((long)nodeX.getNeighbors().get(index).getProteinIndex()
+														, nodeX.getNeighbors().get(index).getFragmentIndex());
+				if(nodeY == null)
+					nodeY = new NodePCN((long)nodeX.getNeighbors().get(index).getProteinIndex()
+														, nodeX.getNeighbors().get(index).getFragmentIndex());
+				
+				nodeY.setMeanRmsd(nodeX.getNeighbors().get(index).getMeanRmsd());
+				
 				for (Node xjN : nodeY.getNeighbors()) 
 				{
 					sumY += xjN.getMeanRmsd();
 				}
 				epsilon = (sumX+ sumY)/3;
 				
-				weight[j] = Math.pow(Math.E,(-1*Math.pow(nodeY.getMeanRmsd(),2))/(m_miu*epsilon));
+				weight[j] = Math.pow(Math.E,(-1*Math.pow(( nodeY.getMeanRmsd()),2))/(m_miu*epsilon));
+//				weight[j] = Math.pow(Math.E,(-1*Math.pow(( nodeY.getMeanRmsd()),2)));
 				j++;
+				
+				sumY = 0 ;
 			}
 			
-			m_cluterClient.updateDocument(weight, i);
+			
+			m_cluterClient.updateDocument(weight, i,"weight");
 			
 		}
 		
