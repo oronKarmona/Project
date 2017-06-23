@@ -7,7 +7,7 @@ public class Node {
 	private long m_protein;
 	private int m_index;
 	private double m_meanRmsd; 
-	
+	private double weight;
 	public Node(){
 		
 	}
@@ -15,6 +15,7 @@ public class Node {
 		m_protein = proteind;
 		m_index = index;
 		m_meanRmsd= 0;
+		weight = 0 ;
 	}
 	
 	
@@ -36,7 +37,13 @@ public class Node {
 	public void setMeanRmsd(double m_meanRmsd) {
 		this.m_meanRmsd = m_meanRmsd;
 	}
-	
+	public void setWeight(double weight){
+		this.weight = weight;
+	}
+	public double getWeight()
+	{
+		return this.weight;
+	}
 	
 	
 	

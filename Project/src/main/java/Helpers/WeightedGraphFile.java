@@ -68,6 +68,8 @@ public class WeightedGraphFile {
 				numberVertex= vertexMap.get(this.node_toString(n));
 				edgesPart+=" ";
 				edgesPart+=numberVertex;
+				edgesPart+=" ";
+				edgesPart+=n.getWeight();
 				}catch(NullPointerException e)
 				{
 					
@@ -82,7 +84,7 @@ public class WeightedGraphFile {
 	
 	private void saveToFile()
 	{
-		try(  PrintWriter out = new PrintWriter( "cluster\\"+this.fileName)  ){
+		try(  PrintWriter out = new PrintWriter( "cluster//"+this.fileName)  ){
 		    out.println( pajekFile );
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

@@ -412,7 +412,7 @@ public class ElasticSearchService
 		private NodePCN fromMapToVertex(Map<String, Object> map )
 		{
 			ArrayList<Double> mean_rmsd = new ArrayList<Double>();
-			
+			ArrayList<Double> weight = new ArrayList<Double>();
 			 NodePCN neighbors = new NodePCN();
 			 
 			 neighbors.setProteinIndex((Integer)map.get("m_protein"));
@@ -420,18 +420,19 @@ public class ElasticSearchService
 			 neighbors.setNeighbors((ArrayList<Node>)map.get("neighbors"));
 			 try{
 			 mean_rmsd = (ArrayList<Double>)map.get("mean_rmsd");
+			 weight = (ArrayList<Double>)map.get("weight");
 			 }catch(Exception e )
 			 {
 				 
 			 }
-			 neighbors.setNeighbors(this.fromMapToNeighbors(neighbors, mean_rmsd));
+			 neighbors.setNeighbors(this.fromMapToNeighbors(neighbors, mean_rmsd,weight));
 			 
 			 return neighbors;
 		}
 		
 		
 		@SuppressWarnings("unchecked")
-		private ArrayList<Node> fromMapToNeighbors(NodePCN neighbors, ArrayList<Double> mean_rmsd)
+		private ArrayList<Node> fromMapToNeighbors(NodePCN neighbors, ArrayList<Double> mean_rmsd,ArrayList<Double>weight)
 		{
 			Map<String, Object> nmap , rmap;
 			ArrayList<Node> nodes = new ArrayList<Node>();
@@ -441,8 +442,10 @@ public class ElasticSearchService
 				if(nmap == null)
 					return null;
 				nodes.add(new Node( (Integer)nmap.get("m_protein"),(Integer)nmap.get("m_index")));
-				if(!(mean_rmsd == null))
+				if(!(mean_rmsd == null) )
 					nodes.get(i).setMeanRmsd(mean_rmsd.get(i));
+				if(!(weight==null))
+					nodes.get(i).setWeight(weight.get(i));
 			}
 			
 			return nodes;
