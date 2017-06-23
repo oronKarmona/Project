@@ -247,7 +247,7 @@ private void setActions(){
 				e1.printStackTrace();
 			}catch (Throwable e2) {
 
-
+				errorLabel.setText("*ElasticSearch server is not running!");
 				int optionPane = JOptionPane.showOptionDialog(null, "Hello World", "The title", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
 
 				if(optionPane == JOptionPane.OK_OPTION)
@@ -276,18 +276,30 @@ private void setActions(){
 			}
 			else
 			{
-				
-				Map<String, Object> map =elasticSearchService.getProtein(Integer.parseInt(proteinIndextextField.getText()));
-				if(map == null){
-					indexErrorLabel.setVisible(false);
+				try{
+					int protein_id = Integer.parseInt(proteinIndextextField.getText());
+					if(protein_id < 0 || protein_id > 30874)
+						throw new Exception();
+					
+					Map<String, Object> map =elasticSearchService.getProtein(Integer.parseInt(proteinIndextextField.getText()));
+					if(map == null){
+						indexErrorLabel.setVisible(false);
+						errorLabel.setVisible(false);
+					}
+					else{
+						proteinName.setText(map.get("name").toString());
+						proteinString.setText(map.get("aminoAcids").toString());
+					}
+					
+					repaint();
+					
+				}catch (Exception e )
+				{
+					indexErrorLabel.setText("Index must be a number between 0 - 30874");
+					indexErrorLabel.setVisible(true);
 					errorLabel.setVisible(false);
 				}
-				else{
-					proteinName.setText(map.get("name").toString());
-					proteinString.setText(map.get("aminoAcids").toString());
-				}
-				
-				repaint();
+		
 			}
 			
 		}
@@ -334,19 +346,56 @@ private void cleanResults() {
 	 * Update for test purpose
 	 * @param txt
 	 */
-	public void update_TextField(String txt)
+	public void setproteinIDtextField(String txt)
 	{
 		proteinIDtextField.setText(txt);
 	}
-	
+	/***
+	 * Simulating pressed button 
+	 */
 	public void pressButton()
 	{
 		this.searchButton.doClick();
 	}
-	
+	/***
+	 * return error label 
+	 * @return text of error label
+	 */
 	public String getErrorLabel()
 	{
 		return this.errorLabel.getText();
+	}
+	
+	/***
+	 * Update for test purpose
+	 * @param txt - text for testing
+	 */
+	public void setproteinIndextextField(String txt)
+	{
+		proteinIndextextField.setText(txt);
+	}
+	/***
+	 * Simulating pressed button 
+	 */
+	public void pressSerchIndexButton()
+	{
+		this.searchIndexButton.doClick();
+	}
+	/***
+	 * Get the protein data as string for test purpose
+ 	 * @return the protein data
+	 */
+	public String getProteinData()
+	{
+		return proteinName.getText() + " " + proteinString.getText() ; 
+	}
+	/***
+	 * Returns the content of the indexErrorlabel
+	 * @return the error msg
+	 */
+	public String getIndexErrorLabelText()
+	{
+		return this.indexErrorLabel.getText();
 	}
 //	public class FileChooser {
 //
