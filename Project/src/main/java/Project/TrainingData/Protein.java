@@ -71,8 +71,10 @@ public class Protein implements Serializable{
 	 */
 	public void setAminoAcids(String aminoAcids) {
 		this.aminoAcids =  aminoAcids.replace("\n", "").replace("\r", "");
-		
-		this.fragment_count = this.aminoAcids.length() - 19 ; 
+		if(aminoAcids.length() < 20)
+			this.fragment_count = 0 ;
+		else
+			this.fragment_count = this.aminoAcids.length() - 19 ; 
 	}
 	
 	/***

@@ -41,31 +41,18 @@ public class App
     {
 		ArrayList<Protein> uknownStructurePDB,knownStructrePDB;
 		long startTime = System.currentTimeMillis();
-		
 
-//		 Main main = new Main();
-//	      main.setBounds(200, 100, 700, 550);
-//	      main.setVisible(true);
-//	   
+		 Main main = new Main();
+	      main.setBounds(200, 100, 700, 550);
+	      main.setVisible(true);
+	   
 
-		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 
-//		writeProteinsToDB("proteins","known_structure",knownStructrePDB);
+//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+//		LinearRegressionUpdateHelper helper = new LinearRegressionUpdateHelper("cluster", 1, 4, 60, uknownStructurePDB, knownStructrePDB);
 
-		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
-		LinearRegressionUpdateHelper helper = new LinearRegressionUpdateHelper("cluster", 1, 4, 60, uknownStructurePDB, knownStructrePDB);
-//		
-//	      TrainingData training = new TrainingData(knownStructrePDB);
-//		//LinearSystemSolution xy = new LinearSystemSolution();
-//	
-//		
-//        double[] x = { 10, 20, 40, 80, 160, 200 };
-//        double[] y = { 100, 350, 1500, 6700, 20160, 40000 };
-//        PolynomialRegression regression = new PolynomialRegression(x, y, 3);
-//        beta = regression.getBeta();
-		
-
-//	
+	
 //		for(int i = 0 ; i <= 0 ; i++)
 //		{
 //			System.out.println("Cluster " + i);
@@ -77,8 +64,8 @@ public class App
 //
 //				
 //		}
-		
-		
+//		
+
 		
 		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }

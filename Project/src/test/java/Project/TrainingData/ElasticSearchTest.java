@@ -30,7 +30,7 @@ public class ElasticSearchTest
 		
 		
 		/***
-		 * getting specific protein from the DB
+		 * getting specific protein from the DB by index
 		 * precondition - index and type are exist without protein index to be found
 		 * expected -  null
 		 */
@@ -39,7 +39,7 @@ public class ElasticSearchTest
 		{
 			Map<String, Object> result ; 
 			es = new ElasticSearchService("proteins","known_structure");
-			int proteinIndex = -1;
+			int proteinIndex = -2;
 			result = es.get(proteinIndex);
 			es.clientClose();
 			assertTrue(result == null );
