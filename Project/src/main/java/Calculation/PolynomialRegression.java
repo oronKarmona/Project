@@ -11,7 +11,11 @@ package Calculation;
 
 import Jama.Matrix;
 import Jama.QRDecomposition;
-
+/***
+ * calculate PolynomialRegression - already written code with compiled jar
+ * @author Oron
+ *
+ */
 
 public class PolynomialRegression {
     private final String variableName;  // name of the predictor variable

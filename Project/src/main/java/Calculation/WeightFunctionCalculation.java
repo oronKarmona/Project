@@ -7,12 +7,25 @@ import DB.ElasticSearchService;
 import PCN.Node;
 import PCN.NodePCN;
 import ProGAL.geom3d.Point;
-
+/***
+ * implementation of the weight function nrc 
+ * @author Oron
+ *
+ */
 public class WeightFunctionCalculation implements IWeightFunctionCalculation {
-
+	/***
+	 * elastic search client
+	 */
 	private ElasticSearchService m_cluterClient;
+	/***
+	 * factor for tuning the exponent result
+	 */
 	private double m_miu;
-
+	/***
+	 * constructor
+	 * @param clusterNum - cluster to be calculated 
+	 * @param miu - factor set by the user
+	 */
 	public WeightFunctionCalculation(int clusterNum, double miu){
 		
 		m_miu = miu;
@@ -20,6 +33,10 @@ public class WeightFunctionCalculation implements IWeightFunctionCalculation {
 		Calculate();
 
 	}
+	/***
+	 * calculates the weight function for the cluster by traveling between all neighbors of the checked node for all nodes
+	 * this function writes directly to the elastic search database and updating the specified document with the weights to its neighbors
+	 */
 	public Double[] Calculate(){
 		
 		NodePCN nodeX, nodeY = new NodePCN();
