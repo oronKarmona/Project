@@ -32,6 +32,7 @@ public class Main extends JFrame {
 	private ProteinSearch m_proteinSearch;
 	private ClusterSearch m_clusterSearch;
 	//private ClusterCreate m_clusterCreate;
+	private PredictiveWatch m_predictiveWatch;
 
 	   public Main(){
 		  
@@ -67,6 +68,9 @@ public class Main extends JFrame {
 		   //cluster
 		   m_clusterSearch = new ClusterSearch("cluster search");
 
+		   //cluter watch
+		   m_predictiveWatch = new PredictiveWatch("predictive watch");
+
 		  setLayout(new BorderLayout());
 
 		 
@@ -87,7 +91,7 @@ public class Main extends JFrame {
 		  settings();
 		  proteins();
 		  cluster();
-
+		  predictiveWatch();
 	      menuBar.add(Box.createHorizontalGlue());
 	      about();
 		  home();
@@ -96,7 +100,22 @@ public class Main extends JFrame {
 	      setJMenuBar(menuBar);
 	          
 	   }
-	   private void proteins() {
+	   
+	   private void predictiveWatch() {
+
+		   final JMenu proteinsMenu = new JMenu("Predict"); 
+		  
+	      JMenuItem predictiveWatchhMenu = new JMenuItem("Predictive Watch");
+	      predictiveWatchhMenu.addActionListener(new MenuItemListener(m_predictiveWatch));
+
+	     
+	      proteinsMenu.add(predictiveWatchhMenu);
+	      //settingsMenu.addSeparator();
+	      
+	      menuBar.add(proteinsMenu);
+	   }
+
+	private void proteins() {
 
 		   final JMenu proteinsMenu = new JMenu("Proteins"); 
 			  
