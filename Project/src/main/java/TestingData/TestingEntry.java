@@ -26,6 +26,11 @@ public class TestingEntry
 	 * rmsd value of the 2 proteins
 	 */
 	private double rmsd ; 
+	
+	/**
+	 * Astral ID
+	 */
+	private String astralId1,astralId2;
 	/**
 	 * Constructor
 	 * @param p1 - first protein 
@@ -85,6 +90,18 @@ public class TestingEntry
 	}
 	public void setRmsd(double rmsd) {
 		this.rmsd = rmsd;
+	}
+	public String getAstralId1() {
+		return astralId1;
+	}
+	public void setAstralId1(String astralId1) {
+		this.astralId1 = astralId1;
+	}
+	public String getAstralId2() {
+		return astralId2;
+	}
+	public void setAstralId2(String astralId2) {
+		this.astralId2 = astralId2;
 	}
 	
 	

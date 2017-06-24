@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.elasticsearch.search.SearchHit;
 
+import Calculation.RMSDCalculation;
 import DB.ElasticSearchService;
 import PCN.NodePCN;
 import ProGAL.geom3d.Point;
@@ -36,7 +37,7 @@ public class CalculateRmsdForEntry
 		 */
 		private ArrayList<NodePCN> graph;
 		private ArrayList<Protein> known_proteins;
-		ArrayList<TestingEntry> entries ;
+		private ArrayList<TestingEntry> entries ;
 			/**
 			 * constructor
 			 * @param entries - test entries
@@ -55,6 +56,7 @@ public class CalculateRmsdForEntry
 				number_of_vertex = (int)readCluster.getCountOfDocInType() - 2 ;
 				this.createProteinMap();
 				this.updateEntries();
+				System.out.println();
 			}
 			
 			
@@ -66,20 +68,29 @@ public class CalculateRmsdForEntry
 				String data ; 
 				SearchHit[] result  ; 
 				Protein p1 , p2 ;
+				double rmsd ;
+				RMSDCalculation r = new RMSDCalculation();
 				for(TestingEntry e : entries)
 				{
 					data = new String (clusterMap.get(e.getP1()));
 					e.setProtein1_index(Integer.parseInt(data.split("_")[0]));
 					e.setProtein1_fragment(Integer.parseInt(data.split("_")[1]));
 					
-					getProtein(e.getProtein1_index());
+					p1 = getProtein(e.getProtein1_index());
+					e.setAstralId1(p1.getAstralID());
 					
 					data = new String (clusterMap.get(e.getP2()));
 					e.setProtein2_index(Integer.parseInt(data.split("_")[0]));
 					e.setProtein2_fragment(Integer.parseInt(data.split("_")[1]));
+					if(e.getProtein2_index() == 322131)
+						System.out.println();
+					p2 = getProtein(e.getProtein2_index());
+					e.setAstralId2(p2.getAstralID());
 					
-					getProtein(e.getProtein2_index());
 					
+					rmsd = r.Calculate(p1.getFragmentCoordinates(e.getProtein1_fragment()), p2.getFragmentCoordinates(e.getProtein2_fragment()));
+					
+					e.setRmsd(rmsd);
 					System.out.println();
 					
 				}
@@ -94,7 +105,13 @@ public class CalculateRmsdForEntry
 //				p.setStructure((ArrayList<Structure>)map.get("structure"));
 //				p.setStructure(fromMaptToStructure(p));
 				
-				p = proteinMap.get(protein_index - 320572);
+				p = proteinMap.get(protein_index);
+//				for(Protein pr : known_proteins)
+//				{
+//					if(pr.getProteinIndex() == protein_index - 320572)
+//						return pr;
+//				}
+//				return null ;
 				return p ;
 			}
 			
@@ -145,7 +162,7 @@ public class CalculateRmsdForEntry
 				for(int i = 0 ; i< known_proteins.size() ; i++)
 				{
 					System.out.println(i);
-					proteinMap.put(known_proteins.get(i).getProteinIndex(), known_proteins.get(i));
+					proteinMap.put(i + 320572, known_proteins.get(i));
 				}
 				System.out.println("finished protein map");
 			}
@@ -154,5 +171,10 @@ public class CalculateRmsdForEntry
 			private String node_toString(NodePCN node)
 			{
 				return node.getProteinIndex()+"_"+node.getFragmentIndex();
+			}
+			
+			public ArrayList<TestingEntry> getEntries()
+			{
+				return entries;
 			}
 }
