@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import Project.TrainingData.Protein;
-
+/***
+ * Parser for the pdb given by zachary 
+ * @author Oron
+ *
+ */
 public class PCNpdbParser 
 {
 	private static File pdbFile ;

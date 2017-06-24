@@ -1,15 +1,37 @@
 package Calculation;
 
 import java.util.ArrayList;
-
+/***
+ * calculate the mean rmsd of given x (direct hamming distance ) and y (context hamming distance) 
+ * @author Oron
+ *
+ */
 public class MeanRMSD
 {
+	/***
+	 * x - direct hamming distance , y- context hamming distance , power - the power of the calculation (n^power)
+	 */
 	private int x , y , power;
+	/***
+	 * holds the power of x , y , multiplications of xy , all together 
+	 */
 	private ArrayList<Double> power_of_x  , power_of_y , power_of_xy, total ; 
+	/***
+	 * beta coefficients
+	 */
 	private double[] m_beta;
+	/**
+	 * sum 
+	 */
 	private double m_sum;
-	private double[] beta;
-	
+	//private double[] beta;
+	/***
+	 * Set the variables for the calculation
+	 * @param x direct hamming distance
+	 * @param y context hamming distance
+	 * @param power the power of the calculation (n^power)
+	 * @param beta - beta coefficients
+	 */
 	public void setMeanRMSD( int x,int y , int power, double[] beta)
 	{
 		this.x = x ;
@@ -27,7 +49,9 @@ public class MeanRMSD
 		calculate_pows();
 		calculate_meanRmsd();
 	}
-	
+	/***
+	 * calculating powers of the variables
+	 */
 	public void calculate_pows()
 	{
 		for(int i = 1 ; i <= power ; i++)
@@ -58,6 +82,9 @@ public class MeanRMSD
 
 	}
 	
+	/***
+	 * calculating the mean rmsd by multiplying with the betas
+	 */
 	private void calculate_meanRmsd(){
 		
 		for(int i=0 ;i< total.size();i++){
@@ -65,7 +92,10 @@ public class MeanRMSD
 		}
 
 	}
-	
+	/***
+	 * getMeanRmsd
+	 * @return mean rmsd
+	 */
 	public double getMeanRmsd() {
 		return m_sum;
 		

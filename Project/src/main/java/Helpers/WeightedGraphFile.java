@@ -9,14 +9,42 @@ import java.util.Map;
 import DB.ElasticSearchService;
 import PCN.Node;
 import PCN.NodePCN;
-
+/***
+ * create weight graph file 
+ * @author Oron
+ *
+ */
 public class WeightedGraphFile {
-	private ElasticSearchService es ; 
-	private ArrayList<NodePCN> graph;
-	private long number_of_edges = 0 , number_of_vertex;
-	private String pajekFile = "" , fileName;
-	private String edgesPart = "";
-	private Map<String,Integer> vertexMap ;
+	/***
+	 * Elastic search client
+	 */
+		private ElasticSearchService es ; 
+		/***
+		 * will hold the cluster
+		 */
+		private ArrayList<NodePCN> graph;
+		/***
+		 * number of edges and vertices
+		 */
+		private long number_of_edges = 0 , number_of_vertex;
+		/***
+		 * pjek file - string representation of the file 
+		 * fileName - name of the output file 
+		 */
+		private String pajekFile = "" , fileName;
+		/**
+		 * part of the edges details for easier file building 
+		 */
+		private String edgesPart = "";
+		/***
+		 * Vertex map that convert the node to increasing indices from 1 
+		 */
+		private Map<String,Integer> vertexMap ;
+		/***
+		 * Constructor
+		 * @param cluster_es_index
+		 * @param cluster_es_type
+		 */
 	
 	public WeightedGraphFile(String cluster_es_index , String cluster_es_type)
 	{
@@ -28,7 +56,10 @@ public class WeightedGraphFile {
 	}
 	
 	
-	
+	/***
+	 * gets the graph from the database
+	 * manipulates all data from the graph 
+	 */
 	private void retreive_graph()
 	{
 		number_of_vertex = es.getCountOfDocInType() - 2 ;
@@ -49,7 +80,10 @@ public class WeightedGraphFile {
 			
 	}
 	
-	
+	/***
+	 * creates the file under the class attribute pajekFile 
+	 * @return number of edges
+	 */
 	private long create_file()
 	{
 		long count  = 0 ;
@@ -88,7 +122,9 @@ public class WeightedGraphFile {
 		}
 		return count;
 	}
-	
+	/***
+	 * save the result file to an output file 
+	 */
 	private void saveToFile()
 	{
 		try(  PrintWriter out = new PrintWriter( "cluster//"+this.fileName)  ){
@@ -98,6 +134,11 @@ public class WeightedGraphFile {
 			e.printStackTrace();
 		}
 	}
+	/***
+	 * vertex line for the vertices part at top of the file 
+	 * @param node
+	 * @return
+	 */
 	private String addVertexLine(NodePCN node)
 	{
 		String node_as_string = node_toString(node);

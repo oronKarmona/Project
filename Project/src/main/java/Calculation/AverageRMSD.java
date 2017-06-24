@@ -13,14 +13,38 @@ import Threads.UpdateHammingThread;
  */
 public class AverageRMSD 
 {
+	/***
+	 * number of docs in the elastic search index /type
+	 */
 	private static long documentsCount ;
+	/***
+	 * elastic search client
+	 */
 	private ElasticSearchService es ; 
+	/**
+	 * index and type for the elastic search
+	 */
 	private String index , type;
+	/**
+	 * working threads
+	 */
 	private ArrayList<MeanRMSDThread> threads ;
+	/**
+	 * index to update in the output , starting for -1 due to the first loop iteration
+	 */
 	private static int indexToUpdate = -1 ;
+	/***
+	 * hamming distance factor
+	 */
 	private int HammingDistanceFactor;
 	private int numberOfThreads ;
 	
+	/**
+	 * constructor 
+	 * @param index - elastic search index 
+	 * @param type - elastic search type 
+	 * @param HammingDistanceFactor - factor
+	 */
 	public AverageRMSD(String index , String type , int HammingDistanceFactor) 
 	{
 		this.index = index ; this.type = type ; 
@@ -41,13 +65,18 @@ public class AverageRMSD
 		double[] meanRmsdValues = this.sum_arrays();
 		JSONhelper.WriteMeanRMSD(meanRmsdValues, "MeanRMSD");
 	}
-	
+	/***
+	 * creating the thread 
+	 */
 	private void createThreads()
 	{
 		for(int i = 0 ; i < numberOfThreads ; i++)
 			threads.add(new MeanRMSDThread(this.index , this.type,this.HammingDistanceFactor));
 	}
-	
+	/**
+	 * starting threads 
+	 * @throws InterruptedException
+	 */
 	private void startThreads() throws InterruptedException
 	{
 		if(threads == null )
@@ -59,7 +88,10 @@ public class AverageRMSD
 		for(MeanRMSDThread t : threads)
 			t.join();
 	}
-	
+	/**
+	 * sums the array of the working threads 
+	 * @return avearage rmsd array
+	 */
 	private double[] sum_arrays()
 	{
 		if(threads == null)
@@ -95,6 +127,11 @@ public class AverageRMSD
 		
 		return MeanRMSDarray;
 	}
+	
+	/**
+	 * retrun the next index to be manipulated
+	 * @return
+	 */
 	public static synchronized int getNextIndex()
 	{
 		if(indexToUpdate == documentsCount )

@@ -9,15 +9,43 @@ import java.util.Map;
 import DB.ElasticSearchService;
 import PCN.NodePCN;
 import PCN.Node;
-
+/***
+ * Converting a cluster from the databzse into a pajek file format
+ * @author Oron
+ *
+ */
 public class PajekFormatHelper 
 {
+	/***
+	 * Elastic search client
+	 */
 		private ElasticSearchService es ; 
+		/***
+		 * will hold the cluster
+		 */
 		private ArrayList<NodePCN> graph;
+		/***
+		 * number of edges and vertices
+		 */
 		private long number_of_edges = 0 , number_of_vertex;
+		/***
+		 * pjek file - string representation of the file 
+		 * fileName - name of the output file 
+		 */
 		private String pajekFile = "" , fileName;
+		/**
+		 * part of the edges details for easier file building 
+		 */
 		private String edgesPart = "";
+		/***
+		 * Vertex map that convert the node to increasing indices from 1 
+		 */
 		private Map<String,Integer> vertexMap ;
+		/***
+		 * Constructor
+		 * @param cluster_es_index
+		 * @param cluster_es_type
+		 */
 		public PajekFormatHelper(String cluster_es_index , String cluster_es_type)
 		{
 			fileName = cluster_es_index+cluster_es_type+".net";
@@ -28,7 +56,10 @@ public class PajekFormatHelper
 		}
 		
 		
-		
+		/***
+		 * gets the graph from the database
+		 * manipulates all data from the graph 
+		 */
 		private void retreive_graph()
 		{
 			number_of_vertex = es.getCountOfDocInType() - 2 ;
@@ -48,7 +79,10 @@ public class PajekFormatHelper
 				
 		}
 		
-		
+		/***
+		 * creates the file under the class attribute pajekFile 
+		 * @return number of edges
+		 */
 		private long create_file()
 		{
 			long count  = 0 ;
@@ -79,7 +113,9 @@ public class PajekFormatHelper
 			}
 			return count;
 		}
-		
+		/***
+		 * save the result file to an output file 
+		 */
 		private void saveToFile()
 		{
 			try(  PrintWriter out = new PrintWriter( "cluster\\"+this.fileName)  ){
@@ -89,6 +125,11 @@ public class PajekFormatHelper
 				e.printStackTrace();
 			}
 		}
+		/***
+		 * vertex line for the vertices part at top of the file 
+		 * @param node
+		 * @return
+		 */
 		private String addVertexLine(NodePCN node)
 		{
 			String node_as_string = node_toString(node);
@@ -97,6 +138,7 @@ public class PajekFormatHelper
 
 			return line;
 		}
+		
 		private String node_toString(NodePCN node)
 		{
 			return node.getProteinIndex()+"_"+node.getFragmentIndex();

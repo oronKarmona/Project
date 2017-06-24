@@ -2,14 +2,26 @@ package Calculation;
 
 import org.springframework.util.StringUtils;
 
-
+/**
+ * checking the occurence of letters in a String 
+ * @author Oron
+ *
+ */
 public class CharacterOccurrence {
 
 	private double m_factor = 0;
-	
+	/***
+	 * constructor
+	 * @param factor - factor for possible occurences
+	 */
 	public CharacterOccurrence(double factor){
 		m_factor = factor;
 	}
+	/***
+	 * calculate occurence
+	 * @param protein - the string to be checked
+	 * @return - true in case of occurence less than factor , false otherwise
+	 */
 	public boolean Calculate(String protein){
 		int count = 0 ;
 		char letter;

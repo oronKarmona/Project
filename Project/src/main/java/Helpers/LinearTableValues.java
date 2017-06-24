@@ -1,21 +1,57 @@
 package Helpers;
 
 import java.util.ArrayList;
-
+/***
+ * This class contains the x , y , rmsd and the powers for furhter multiplication calculation  
+ * @author Oron
+ *
+ */
 public class LinearTableValues 
 {
+	/***
+	 * x - direct haming distance result
+	 */
 	private	int x ; 
+	/**
+	 * y - context hamming distance result
+	 */
 	private	int y ; 
+	/***
+	 * rmsd result of the compared proteins
+	 */
 	private double rmsd;
+	/***
+	 * all the powers of y
+	 */
 	private ArrayList<Double> power_of_y;
+	/***
+	 * all the powers of x 
+	 * total - all the results togehter
+	 */
 	private ArrayList<Double> power_of_x , total ;
+	/***
+	 * lists of Strings corresponded to the previous List for visual presentation and testing 
+	 * of the order of the powers
+	 */
 	private ArrayList<String> powersY,powersX,powersXY;
+	/***
+	 * power of the calculation 
+	 */
 	private int pow ; 
+	/***
+	 * String representation of the calculation
+	 */
 	private String order_of_calculation = "";
-	
+	/***
+	 * constructor
+	 * @param x
+	 * @param y
+	 * @param rmsd
+	 * @param pow
+	 */
 	public LinearTableValues (int x , int y , double rmsd , int pow)
 	{
-		this.initiate();
+		this.initialise();
 		this.x = x ; this.y = y ; this.rmsd = rmsd ; 
 		this.pow = pow;
 		
@@ -44,7 +80,9 @@ public class LinearTableValues
 		
 		
 	}
-	
+	/***
+	 * calculate the power of each variable
+	 */
 	private void calculate_pows()
 	{
 		for(int i = 0 ; i <= pow ; i++)
@@ -73,7 +111,10 @@ public class LinearTableValues
 			}
 		}
 	}
-
+	/***
+	 * get names of the results for the output file 
+	 * @return
+	 */
 	public String getColumnsNames()
 	{
 		
@@ -93,8 +134,10 @@ public class LinearTableValues
 		
 	}
 	
-	
-	private void initiate()
+	/***
+	 * initialize all the necessery lists
+	 */
+	private void initialise()
 	{
 		powersY = new ArrayList<String>();
 		powersX = new ArrayList<String>();

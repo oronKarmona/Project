@@ -15,7 +15,11 @@ package Calculation;
 
 import Jama.Matrix;
 import Jama.QRDecomposition;
-
+/***
+ * calculate MultipleLinearRegression - already written code with compiled jar
+ * @author Oron
+ *
+ */
 public class MultipleLinearRegression {
     private final int N;        // number of 
     private final int p;        // number of dependent variables
