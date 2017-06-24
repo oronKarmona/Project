@@ -81,7 +81,11 @@ public class JSONhelper
 	       
 	        return null;
 	}
-	
+	/***
+	 * write mean rmsd values to json file
+	 * @param values
+	 * @param file_name
+	 */
 	public static void WriteMeanRMSD(double[] values , String file_name)
 	{
 		
@@ -97,7 +101,11 @@ public class JSONhelper
 			}
 	}
 	
-	
+	/***
+	 * write coefficients as a json object to a file 
+	 * @param a
+	 * @param file_name
+	 */
 	public static void writeCoefficientsRegression(Matrix a, String file_name)
 	{
 		try (Writer writer = new FileWriter(file_name+".json")) 
@@ -112,7 +120,11 @@ public class JSONhelper
 		}
 	}
 	
-	
+	/***
+	 * read json object of coefficients from a file
+	 * @param file_name
+	 * @return
+	 */
 	public static double[] readCoefficientsRegression(String file_name)
 	{
 		JSONParser parser = new JSONParser();

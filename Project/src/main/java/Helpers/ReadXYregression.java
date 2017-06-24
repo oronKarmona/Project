@@ -6,13 +6,23 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import Project.TrainingData.Protein;
-
+/***
+ * reads the regression file attributes for further calculation 
+ * @author Oron
+ *
+ */
 public class ReadXYregression
 {
+	/***
+	 * attributes of the calculation
+	 */
 	private ArrayList<Double> x  , y , rmsd; 
 	private ArrayList<Double> values;
 	private int number_of_colomns;
-	
+	/***
+	 * constructor
+	 * @param file_name
+	 */
 	public ReadXYregression(String file_name)
 	{
 		
@@ -23,7 +33,10 @@ public class ReadXYregression
 		this.readFile(file_name);
 	}
 	
-	@SuppressWarnings("resource")
+	/***
+	 * reading the file under file name
+	 * @param file_name
+	 */
 	private void readFile(String file_name)
 	{
 		String[] split_result ; 

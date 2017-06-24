@@ -11,7 +11,12 @@ import org.elasticsearch.index.get.GetField;
 import DB.ElasticSearchService;
 import Project.TrainingData.Protein;
 import Threads.UpdateHammingThread;
-
+/***
+ * update hamming distance for giver database - internal usage only
+ * used for checking the correctness of the data in the training data
+ * @author Oron
+ *
+ */
 public class UpdateHamming 
 {
 	private ArrayList<Protein> proteinsdb ; 
@@ -22,7 +27,13 @@ public class UpdateHamming
 	private ArrayList<UpdateHammingThread> threads;
 	private static long count_of_docs ; 
 	
-	
+	/***
+	 * constructor
+	 * @param proteinsdb
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 */
 	public UpdateHamming(ArrayList<Protein> proteinsdb) throws IOException, InterruptedException, ExecutionException
 	{
 		es = new ElasticSearchService("proteins" , "trainingdata");
