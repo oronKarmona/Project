@@ -5,13 +5,25 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import DB.ElasticSearchService;
-
+/**
+ * Inside use
+ * correcting the PCN with several conditions
+ * @author Oron
+ *
+ */
 public class PCNCorrector 
 {
+	/**
+	 * client
+	 */
 	private ElasticSearchService es = new ElasticSearchService("pcn","data");
-	
+	/**
+	 * running indices
+	 */
 	private int start_index  = 0 , final_index ; 
-	
+	/**
+	 * constructor
+	 */
 	public PCNCorrector()
 	{
 		final_index = (int) (es.getCountOfDocInType() - 1) ;

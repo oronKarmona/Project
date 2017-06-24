@@ -11,12 +11,27 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import DB.ElasticSearchService;
-
+/**
+ * reading and parsing the PCN file
+ * @author Oron
+ *
+ */
 public class ReadPCNFile {
-
+	/**
+	 * Time attribute 
+	 */
 	static LocalDateTime now = LocalDateTime.now();
+	/**
+	 * Date attribute
+	 */
 	static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-	
+	/**
+	 * Read pcn file and write to elastic search db
+	 * @param file
+	 * @param index - index to write in elastic 
+	 * @param type - type to write in elastic
+	 * @return
+	 */
 	public static boolean Read(File file,String index ,String type){
 		
 		ElasticSearchService elasticSearchService = new ElasticSearchService(index,type);

@@ -1,16 +1,39 @@
 package PCN;
 
 import java.util.ArrayList;
-
+/***
+ * Basic node representaion of protein 
+ * @author Oron
+ *
+ */
 public class Node {
-	
+	/***
+	 * protein index 
+	 */
 	private long m_protein;
+	/***
+	 * fragment index 
+	 */
 	private int m_index;
+	/***
+	 * mean rmsd with neighbor node (as neighbor)
+	 */
 	private double m_meanRmsd; 
+	/***
+	 * weight with neighbor node calculated by weight function
+	 */
 	private double weight;
+	/***
+	 * general constructor
+	 */
 	public Node(){
 		
 	}
+	/***
+	 * sceond constructor
+	 * @param proteind - protein index 
+ 	 * @param index - fragment index
+	 */
 	public Node(long proteind,int index){
 		m_protein = proteind;
 		m_index = index;
