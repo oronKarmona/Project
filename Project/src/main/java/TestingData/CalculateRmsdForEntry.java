@@ -29,11 +29,13 @@ public class CalculateRmsdForEntry
 		/***
 		 * from indices to proteins
 		 */
-		private Map<Integer , String> proteinMap ; 
+		private Map<Integer , String> clusterMap ; 
+		private Map<Integer , Protein> proteinMap;
 		/***
 		 * will hold the cluster
 		 */
 		private ArrayList<NodePCN> graph;
+		private ArrayList<Protein> known_proteins;
 		ArrayList<TestingEntry> entries ;
 			/**
 			 * constructor
@@ -41,13 +43,15 @@ public class CalculateRmsdForEntry
 			 * @param cluster_index
 			 * @param cluster_type
 			 */
-			public CalculateRmsdForEntry(ArrayList<TestingEntry> entries , String cluster_index , String cluster_type)
+			public CalculateRmsdForEntry(ArrayList<TestingEntry> entries , String cluster_index , String cluster_type , ArrayList<Protein> known_proteins)
 			{
 				this.entries = entries ; 
+				this.known_proteins = known_proteins;
 				graph  = new ArrayList<NodePCN>();
 				readCluster = new ElasticSearchService(cluster_index, cluster_type);
 				readProteins = new ElasticSearchService("proteins", "known_structure");
-				proteinMap = new HashMap<Integer, String>();
+				clusterMap = new HashMap<Integer, String>();
+				proteinMap = new HashMap<Integer,Protein>();
 				number_of_vertex = (int)readCluster.getCountOfDocInType() - 2 ;
 				this.createProteinMap();
 				this.updateEntries();
@@ -64,13 +68,13 @@ public class CalculateRmsdForEntry
 				Protein p1 , p2 ;
 				for(TestingEntry e : entries)
 				{
-					data = new String (proteinMap.get(e.getP1()));
+					data = new String (clusterMap.get(e.getP1()));
 					e.setProtein1_index(Integer.parseInt(data.split("_")[0]));
 					e.setProtein1_fragment(Integer.parseInt(data.split("_")[1]));
 					
 					getProtein(e.getProtein1_index());
 					
-					data = new String (proteinMap.get(e.getP2()));
+					data = new String (clusterMap.get(e.getP2()));
 					e.setProtein2_index(Integer.parseInt(data.split("_")[0]));
 					e.setProtein2_fragment(Integer.parseInt(data.split("_")[1]));
 					
@@ -83,54 +87,65 @@ public class CalculateRmsdForEntry
 			
 			private Protein getProtein(int protein_index)
 			{
-				Protein p = new Protein();
-				Map<String, Object> map  = readProteins.get(protein_index - 320572);
-				p.setAminoAcids((String)map.get("aminoAcids"));
-				p.setAstralID((String)map.get("astralID"));
-				p.setStructure((ArrayList<Structure>)map.get("structure"));
-				p.setStructure(fromMaptToStructure(p));
+				Protein p =null;
+//				Map<String, Object> map  = readProteins.get(protein_index - 320572);
+//				p.setAminoAcids((String)map.get("aminoAcids"));
+//				p.setAstralID((String)map.get("astralID"));
+//				p.setStructure((ArrayList<Structure>)map.get("structure"));
+//				p.setStructure(fromMaptToStructure(p));
+				
+				p = proteinMap.get(protein_index - 320572);
 				return p ;
 			}
 			
-			private ArrayList<Structure> fromMaptToStructure(Protein p )
-			{
-				Map<String,Object> smap;
-				Structure temp = new Structure();
-				ArrayList<Structure> structure = new ArrayList<Structure>();
-				for(int i = 0 ; i < p.getStructure().size() ; i++)
-				{
-					smap = (Map<String,Object>) p.getStructure().get(i);
-					Point point = new Point()
-					if(smap == null)
-						return null;
-					Object o = smap.get("p");
-					temp.setAminoAcid((String)smap.get("AminoAcid"));
-					temp.setIndex((Integer)smap.get("atomIndex"));
-					temp.setP((Point) smap.get("p"));
-					temp.setResidueSequenceNumber((Integer)smap.get("residueSequenceNumber"));
-					temp.setType((String)smap.get("type"));
-					
-					structure.add(new Structure(temp));
-					
-				}
-				
-				if(structure.isEmpty())
-					return null;
-				else
-					return structure;
-				
-			}
+//			private ArrayList<Structure> fromMaptToStructure(Protein p )
+//			{
+//				Map<String,Object> smap;
+//				Structure temp = new Structure();
+//				ArrayList<Structure> structure = new ArrayList<Structure>();
+//				for(int i = 0 ; i < p.getStructure().size() ; i++)
+//				{
+//					smap = (Map<String,Object>) p.getStructure().get(i);
+//					Point point = new Point()
+//					if(smap == null)
+//						return null;
+//					Object o = smap.get("p");
+//					temp.setAminoAcid((String)smap.get("AminoAcid"));
+//					temp.setIndex((Integer)smap.get("atomIndex"));
+//					temp.setP((Point) smap.get("p"));
+//					temp.setResidueSequenceNumber((Integer)smap.get("residueSequenceNumber"));
+//					temp.setType((String)smap.get("type"));
+//					
+//					structure.add(new Structure(temp));
+//					
+//				}
+//				
+//				if(structure.isEmpty())
+//					return null;
+//				else
+//					return structure;
+//				
+//			}
 			/**
 			 * creates map of proteins 
 			 */
 			private void createProteinMap()
 			{
-				System.out.println("creating protein map");
+				System.out.println("creating cluster map");
 				for(int i = 0 ; i < number_of_vertex ; i++)
 				{
 					System.out.println(i);
 					graph.add(readCluster.getVertexAt(i));
-					proteinMap.put( i + 1 , this.node_toString(graph.get(graph.size() - 1))) ;
+					clusterMap.put( i + 1 , this.node_toString(graph.get(graph.size() - 1))) ;
+				}
+				System.out.println("finished cluster map");
+				
+				
+				System.out.println("Creating protein map");
+				for(int i = 0 ; i< known_proteins.size() ; i++)
+				{
+					System.out.println(i);
+					proteinMap.put(known_proteins.get(i).getProteinIndex(), known_proteins.get(i));
 				}
 				System.out.println("finished protein map");
 			}
