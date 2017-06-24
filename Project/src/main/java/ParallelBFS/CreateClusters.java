@@ -13,22 +13,70 @@ import PCN.NodePCN;
 import PCN.Node;
 import Project.TrainingData.Protein;
 import Threads.ParallelBFSThread;
-
+/***
+ * creating clusters by using the bfs algorithm until certaion distance
+ * @author Oron
+ *
+ */
 public class CreateClusters 
 {
+	/***
+	 * client for read
+	 */
 	private ElasticSearchService readPcnClient;
+	/***
+	 * client for write 
+	 */
 	private static ElasticSearchService writeClusterClient;
+	/***
+	 * queue of nodes to be discovered
+	 */
 	private static ArrayList<NodeBFS> queue = new ArrayList<NodeBFS>();
+	/***
+	 * visited nodes
+	 */
 	private static Map<String , Boolean> visited = new HashMap <String , Boolean>();
+	/***
+	 * marked nodes that are about to be visited
+	 */
 	private static Map<String , Boolean> marked_to_be_visited = new HashMap <String , Boolean>();
+	/***
+	 * current node in the bfs 
+	 */
 	private static NodeBFS current ; 
+	/***
+	 * hamming object
+	 */
 	private static HammingCalculation hamming;
+	/***
+	 * distance factor
+	 */
 	private static int distance_threshold  ;
+	/***
+	 * proteins pdb of known and unknown
+	 */
 	private ArrayList<Protein> uknownStructurePDB , knownStructrePDB;
+	/***
+	 * protein map contatins the lists above for easiear access
+	 */
 	private static Map<Integer , Protein> protein_map  = new HashMap<Integer , Protein>();
+	/***
+	 * occurance threshold
+	 */
 	private static double OThreshold;
 
-	
+	/***
+	 * contructor
+	 * @param distance_factor
+	 * @param uknownStructurePDB
+	 * @param knownStructrePDB
+	 * @param OccurenceThreshold
+	 * @param elastic_search_index - of the pcn fro read 
+	 * @param elastic_search_type - of the pcn  for read 
+	 * @param cluster_index - for write 
+	 * @param cluster_type - for write 
+	 * @param threshold - for similarity 
+	 */
 	public CreateClusters(int distance_factor, ArrayList<Protein> uknownStructurePDB, ArrayList<Protein> knownStructrePDB , int OccurenceThreshold , 
 							String elastic_search_index , String elastic_search_type, String cluster_index, String cluster_type, double threshold){
 		
@@ -45,7 +93,10 @@ public class CreateClusters
 			e.printStackTrace();
 		}
 	}
-	
+	/***
+	 * Starting the bfs run from certain index of root
+	 * @param root_index
+	 */
 	public void startBFS(int root_index)
 	{
 		NodeBFS childNode  ;
@@ -84,7 +135,11 @@ public class CreateClusters
 			}
 	
 
-	
+	/***
+	 * correcting the neighbors of certain node 
+	 * @param node
+	 * @return corrected neighbors list
+	 */
 	private ArrayList<Node> correctNeighbors(NodeBFS node)
 	{
 		 ArrayList<Node> neighbors = node.getVertex().getNeighbors();
@@ -101,7 +156,12 @@ public class CreateClusters
 		 
 		 return neighbors;
 	}
-	
+	/***
+	 * checking conditions of similarity between 2 nodes
+	 * @param father
+	 * @param child
+	 * @return true for similar (not good) , false otherwise
+	 */
 	private synchronized static boolean check_conditions(NodeBFS father , NodeBFS child)
 	{
 		if(child != null && child.getVertex() != null  && 
@@ -111,16 +171,30 @@ public class CreateClusters
 		
 		return false;
 	}
+	
+	/***
+	 * return all neighbors not listed in this node list 
+	 * @param node
+	 * @return
+	 */
 	private ArrayList<NodePCN>  return_unrecoreded_neighbors(NodeBFS node)
 	{	
 		
 		return readPcnClient.SearchForNeighborsInPCN(node.getVertex().getProteinIndex(), 
 									node.getVertex().getFragmentIndex());
 	}
+	/***
+	 * for asynchrounos use
+	 */
 	public void flushBulk()
 	{
 		writeClusterClient.bulkProcessor.flush();
 	}
+	/***
+	 * add to visited map after visit
+	 * @param node
+	 * @return
+	 */
 	public static synchronized boolean add_to_visited(NodeBFS node)
 	{
 		
@@ -129,13 +203,20 @@ public class CreateClusters
 		//System.out.println(node.getDistance());
 		return true;
 	}
-	
+	/***
+	 * write node to db under new cluster
+	 * @param node
+	 */
 	public static synchronized void writeToDB(NodeBFS node)
 	{
 		//writeClusterClient.addToBulk(node.getVertex());
 		writeClusterClient.add(node.getVertex());
 	}
-	
+	/***
+	 * adding to the waiting queue after checking conditions 
+	 * @param father
+	 * @param child
+	 */
 	public static synchronized void add_to_queue(NodeBFS father ,NodeBFS child )
 	{
 		
@@ -145,7 +226,11 @@ public class CreateClusters
 			 		queue.add(child);
 		 }
 	}
-	
+	/***
+	 * check if the node is about to be visited (marked)
+	 * @param node
+	 * @return
+	 */
 	private static boolean check_marked(NodePCN node)
 	{
 		boolean result ; 
@@ -160,7 +245,11 @@ public class CreateClusters
 		
 
 	}
-	
+	/***
+	 * checking if the node is already visited
+	 * @param node
+	 * @return
+	 */
 	private static boolean check_exist(NodePCN node)
 	{
 		boolean result ; 
@@ -173,6 +262,10 @@ public class CreateClusters
 			return false;
 		}
 	}
+	/***
+	 * get next node from queue
+	 * @return
+	 */
 	public static synchronized NodeBFS get_from_queue()
 	{
 		if(queue.isEmpty() || (queue.get(0).getDistance()> distance_threshold) )
@@ -196,7 +289,12 @@ public class CreateClusters
 		return neighbors;
 	}
 
-	
+	/***
+	 * return node from the PCN
+	 * @param protein
+	 * @param index
+	 * @return
+	 */
 	private NodePCN getNode(long protein , int index)
 	{
 		NodePCN neighbors = readPcnClient.SearchPCNDB(protein, index);
@@ -205,7 +303,11 @@ public class CreateClusters
 		
 		return neighbors;
 	}
-	
+	/**
+	 * checking the repeats in a bfs node amino acid chain under the constraint of the predefined OThreshold
+	 * @param bfs_node
+	 * @return true for good occurance 
+	 */
 	private static boolean check_repeates(NodeBFS bfs_node )
 	{
 		NodePCN node = bfs_node.getVertex();
@@ -221,7 +323,12 @@ public class CreateClusters
 		return occurence_check;
 	}
 	
-	
+	/***
+	 * checking complete correspondence between father and son
+	 * @param current_node
+	 * @param child_node
+	 * @return
+	 */
 	private static boolean check_complete_correspondence(NodeBFS current_node , NodeBFS child_node)
 	{
 		NodePCN father_node = current_node.getVertex();
@@ -244,7 +351,9 @@ public class CreateClusters
 	}
 	
 
-	
+	/***
+	 * from lists to protein map
+	 */
 	private void setProteinsMap()
 	{
 		for(Protein p : uknownStructurePDB)
