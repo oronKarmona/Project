@@ -44,13 +44,13 @@ public class App
 	public static void main( String[] args )
     {
 		ArrayList<Protein> uknownStructurePDB,knownStructrePDB;
-		long startTime = System.currentTimeMillis();
+	//	long startTime = System.currentTimeMillis();
 	//	WeightedGraphFile w = new WeightedGraphFile("cluster",0+"");
-		WeightFunctionCalculation wf = new WeightFunctionCalculation(0,1000000);
-		WeightedGraphFile w = new WeightedGraphFile("cluster",0+"");
-//		 Main main = new Main();
-//	      main.setBounds(200, 100, 700, 550);
-//	      main.setVisible(true);
+	//	WeightFunctionCalculation wf = new WeightFunctionCalculation(0,1000000);
+	//	WeightedGraphFile w = new WeightedGraphFile("cluster",0+"");
+		 Main main = new Main();
+	      main.setBounds(200, 100, 700, 550);
+	      main.setVisible(true);
 	   
 
 //		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
@@ -73,7 +73,7 @@ public class App
 //		
 
 		
-		System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
+	//	System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
     }
 	
 	public void calculateBetaLinearRegression()
