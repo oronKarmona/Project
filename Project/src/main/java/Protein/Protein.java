@@ -1,4 +1,4 @@
-package Project.TrainingData;
+package Protein;
 
 
 import java.io.Serializable;

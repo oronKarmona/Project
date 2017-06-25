@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import Project.TrainingData.Protein;
+import Protein.Protein;
 /***
  * Parser for the pdb given by zachary 
  * @author Oron

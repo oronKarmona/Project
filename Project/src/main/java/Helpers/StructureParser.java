@@ -11,12 +11,13 @@ import java.util.List;
 
 
 
+
 import org.apache.commons.io.FileUtils;
 
 import ProGAL.geom3d.Point;
 import Project.TrainingData.App;
-import Project.TrainingData.Protein;
-import Project.TrainingData.Structure;
+import Protein.Protein;
+import Protein.Structure;
 
 /***
  * This class contains 2 static methods which will be used to parse the ASTRAL database files

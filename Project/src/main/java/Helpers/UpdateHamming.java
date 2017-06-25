@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutionException;
 import org.elasticsearch.index.get.GetField;
 
 import DB.ElasticSearchService;
-import Project.TrainingData.Protein;
+import Protein.Protein;
 import Threads.UpdateHammingThread;
 /***
  * update hamming distance for giver database - internal usage only

@@ -42,7 +42,7 @@ import Helpers.LinearTableValues;
 import PCN.NodePCN;
 import PCN.Node;
 import ProGAL.proteins.ProteinComplex;
-import Project.TrainingData.Protein;
+import Protein.Protein;
 import Table.TrainingDataEntry;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
 /***

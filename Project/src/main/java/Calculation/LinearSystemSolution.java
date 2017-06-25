@@ -1,4 +1,4 @@
-package Project.TrainingData;
+package Calculation;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

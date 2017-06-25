@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import Calculation.LinearSystemSolution;
 import Calculation.MultipleLinearRegression;
 import Calculation.PolynomialRegression;
 import Calculation.WeightFunctionCalculation;
@@ -22,9 +23,10 @@ import Helpers.ReadXYregression;
 import Jama.Matrix;
 import PCN.NodePCN;
 import PCN.WritePCNtoDB;
-
 import Table.TrainingData;
 import ParallelBFS.CreateClusters;
+import Protein.Protein;
+import Protein.Structure;
 import ToRemove.BFS;
 
 //WritePCNtoDB pcn2db = new WritePCNtoDB("1//PDB_Proteom_Map2~",61,"pcn","data");

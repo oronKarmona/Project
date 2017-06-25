@@ -13,7 +13,7 @@ import DB.ElasticSearchService;
 import PCN.NodePCN;
 import PCN.Node;
 import ParallelBFS.NodeBFS;
-import Project.TrainingData.Protein;
+import Protein.Protein;
 
 public class BFS {
 	

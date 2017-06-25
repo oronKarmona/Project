@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import Project.TrainingData.Protein;
+import Protein.Protein;
 
 public class CreateSequenceFile {
 	
