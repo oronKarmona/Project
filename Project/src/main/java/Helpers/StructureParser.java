@@ -12,10 +12,11 @@ import java.util.List;
 
 
 
+
 import org.apache.commons.io.FileUtils;
 
+import Main.App;
 import ProGAL.geom3d.Point;
-import Project.TrainingData.App;
 import Protein.Protein;
 import Protein.Structure;
 

@@ -16,7 +16,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import Jama.Matrix;
-import Project.TrainingData.App;
+import Main.App;
 import Protein.Protein;
 
 /***
