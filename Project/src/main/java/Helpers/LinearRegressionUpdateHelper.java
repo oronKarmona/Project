@@ -9,7 +9,7 @@ import Calculation.MeanRMSD;
 import DB.ElasticSearchService;
 import Jama.Matrix;
 import PCN.NodePCN;
-import Project.TrainingData.Protein;
+import Protein.Protein;
 import PCN.Node;
 
 public class LinearRegressionUpdateHelper {

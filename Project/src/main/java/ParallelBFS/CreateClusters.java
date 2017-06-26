@@ -11,7 +11,7 @@ import Calculation.HammingCalculation;
 import DB.ElasticSearchService;
 import PCN.NodePCN;
 import PCN.Node;
-import Project.TrainingData.Protein;
+import Protein.Protein;
 import Threads.ParallelBFSThread;
 /***
  * creating clusters by using the bfs algorithm until certaion distance

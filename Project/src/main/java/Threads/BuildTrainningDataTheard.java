@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import Calculation.HammingCalculation;
 import Calculation.RMSDCalculation;
 import DB.ElasticSearchService;
-import Project.TrainingData.Protein;
+import Protein.Protein;
 import Table.TrainingData;
 import Table.TrainingDataEntry;
 

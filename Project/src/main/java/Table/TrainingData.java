@@ -17,8 +17,8 @@ import com.google.gson.GsonBuilder;
 
 import DB.ElasticSearchService;
 import GUI.ProgressBar;
-import Project.TrainingData.App;
-import Project.TrainingData.Protein;
+import Main.App;
+import Protein.Protein;
 import Threads.BuildTrainningDataTheard;
 import Threads.ElasticSearchWriteThread;
 

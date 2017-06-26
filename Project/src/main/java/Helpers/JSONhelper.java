@@ -16,8 +16,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import Jama.Matrix;
-import Project.TrainingData.App;
-import Project.TrainingData.Protein;
+import Main.App;
+import Protein.Protein;
 
 /***
  * This class contains static methods for reading and writing JSON objects from/to file

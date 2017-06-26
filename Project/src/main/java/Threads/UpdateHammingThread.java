@@ -5,7 +5,7 @@ import java.util.Map;
 
 import DB.ElasticSearchService;
 import Helpers.UpdateHamming;
-import Project.TrainingData.Protein;
+import Protein.Protein;
 
 public class UpdateHammingThread extends Thread
 {

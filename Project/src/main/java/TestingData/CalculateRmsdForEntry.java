@@ -10,8 +10,8 @@ import Calculation.RMSDCalculation;
 import DB.ElasticSearchService;
 import PCN.NodePCN;
 import ProGAL.geom3d.Point;
-import Project.TrainingData.Protein;
-import Project.TrainingData.Structure;
+import Protein.Protein;
+import Protein.Structure;
 /***
  * calculate rmsd for each test entry
  * @author Oron

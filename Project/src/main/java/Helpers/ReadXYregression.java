@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import Project.TrainingData.Protein;
+import Protein.Protein;
 /***
  * reads the regression file attributes for further calculation 
  * @author Oron

@@ -3,10 +3,10 @@ package Threads;
 import java.util.Map;
 
 import Calculation.HammingCalculation;
+import Calculation.LinearSystemSolution;
 import DB.ElasticSearchService;
 import Helpers.LinearTableValues;
-import Project.TrainingData.LinearSystemSolution;
-import Project.TrainingData.Protein;
+import Protein.Protein;
 
 public class CalculateLinearVariablesThread extends Thread{
 
