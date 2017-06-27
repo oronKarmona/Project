@@ -22,14 +22,16 @@ public class ResistanceRMSDParser {
 		String input_line;
 		try {
 			 input = new Scanner(new File(file_name));
-			 input.nextLine(); // skip first line 
 			 while (input.hasNextLine())
 			{
 	           result = input.nextLine().split(" ");
 
+	           if(result[0].equals(""))
+	        	   break;
 	           ResistanceRMSD element = new ResistanceRMSD(result[0],
 	        		   result[1], result[2], result[3],result[4], result[5]);
 	           m_data.add(element);
+	        
 			}
 				
 		} catch (Exception e) {

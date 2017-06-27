@@ -54,7 +54,7 @@ public class PredictiveWatch extends JPanel{
 	    /*
 	     * Help
 	     */
-	    constraints.gridx = 3;
+	    constraints.gridx = 4;
 	    constraints.gridy = 0;
 	
 	    Helpbutton = new JButton();
@@ -125,9 +125,7 @@ public class PredictiveWatch extends JPanel{
 				}
 				
 				
-			    DefaultTableModel model = new DefaultTableModel(0, 0);
-
-			    resultsTable.setModel(model);
+			    DefaultTableModel model = (DefaultTableModel) resultsTable.getModel();
 
 			    for (String[] strings : data) {
 			    	model.addRow(strings);
@@ -185,6 +183,8 @@ public class PredictiveWatch extends JPanel{
 
         clusterIndex.setText("Cluster Index: ");
         resultsLabel.setText("Results: ");
+        Helpbutton.setPreferredSize(new Dimension(40, 40));
+
     }
 	
 	
