@@ -10,7 +10,6 @@ import Calculation.CharacterOccurrence;
 import Calculation.HammingCalculation;
 import DB.ElasticSearchService;
 import Helpers.PajekFormatHelper;
-import PCN.CreateClusterManager;
 import PCN.NodePCN;
 import PCN.Node;
 import Protein.Protein;
@@ -20,7 +19,7 @@ import Threads.ParallelBFSThread;
  * @author Oron
  *
  */
-public class CreateClusters  extends Thread
+public class CreateClusters  
 {
 	/***
 	 * client for read
@@ -98,18 +97,7 @@ public class CreateClusters  extends Thread
 	}
 	
 	
-	@Override
-	public void run()
-	{
-		int index ;
-		
-		while( (index = CreateClusterManager.getNextIndex()) != -1)
-		{
-			this.setClusterStart(index);
-			this.startBFS(index);
-			PajekFormatHelper pf = new PajekFormatHelper("cluster", index+"");
-		}
-	}
+
 	/***
 	 * Starting the bfs run from certain index of root
 	 * @param root_index
@@ -152,6 +140,7 @@ public class CreateClusters  extends Thread
 					
 					 readPcnClient.clientClose();
 					 writeClusterClient.clientClose();	
+					 PajekFormatHelper pf = new PajekFormatHelper("cluster", root_index+"");
 			}
 	/***
 	 * cluster type for elastiSearch
@@ -161,6 +150,7 @@ public class CreateClusters  extends Thread
 	public void setClusterStart(int cluster_type)
 	{
 		writeClusterClient = new ElasticSearchService(this.cluster_index,cluster_type+"");
+		this.startBFS(cluster_type);
 	}
 
 	/***

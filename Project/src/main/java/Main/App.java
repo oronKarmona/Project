@@ -21,7 +21,6 @@ import Helpers.PCNpdbParser;
 import Helpers.PajekFormatHelper;
 import Helpers.ReadXYregression;
 import Jama.Matrix;
-import PCN.CreateClusterManager;
 import PCN.NodePCN;
 import PCN.WritePCNtoDB;
 import Table.TrainingData;
@@ -69,21 +68,20 @@ public class App
 
 		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 
-		CreateClusterManager cc = new CreateClusterManager(5, 7,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
-										95);
-//		for(int i = 4; i < 20; i++)
-//		{
-//			System.out.println("Cluster " + i);
-//			CreateClusters bfs = new CreateClusters(7,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
-//										"cluster",95);
-//				bfs.startBFS(i);
+		CreateClusters bfs = new CreateClusters(7,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
+				"cluster",95);							
+		for(int i = 0; i < 1; i++)
+		{
+			System.out.println("Cluster " + i);
+			
+				bfs.setClusterStart(i);
 //				PajekFormatHelper pf = new PajekFormatHelper("cluster", i+"");
 ////				LinearRegressionUpdateHelper helper = new LinearRegressionUpdateHelper("cluster", i, 4, 60, uknownStructurePDB, knownStructrePDB);
 ////				WeightFunctionCalculation wf = new WeightFunctionCalculation(i,1000000);
 ////				WeightedGraphFile w = new WeightedGraphFile("cluster",i+"");
-//
-//				
-//		}
+
+				
+		}
 		
 
 		
