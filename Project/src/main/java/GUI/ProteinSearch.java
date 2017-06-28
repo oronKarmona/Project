@@ -8,21 +8,25 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileSystemView;
 
+import org.elasticsearch.client.transport.NoNodeAvailableException;
 import org.elasticsearch.client.transport.TransportClient;
 
 import DB.ElasticSearchService;
@@ -52,6 +56,7 @@ public class ProteinSearch extends JPanel{
 	private String searchedFile;
 	private JTextField proteinIndextextField;
 	private ElasticSearchService elasticSearchService;
+	private JButton Helpbutton;
 	public ProteinSearch(String name) {
 
 		this.setName(name);
@@ -78,19 +83,19 @@ public class ProteinSearch extends JPanel{
 	     * protien id: __________ search
 	     */
 	    constraints.gridx = 0;
-	    constraints.gridy = 0;
+	    constraints.gridy = 1;
 		proteinID = new JLabel();
 		proteinID.setFont(new Font(proteinID.getFont().getName(), Font.BOLD, 14));
 		add(proteinID,constraints);
 		
 	    constraints.gridx = 1;
-	    constraints.gridy = 0;
+	    constraints.gridy = 1;
 		proteinIDtextField = new JTextField(20);
 		proteinIDtextField.setToolTipText("insert astral id");
 		add(proteinIDtextField,constraints);
 		
 	    constraints.gridx = 2;
-	    constraints.gridy = 0;
+	    constraints.gridy = 1;
 		searchButton = new JButton("Search");
 		add(searchButton,constraints);
 
@@ -100,7 +105,7 @@ public class ProteinSearch extends JPanel{
 		 */
 		constraints.gridwidth = 5;
 	    constraints.gridx = 0;
-	    constraints.gridy = 1;
+	    constraints.gridy = 2;
 	    errorLabel = new JLabel("");
 		errorLabel.setFont(new Font(errorLabel.getFont().getName(), Font.BOLD, 12));
 		errorLabel.setForeground(Color.RED);
@@ -112,19 +117,19 @@ public class ProteinSearch extends JPanel{
 		constraints.gridwidth = 1;
 
 	    constraints.gridx = 0;
-	    constraints.gridy = 2;
+	    constraints.gridy = 3;
 	    proteinIndex = new JLabel();
 	    proteinIndex.setFont(new Font(proteinIndex.getFont().getName(), Font.BOLD, 14));
 		add(proteinIndex,constraints);
 		
 	    constraints.gridx = 1;
-	    constraints.gridy = 2;
+	    constraints.gridy = 3;
 		proteinIndextextField = new JTextField(10);
 		proteinIndextextField.setToolTipText("insert astral id");
 		add(proteinIndextextField,constraints);
 		
 	    constraints.gridx = 2;
-	    constraints.gridy = 2;
+	    constraints.gridy = 3;
 		searchIndexButton = new JButton("Search");
 		add(searchIndexButton,constraints);
 
@@ -137,7 +142,7 @@ public class ProteinSearch extends JPanel{
 		
 		constraints.gridwidth = 5;
 	    constraints.gridx = 0;
-	    constraints.gridy = 3;
+	    constraints.gridy = 4;
 	    indexErrorLabel = new JLabel("");
 	    indexErrorLabel.setFont(new Font(errorLabel.getFont().getName(), Font.BOLD, 12));
 	    indexErrorLabel.setForeground(Color.RED);
@@ -148,7 +153,7 @@ public class ProteinSearch extends JPanel{
 		 * name string
 		 */
 		constraints.gridx = 0;
-	    constraints.gridy = 4;
+	    constraints.gridy = 5;
 	    
 	    proteinName = new JTextArea(1,3);
 	    proteinName.setEditable(false);
@@ -164,7 +169,7 @@ public class ProteinSearch extends JPanel{
 		 */
 	
 	    constraints.gridx = 0;
-	    constraints.gridy = 5;
+	    constraints.gridy = 6;
 	    
 	    proteinString = new JTextArea(5,5);
 	    proteinString.setWrapStyleWord(true);
@@ -177,20 +182,38 @@ public class ProteinSearch extends JPanel{
 
 		proteinString.setBorder(title);
 	    add(proteinString,constraints);
-//		openProtein = new JButton("open");
-//		openProtein.setEnabled(false);
-//		openProtein.addActionListener(new ActionListener() {
-//			
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent arg0) {
-//				FileChooser fc = new FileChooser(searchedFile);
-//			}
-//		});
 
-//		add(openProtein,constraints);
+
+	    /*
+	     * Help
+	     */
+	    constraints.gridx = 3;
+	    constraints.gridy = 0;
+	    Helpbutton = new JButton();
+	    try {
+		   ImageIcon help = new ImageIcon("help.png");
+		   Image image = help.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+		   Helpbutton.setIcon(new ImageIcon(image));
+	    } catch (Exception ex) {
+	      System.out.println(ex);
+	    }
 
 	    
+        final JPopupMenu helpString = new JPopupMenu("Menu");
+        helpString.add("Find protein from DB.");
+        helpString.add("Displaying it's name, aminoAcid sequence");
+        helpString.add("and view it's 3D structure");
+
+        Helpbutton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				helpString.show(Helpbutton, Helpbutton.getWidth()/2, Helpbutton.getHeight()/2);
+				
+			}
+		});
+        
+        add(Helpbutton, constraints);
 		
 
 	}
@@ -242,22 +265,14 @@ private void setActions(){
 				}
 				repaint();
 
-			} catch (IOException e1) {
+			} 
+			catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}catch (Throwable e2) {
-
-				errorLabel.setText("*ElasticSearch server is not running!");
-				int optionPane = JOptionPane.showOptionDialog(null, "Hello World", "The title", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-
-				if(optionPane == JOptionPane.OK_OPTION)
-				{
-
-				}
-				else{
-					
-				}
-				}
+			}				
+			catch (NoNodeAvailableException e2){
+                JOptionPane.showMessageDialog(null, "Server is down", "Error",JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		}
 	});
@@ -287,13 +302,29 @@ private void setActions(){
 						errorLabel.setVisible(false);
 					}
 					else{
+
 						proteinName.setText(map.get("name").toString());
 						proteinString.setText(map.get("aminoAcids").toString());
+						
+						/*
+						 * find structure in pdbstyle
+						 */
+						String astralId  = map.get("astralID").toString();
+						String id = astralId.substring(astralId.length()- 5, astralId.length()- 3);
+						id = String.format(id +"\\"+astralId+".ent");
+						if(checkIfFileExists(id))
+							Desktop.getDesktop().open(new File(searchedFile));
 					}
 					
 					repaint();
 					
-				}catch (Exception e )
+				}
+				catch (NoNodeAvailableException e){
+	                JOptionPane.showMessageDialog(null, "Server is down", "Error",JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
+				catch (Exception e )
 				{
 					indexErrorLabel.setText("Index must be a number between 0 - 30874");
 					indexErrorLabel.setVisible(true);

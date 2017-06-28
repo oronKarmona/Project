@@ -21,18 +21,28 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+/***
+ * Main JFrame - initialize all panels and UI settings
+ * Control the replacment of the panels
+ * @author ליטף
+ *
+ */
 public class Main extends JFrame {
 	
 //	   private JFrame Frame;
 
 	private MainPanel m_mainPanel;
 	private JMenuBar menuBar;
-	private HammingSettingsPanel m_hammingSettingsPanel ;
+	private ParamsSettingsPanel m_paramsSettings ;
 	private AboutPanel m_aboutPanel;
 	private ProteinSearch m_proteinSearch;
 	private ClusterSearch m_clusterSearch;
 	//private ClusterCreate m_clusterCreate;
 	private PredictiveWatch m_predictiveWatch;
+	private TrainingDataPanel m_trainingMenu;
+	private StructurePanel m_structureMenu;
+	private ClustersPanel m_clustersMenu;
+	private TestingPanel m_testingMenu;
 
 	   public Main(){
 		  
@@ -47,21 +57,17 @@ public class Main extends JFrame {
 	   private void initPanels() {
 		   		 
 		   //home
-	       try{
-	            File image2 = new File("background.jpg");
-	            Image image = ImageIO.read(image2);
-		        m_mainPanel = new MainPanel(image, "main");
-	        }
-	        catch (IOException e){
-	            e.printStackTrace();
-	        }
-
+	        m_mainPanel = new MainPanel("main");
 	       //about
 	       m_aboutPanel = new AboutPanel("about");
 	       //hamming
-		   m_hammingSettingsPanel= new HammingSettingsPanel("hamming");
+		   m_paramsSettings= new ParamsSettingsPanel("hamming");
 		  
-		   //bfs
+		   //Run App
+		   m_trainingMenu = new TrainingDataPanel("training");
+		   m_structureMenu = new StructurePanel("structure");
+		   m_clustersMenu = new ClustersPanel("clusters");
+		   m_testingMenu = new TestingPanel("testing");
 		   
 		   //protein data
 		   m_proteinSearch = new ProteinSearch("protein search");
@@ -76,12 +82,15 @@ public class Main extends JFrame {
 		 
 	}
 
-	private void prepareGUI(){
-		   
-	      ImageIcon icon = new ImageIcon("proteinIcon.png");
-	      setIconImage(icon.getImage());
-	      setName("protein connectivity network");
-	      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
+	private void prepareGUI()
+	{
+		
+//		setBackground(new Color(153, 255, 204));
+
+      ImageIcon icon = new ImageIcon("proteinIcon.png");
+      setIconImage(icon.getImage());
+      setName("protein connectivity network");
+      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
 	}
 	   public void initMenu(){
 
@@ -89,6 +98,7 @@ public class Main extends JFrame {
 
 	      //create menus
 		  settings();
+		  runApp();
 		  proteins();
 		  cluster();
 		  predictiveWatch();
@@ -101,7 +111,36 @@ public class Main extends JFrame {
 	          
 	   }
 	   
-	   private void predictiveWatch() {
+	   private void runApp() {
+		   
+		   final JMenu RunMenu = new JMenu("Start DB's"); 
+			  
+		      JMenuItem trainingMenu = new JMenuItem("Create Training Data");
+		      trainingMenu.addActionListener(new MenuItemListener(m_trainingMenu));
+		      JMenuItem structureMenu = new JMenuItem("Create Structure Data");
+		      structureMenu.addActionListener(new MenuItemListener(m_structureMenu));
+
+		      JMenuItem clustersMenu = new JMenuItem("Create Clusters");
+		      clustersMenu.addActionListener(new MenuItemListener(m_clustersMenu));
+		      
+		      JMenuItem testingMenu = new JMenuItem("Create Testing Data");
+		      testingMenu.addActionListener(new MenuItemListener(m_testingMenu));
+
+		     
+		      RunMenu.add(trainingMenu);
+		      RunMenu.addSeparator();
+		      RunMenu.add(structureMenu);
+		      RunMenu.addSeparator();
+		      RunMenu.add(clustersMenu);
+		      RunMenu.addSeparator();
+		      RunMenu.add(testingMenu);
+		      
+		      
+		      menuBar.add(RunMenu);
+		
+	}
+
+	private void predictiveWatch() {
 
 		   final JMenu proteinsMenu = new JMenu("Predict"); 
 		  
@@ -135,16 +174,9 @@ public class Main extends JFrame {
 			  
 		      JMenuItem proteinSearchMenu = new JMenuItem("Find cluter");
 		      proteinSearchMenu.addActionListener(new MenuItemListener(m_clusterSearch));
-
-		     
 		      proteinsMenu.add(proteinSearchMenu);
 		      
-		      proteinSearchMenu = new JMenuItem("Create cluter");
-		    //  proteinSearchMenu.addActionListener(new MenuItemListener(m_find));
-		      proteinsMenu.add(proteinSearchMenu);
-
-		      //settingsMenu.addSeparator();
-		      
+		    
 		      menuBar.add(proteinsMenu);
 		   
 		
@@ -181,15 +213,12 @@ public class Main extends JFrame {
 		   
 		  final JMenu settingsMenu = new JMenu("Settings"); 
 		  
-	      JMenuItem hammingMenuItem = new JMenuItem("Hamming Threshold");
-	      hammingMenuItem.addActionListener(new MenuItemListener(m_hammingSettingsPanel));
-
-	      JMenuItem bfsMenuItem = new JMenuItem("BFS Depth");
-	      //bfsMenuItem.addActionListener(new MenuItemListener(m_bfs));		
+	      JMenuItem paramsMenuItem = new JMenuItem("Parameters");
+	      paramsMenuItem.addActionListener(new MenuItemListener(m_paramsSettings));
 	      
-	      settingsMenu.add(hammingMenuItem);
-	      settingsMenu.addSeparator();
-	      settingsMenu.add(bfsMenuItem);
+	      settingsMenu.add(paramsMenuItem);
+//	      settingsMenu.addSeparator();
+//	      settingsMenu.add(bfsMenuItem);
 	      
 	      //add menu to menubar
 	      menuBar.add(settingsMenu);
@@ -248,7 +277,7 @@ public class Main extends JFrame {
 	    }
 	    else
 	    {
-		    getContentPane().add(panel, BorderLayout.WEST);
+		    getContentPane().add(panel,BorderLayout.WEST);
 
 	    }
 	    getContentPane().doLayout();

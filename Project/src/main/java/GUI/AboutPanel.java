@@ -34,6 +34,7 @@ import javax.swing.SwingConstants;
 
 public class AboutPanel extends JPanel{
 
+
 	String aboutText = String.format("Protein annotation is one of the most important goals pursued by bioinformatics, it is highly important in medicine (for example, in drug design) and biotechnology (for example, in the design of novel enzymes)."+
 	"Correct detection of relatedness between protein sequences is an important stage for protein annotation. Usually, this detection is carried out by direct comparison of the sequences – sequence alignment."+
 	"Our project's purpose is to improve a new approach for the relatedness detection, which is based on the protein connectivity network (PCN)."+
@@ -48,10 +49,21 @@ public class AboutPanel extends JPanel{
 	 Image scaledImage1;
 	 Image scaledImage2;
 
+	 Image image;
 	 ImageIcon imageIcon;
 	public AboutPanel(String name) {
 		
 		this.setName(name);
+		
+		//setBackground(new Color(204, 204, 255));
+		image=null;
+	       try{
+	            image = ImageIO.read(new File("background.jpeg"));
+	        }
+	        catch (IOException e){
+	            e.printStackTrace();
+	        }
+	       
 		
 		//******************* set panels **************************//
 	    JPanel upperPanel = new JPanel();
@@ -150,7 +162,9 @@ public class AboutPanel extends JPanel{
         super.paintComponent(G);
 
         area.setText(aboutText);
-          }
+        G.drawImage(image, 0, 0, null);
+
+    }
 
 	
 	

@@ -46,6 +46,15 @@ public class App
 		ArrayList<Protein> uknownStructurePDB,knownStructrePDB;
 	//	long startTime = System.currentTimeMillis();
 
+	//	WeightedGraphFile w = new WeightedGraphFile("cluster",0+"");
+	//	WeightFunctionCalculation wf = new WeightFunctionCalculation(0,1000000);
+	//	WeightedGraphFile w = new WeightedGraphFile("cluster",0+"");
+		 Main main = new Main();
+	      main.setBounds(200, 100, 750, 550);
+	      main.setVisible(true);
+	   
+
+
 //		 Main main = new Main();
 //	      main.setBounds(200, 100, 700, 550);
 //	      main.setVisible(true);

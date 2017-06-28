@@ -1,11 +1,13 @@
 package GUI;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,18 +15,31 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.media.j3d.Background;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.JTextComponent;
 
+import org.apache.logging.log4j.core.Layout;
+
 import DB.ElasticSearchService;
 
+/***
+ * ClusterSearch panel
+ * Recive cluster index from the user and searching in the clusters DB the
+ * right cluster. Display the cluster neighbors and open in pajek tool
+ * @author ליטף
+ *
+ */
 public class ClusterSearch  extends JPanel{
 	
 	
@@ -35,6 +50,7 @@ public class ClusterSearch  extends JPanel{
 	private JTextArea neighborsString;
 	
 	private String searchedFile;
+	private JButton Helpbutton;
 	public ClusterSearch(String name) {
 
 		this.setName(name);
@@ -45,16 +61,12 @@ public class ClusterSearch  extends JPanel{
 
 	private void initPanel() {
 
+
 		setLayout(new GridBagLayout());
-//		try {
-//			Desktop.getDesktop().open(new File("1.net"));
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+
 
 	    GridBagConstraints constraints = new GridBagConstraints();
-	    constraints.fill = GridBagConstraints.HORIZONTAL;	  
+	    constraints.fill = GridBagConstraints.HORIZONTAL ;	
 	    constraints.insets = new Insets(5, 10, 5, 5);
 	    /*
 	     * protien id: __________ search
@@ -110,7 +122,35 @@ public class ClusterSearch  extends JPanel{
 	    add(neighborsString,constraints);
 
 	    
-		
+	    /*
+	     * Help
+	     */
+	    constraints.gridx = 2;
+	    constraints.gridy = 0;
+	    Helpbutton = new JButton();
+	    try {
+		   ImageIcon help = new ImageIcon("help.png");
+		   Image image = help.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+		   Helpbutton.setIcon(new ImageIcon(image));
+	    } catch (Exception ex) {
+	      System.out.println(ex);
+	    }
+
+        final JPopupMenu helpString = new JPopupMenu("Menu");
+        helpString.add("Find cluster from DB.");
+        helpString.add("Displaying it's neighbors list");
+        helpString.add("and view it's structure in pajek");
+        
+        Helpbutton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				helpString.show(Helpbutton, Helpbutton.getWidth()/2, Helpbutton.getHeight()/2);
+				
+			}
+		});
+        
+        add(Helpbutton, constraints);
 
 	}
 
