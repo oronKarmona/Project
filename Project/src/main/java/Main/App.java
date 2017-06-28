@@ -45,32 +45,35 @@ public class App
     {
 		ArrayList<Protein> uknownStructurePDB,knownStructrePDB;
 	//	long startTime = System.currentTimeMillis();
-	//	WeightedGraphFile w = new WeightedGraphFile("cluster",0+"");
-	//	WeightFunctionCalculation wf = new WeightFunctionCalculation(0,1000000);
-	//	WeightedGraphFile w = new WeightedGraphFile("cluster",0+"");
-		 Main main = new Main();
-	      main.setBounds(200, 100, 700, 550);
-	      main.setVisible(true);
-	   
 
-//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+//		 Main main = new Main();
+//	      main.setBounds(200, 100, 700, 550);
+//	      main.setVisible(true);
+//	   
+//
+//		ElasticSearchService e = new ElasticSearchService("second_pcn","data");
+//		e.SearchPCNDB(327646, 0);
+//		e.SearchForNeighborsInPCN(275852, 1);
+		
+		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
 
-//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
-//		LinearRegressionUpdateHelper helper = new LinearRegressionUpdateHelper("cluster", 1, 4, 60, uknownStructurePDB, knownStructrePDB);
+		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 
 	
-//		for(int i = 0 ; i <= 0 ; i++)
-//		{
-//			System.out.println("Cluster " + i);
-//			CreateClusters bfs = new CreateClusters(3,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
-//										"cluster",i+"",95);
-//				bfs.startBFS(i);
-//				bfs.flushBulk();
-//				PajekFormatHelper pf = new PajekFormatHelper("cluster", i+"");
-//
-//				
-//		}
-//		
+		for(int i = 4; i < 20; i++)
+		{
+			System.out.println("Cluster " + i);
+			CreateClusters bfs = new CreateClusters(7,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
+										"cluster",i+"",95);
+				bfs.startBFS(i);
+				PajekFormatHelper pf = new PajekFormatHelper("cluster", i+"");
+//				LinearRegressionUpdateHelper helper = new LinearRegressionUpdateHelper("cluster", i, 4, 60, uknownStructurePDB, knownStructrePDB);
+//				WeightFunctionCalculation wf = new WeightFunctionCalculation(i,1000000);
+//				WeightedGraphFile w = new WeightedGraphFile("cluster",i+"");
+
+				
+		}
+		
 
 		
 	//	System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));

@@ -53,6 +53,7 @@ public class PajekFormatHelper
 			graph = new ArrayList<NodePCN>();
 			vertexMap = new HashMap<String,Integer>();
 			this.retreive_graph();
+			this.es.clientClose();
 		}
 		
 		
@@ -89,13 +90,15 @@ public class PajekFormatHelper
 			int numberVertex;
 			
 			
-			
+			int i = 0 ;
 			for(NodePCN node : graph)
 			{
+				
 				pajekFile += addVertexLine(node);
 				
 				edgesPart += vertexMap.get(this.node_toString(node));
-				
+				System.out.println(i);
+				i++;
 				for(Node n : node.getNeighbors())
 				{
 					try{
@@ -118,10 +121,12 @@ public class PajekFormatHelper
 		 */
 		private void saveToFile()
 		{
-			try(  PrintWriter out = new PrintWriter( "cluster\\"+this.fileName)  ){
+			System.out.println("Print to file");
+			try(  PrintWriter out = new PrintWriter("cluster//"+this.fileName)  ){
 			    out.println( pajekFile );
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
+				System.out.println("No folder cluster found");
 				e.printStackTrace();
 			}
 		}

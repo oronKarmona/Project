@@ -571,8 +571,16 @@ public class ElasticSearchService
 				nodes.add(new Node( (Integer)nmap.get("m_protein"),(Integer)nmap.get("m_index")));
 				if(!(mean_rmsd == null) )
 					nodes.get(i).setMeanRmsd(mean_rmsd.get(i));
-				if(!(weight==null))
+				if(!(weight==null) )
+					if(!weight.isEmpty())
+					{
+					try{
 					nodes.get(i).setWeight(weight.get(i));
+					}catch(Exception e)
+				{
+						System.out.checkError();
+				}
+					}
 			}
 			
 			return nodes;

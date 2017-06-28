@@ -108,6 +108,7 @@ public class CreateClusters
 					{
 							 current = queue.remove(0);
 							 add_to_visited(current);
+							 System.out.println();
 							 current.getVertex().setNeighbors(correctNeighbors(current));
 						     writeToDB(current);
 						     
@@ -121,6 +122,8 @@ public class CreateClusters
 											 
 											 if(childNode.getVertex() == null)
 											 {
+												 if(node.getProteinIndex() == 275852)
+													 System.out.println();
 												 childNode = new NodeBFS(new NodePCN(node.getProteinIndex(),node.getFragmentIndex()) , current.getDistance() + 1);
 												 childNode.getVertex().getNeighbors().addAll(return_unrecoreded_neighbors(childNode));
 											 }
@@ -147,8 +150,13 @@ public class CreateClusters
 		 
 		 for(Node n : neighbors)
 		 {
+			 try{
 			 if(!check_conditions(node, new NodeBFS(new NodePCN(n.getProteinIndex(),n.getFragmentIndex()),0)))
 				 nodes_toRemove.add(n);
+			 }catch(Exception e )
+			 {
+				 nodes_toRemove.add(n);
+			 }
 		 }
 		 
 		 for(Node n : nodes_toRemove)
@@ -219,12 +227,15 @@ public class CreateClusters
 	 */
 	public static synchronized void add_to_queue(NodeBFS father ,NodeBFS child )
 	{
-		
+		try{
 		 if(check_conditions(father , child) && !check_marked(child.getVertex()) && !check_exist(child.getVertex()) )
 		 {
 			 		marked_to_be_visited.put(getString(child.getVertex()),true);
 			 		queue.add(child);
-		 }
+		 }}catch(Exception e)
+		{
+			 
+		}
 	}
 	/***
 	 * check if the node is about to be visited (marked)
@@ -345,7 +356,7 @@ public class CreateClusters
 		result = current_protein.GetFragments(current_node.getVertex().getFragmentIndex()).equals(son_protein.GetFragments(child_node.getVertex().getFragmentIndex()));
 //		hamming.Calculate(current_protein.GetFragments(father_node.getFragmentIndex()), son_protein.GetFragments(son_node.getFragmentIndex()));
 //		
-//		boolean result = hamming.checkSimilarity();
+//		result = hamming.checkSimilarity();
 //		hamming.setHammingDistance(0); // initialise again
 		return  result;
 	}
@@ -358,8 +369,10 @@ public class CreateClusters
 	{
 		for(Protein p : uknownStructurePDB)
 			protein_map.put(p.getProteinIndex(),p);
-		for(int i = 0 ; i < knownStructrePDB.size() ; i++)
-			protein_map.put(i + 320572, knownStructrePDB.get(i)); //320572
+//		for(int i = 0 ; i < knownStructrePDB.size() ; i++)
+//			protein_map.put(i + 320572, knownStructrePDB.get(i)); //320572
+		for(Protein p : knownStructrePDB)
+			protein_map.put(p.getProteinIndex() + 320572, p);
 
 	}
 	

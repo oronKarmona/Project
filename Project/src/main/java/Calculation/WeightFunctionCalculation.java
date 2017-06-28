@@ -31,6 +31,7 @@ public class WeightFunctionCalculation implements IWeightFunctionCalculation {
 		m_miu = miu;
 		m_cluterClient = new ElasticSearchService("cluster", clusterNum+"");
 		Calculate();
+		m_cluterClient.clientClose();
 
 	}
 	/***

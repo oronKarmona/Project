@@ -45,6 +45,7 @@ public class LinearRegressionUpdateHelper {
 		
 		readRegressionFile();
 		update();
+		readClustersClient.clientClose();
 	}
 	
 	private void readRegressionFile() {

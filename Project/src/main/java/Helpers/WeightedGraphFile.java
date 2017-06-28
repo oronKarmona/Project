@@ -48,11 +48,12 @@ public class WeightedGraphFile {
 	
 	public WeightedGraphFile(String cluster_es_index , String cluster_es_type)
 	{
-		fileName = cluster_es_index+cluster_es_type+".net";
+		fileName = cluster_es_index+cluster_es_type+"_weight.net";
 		this.es = new ElasticSearchService(cluster_es_index, cluster_es_type);
 		graph = new ArrayList<NodePCN>();
 		vertexMap = new HashMap<String,Integer>();
 		this.retreive_graph();
+		this.es.clientClose();
 	}
 	
 	
