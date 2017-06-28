@@ -9,6 +9,8 @@ import java.util.Queue;
 import Calculation.CharacterOccurrence;
 import Calculation.HammingCalculation;
 import DB.ElasticSearchService;
+import Helpers.PajekFormatHelper;
+import PCN.CreateClusterManager;
 import PCN.NodePCN;
 import PCN.Node;
 import Protein.Protein;
@@ -18,7 +20,7 @@ import Threads.ParallelBFSThread;
  * @author Oron
  *
  */
-public class CreateClusters 
+public class CreateClusters  extends Thread
 {
 	/***
 	 * client for read
@@ -64,6 +66,7 @@ public class CreateClusters
 	 * occurance threshold
 	 */
 	private static double OThreshold;
+	private String cluster_index ; 
 
 	/***
 	 * contructor
@@ -78,19 +81,33 @@ public class CreateClusters
 	 * @param threshold - for similarity 
 	 */
 	public CreateClusters(int distance_factor, ArrayList<Protein> uknownStructurePDB, ArrayList<Protein> knownStructrePDB , int OccurenceThreshold , 
-							String elastic_search_index , String elastic_search_type, String cluster_index, String cluster_type, double threshold){
+							String elastic_search_index , String elastic_search_type, String cluster_index,  double threshold){
 		
 		 readPcnClient = new ElasticSearchService(elastic_search_index,elastic_search_type);
-		 writeClusterClient = new ElasticSearchService(cluster_index,cluster_type);
 		 distance_threshold = distance_factor;
 		 this.uknownStructurePDB = uknownStructurePDB;
 		 this.knownStructrePDB = knownStructrePDB;
+		 this.cluster_index = cluster_index ; 
 		 OThreshold = OccurenceThreshold;
 		 this.setProteinsMap();
 		 try {
 			hamming = new HammingCalculation(threshold);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	
+	@Override
+	public void run()
+	{
+		int index ;
+		
+		while( (index = CreateClusterManager.getNextIndex()) != -1)
+		{
+			this.setClusterStart(index);
+			this.startBFS(index);
+			PajekFormatHelper pf = new PajekFormatHelper("cluster", index+"");
 		}
 	}
 	/***
@@ -136,7 +153,15 @@ public class CreateClusters
 					 readPcnClient.clientClose();
 					 writeClusterClient.clientClose();	
 			}
-	
+	/***
+	 * cluster type for elastiSearch
+	 * the cluster type will also be the root index of the cluster
+	 * @param cluster_type
+	 */
+	public void setClusterStart(int cluster_type)
+	{
+		writeClusterClient = new ElasticSearchService(this.cluster_index,cluster_type+"");
+	}
 
 	/***
 	 * correcting the neighbors of certain node 

@@ -21,6 +21,7 @@ import Helpers.PCNpdbParser;
 import Helpers.PajekFormatHelper;
 import Helpers.ReadXYregression;
 import Jama.Matrix;
+import PCN.CreateClusterManager;
 import PCN.NodePCN;
 import PCN.WritePCNtoDB;
 import Table.TrainingData;
@@ -49,10 +50,10 @@ public class App
 	//	WeightedGraphFile w = new WeightedGraphFile("cluster",0+"");
 	//	WeightFunctionCalculation wf = new WeightFunctionCalculation(0,1000000);
 	//	WeightedGraphFile w = new WeightedGraphFile("cluster",0+"");
-		 Main main = new Main();
-	      main.setBounds(200, 100, 750, 550);
-	      main.setVisible(true);
-	   
+//		 Main main = new Main();
+//	      main.setBounds(200, 100, 750, 550);
+//	      main.setVisible(true);
+//	   
 
 
 //		 Main main = new Main();
@@ -68,20 +69,21 @@ public class App
 
 		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 
-	
-		for(int i = 4; i < 20; i++)
-		{
-			System.out.println("Cluster " + i);
-			CreateClusters bfs = new CreateClusters(7,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
-										"cluster",i+"",95);
-				bfs.startBFS(i);
-				PajekFormatHelper pf = new PajekFormatHelper("cluster", i+"");
-//				LinearRegressionUpdateHelper helper = new LinearRegressionUpdateHelper("cluster", i, 4, 60, uknownStructurePDB, knownStructrePDB);
-//				WeightFunctionCalculation wf = new WeightFunctionCalculation(i,1000000);
-//				WeightedGraphFile w = new WeightedGraphFile("cluster",i+"");
-
-				
-		}
+		CreateClusterManager cc = new CreateClusterManager(5, 7,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
+										95);
+//		for(int i = 4; i < 20; i++)
+//		{
+//			System.out.println("Cluster " + i);
+//			CreateClusters bfs = new CreateClusters(7,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
+//										"cluster",95);
+//				bfs.startBFS(i);
+//				PajekFormatHelper pf = new PajekFormatHelper("cluster", i+"");
+////				LinearRegressionUpdateHelper helper = new LinearRegressionUpdateHelper("cluster", i, 4, 60, uknownStructurePDB, knownStructrePDB);
+////				WeightFunctionCalculation wf = new WeightFunctionCalculation(i,1000000);
+////				WeightedGraphFile w = new WeightedGraphFile("cluster",i+"");
+//
+//				
+//		}
 		
 
 		
