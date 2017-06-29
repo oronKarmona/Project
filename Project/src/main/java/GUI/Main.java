@@ -24,7 +24,7 @@ import javax.swing.event.MenuListener;
 /***
  * Main JFrame - initialize all panels and UI settings
  * Control the replacment of the panels
- * @author ליטף
+ * @author LITAF
  *
  */
 public class Main extends JFrame {

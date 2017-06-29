@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 /***
  * 
- * @author ליטף
  * TableEntry
  * abstract class representing an entry in all tables
+ *  * @author LITAF
  * 
  */
 public abstract class TableEntry implements Serializable{
@@ -50,11 +50,25 @@ public abstract class TableEntry implements Serializable{
 	public void setRMSDResult(double RMSD) {
 		RMSDResult = RMSD;
 	}
-	
+	/**
+	 * First protein index 
+	 */
 	protected int firstProteinIndex;
+	/***
+	 * Second protein index 
+	 */
 	protected int secondProteinIndex;
+	/***
+	 * First protein index 
+	 */
 	protected int firstFragmentIndex;
+	/***
+	 * Second fragment index 
+	 */
 	protected int secondFragmentIndex;
+	/***
+	 * The result of the RMSD 
+	 */
 	protected double RMSDResult;
 	
 

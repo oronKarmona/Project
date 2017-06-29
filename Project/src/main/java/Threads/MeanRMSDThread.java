@@ -5,18 +5,55 @@ import java.util.Map;
 import Calculation.AverageRMSD;
 import DB.ElasticSearchService;
 import Helpers.MeanRMSDHelper;
-
+/***
+ * Calculation of the direct average RMSD 
+ * @author Oron
+ *
+ */
 public class MeanRMSDThread extends Thread
 {
+	/***
+	 * ElasticSearch client
+	 */
 	private ElasticSearchService es ;
+	/***
+	 * Index and type of the elasticSearch
+	 */
 	private String index , type ; 
+	/***
+	 * Counting the number of entries for each hamming distance value
+	 */
 	private int[] arrayOfCounters ;
+	/***
+	 * Total results of the RMSD for each hamming distance value
+	 */
 	private double[] arrayOfRMSD ; 
+	/***
+	 * Average results 
+	 */
 	private double[] arrayOfAVGresults ;
+	/***
+	 * Returned object from the elasticseach db
+	 */
 	private Map<String, Object> map ;  
-	private int HammingDistance ; 
+	/***
+	 * Hamming distance result 
+	 */
+	private int HammingDistance ;
+	/***
+	 * rmsd result
+	 */
 	private double RMSD ; 
+	/***
+	 * size of the arrays according to the hamming distance optional values [defined by the user]
+	 */
 	private int size ;
+	/***
+	 * Constructor
+	 * @param index - index of the elasticSearch
+	 * @param type - type of the ElasticSearch
+	 * @param size - size of the arrays according to the hamming distance optional values [defined by the user]
+	 */
 	public  MeanRMSDThread(String index , String type , int size) 
 	{
 		this.size = size;
@@ -44,7 +81,10 @@ public class MeanRMSDThread extends Thread
 		
 		this.calculateAVGarray();
 	}
-	
+	/***
+	 * Retreives the data of the specified document and setting the necessary data to the arrays 
+	 * @param id_of_document
+	 */
 	private void getData_UpdateArray(int id_of_document)
 	{
 		try{
@@ -60,7 +100,9 @@ public class MeanRMSDThread extends Thread
 			System.out.println("problem " + id_of_document);
 		}
 	}
-	
+	/***
+	 * Calculating the average result from the arrays
+	 */
 	private void calculateAVGarray()
 	{
 		for(int i = 0 ; i < size ; i ++)
@@ -68,6 +110,9 @@ public class MeanRMSDThread extends Thread
 			arrayOfAVGresults[i] = (arrayOfRMSD[i] / arrayOfCounters[i]);
 		}
 	}
+	/***
+	 * Adding data to arrays
+	 */
 	private void addToArrays()
 	{
 		arrayOfRMSD[this.HammingDistance] += this.RMSD ; 

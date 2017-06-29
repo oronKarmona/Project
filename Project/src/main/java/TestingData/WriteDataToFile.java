@@ -3,12 +3,23 @@ package TestingData;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
+/***
+ * writing the testing data result to file 
+ * @author Oron
+ *
+ */
 public class WriteDataToFile 
-{
+{		
+	/***
+	 * Testing data data
+	 */
 		private ArrayList<TestingEntry> data;
 		
-		
+		/**
+		 * Writing the data to file 
+		 * @param data - data of the testing data 
+		 * @param fileName - file name to be written 
+		 */
 		public static void WriteDataToFile(ArrayList<TestingEntry> data,String fileName)
 		{
 			System.out.println("Starting to write data to file...");

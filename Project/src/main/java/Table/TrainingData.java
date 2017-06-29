@@ -23,7 +23,7 @@ import Threads.BuildTrainningDataTheard;
 import Threads.ElasticSearchWriteThread;
 
 /***
- * This class purpose is to manage the training data calculation
+ * Manages the training data calculation
  * @author Oron
  *
  */
@@ -44,35 +44,61 @@ public class TrainingData {
 	 * Number of threads assigned to the calculation
 	 */
 	private int threadNum;
+	/***
+	 * Single thread for writing to the elastic Search (second implementation approach)
+	 */
 	ElasticSearchWriteThread btt = null;
-	private static boolean firstT = true;
+	/***
+	 * Last protein read 
+	 */
 	private static int LastRead = 0 ;
+	/***
+	 * barrier for asynchrounos calculation with threads
+	 */
 	private static int barrier = 0 ;
+	/**
+	 * Boolean attribute for signing the first iterations of the threads 
+	 */
 	private static boolean firstTime = true;
 	/***
-	 * Constructor
-	 * @param proteinsDB - protein DB after filtering
+	 * elastic type defined by the user 
 	 */
-	
+	private String elasticType;
+	/***
+	 * hamming distance defined by the user 
+	 * default value is 60
+	 */
+	private double hammingThreshold = 60;
+	/***
+	 * ElasticSearch client 
+	 */
 	public static ElasticSearchService elasticSearchService;
-	
-	public TrainingData(ArrayList<Protein> proteinsDB){
+	/***
+	 * Constructor and initialization of the training data calculation 
+	 * @param proteinsDB - the known structural proteins 
+	 * @param elasticType - elastic search type  to write to
+	 * @param hammingThreshold - hamming distance threshold from the user
+	 */
+	public TrainingData(ArrayList<Protein> proteinsDB, String elasticType, double hammingThreshold){
 		
 		TrainingData = new ArrayList<>();
 		m_proteinsDB = proteinsDB;
 		threadNum = Runtime.getRuntime().availableProcessors();
-		
-		initDB();
+		this.hammingThreshold = hammingThreshold;
+		initDB(elasticType);
 		initTraningData();
 	}
+	/***
+	 * Initialization of the elaticSearch client 
+	 * @param elasticType - elastic search type  to write to
+	 */
+	private void initDB(String elasticType) {
 
-	private void initDB() {
-
-		elasticSearchService = new ElasticSearchService("project" , "trainingdata");
+		elasticSearchService = new ElasticSearchService("trainingdata" , elasticType);
 	}
 
 	/***
-	 * This method will initiate the Threads to calculate the training data
+	 * Initialization of threads 
 	 */
 	private void initTraningData() {
 		long startTime = System.currentTimeMillis();
@@ -84,7 +110,7 @@ public class TrainingData {
 	//	pb.addThreadData(0,m_proteinsDB.size(),-1);
 		for(int i = 0 ; i < threadNum ; i++)
 		{
-			TheardList.add(new BuildTrainningDataTheard(m_proteinsDB, i,elasticSearchService));
+			TheardList.add(new BuildTrainningDataTheard(m_proteinsDB, i,elasticSearchService,hammingThreshold));
 		
 		}
 		System.out.println("Starting Training data calculation");
@@ -114,26 +140,41 @@ public class TrainingData {
 	 * @param progress - the progress that updated
 	 * @param Threadindex - index of the thread to be updated
 	 */
-//	public  static synchronized void UpdateProgress(int progress , int Threadindex)	
-//	{
-//		pb.setData(progress , Threadindex);
-//	}
-//	
-//	public static synchronized void ResetProgress(int ThreadIndex)
-//	{
-//		pb.resetData(ThreadIndex);
-//	}
+	public  static synchronized void UpdateProgress(int progress , int Threadindex)	
+	{
+		pb.setData(progress , Threadindex);
+	}
+	/***
+	 * reset progress bar
+	 * @param ThreadIndex
+	 */
+	public static synchronized void ResetProgress(int ThreadIndex)
+	{
+		pb.resetData(ThreadIndex);
+	}
 	
+	/***
+	 * Date format for progress change 
+	 */
 	static DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-	
+	/***
+	 * Current data 
+	 */
 	static LocalDateTime now = LocalDateTime.now();
+	/**
+	 * Date formatter for user info
+	 */
 	static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
+	/**
+	 * Gets the next index of the proteins to be calculated 
+	 * @return next protein index 
+	 */
 	public static synchronized int IndexForThread()
 	{
 
 		
-		if(LastRead == 10) // if the last proteins has been calculated
+		if(LastRead >= m_proteinsDB.size() - 1 ) // if the last proteins has been calculated
 			return - 1 ;
 
 		if(!firstTime) 
@@ -161,8 +202,11 @@ public class TrainingData {
 	
 
 	
-	
-	public static synchronized void addToWriteQue(TrainingDataEntry d )
+	/**
+	 * For using a writing thread , adding to write queue
+	 * @param entry - entry to be written 
+	 */
+	public static synchronized void addToWriteQue(TrainingDataEntry entry )
 	{
 		synchronized(TrainingData)
 		{
@@ -171,9 +215,13 @@ public class TrainingData {
 		
 		}
 			
-		TrainingData.add(d);
+		TrainingData.add(entry);
 	}
 	
+	/***
+	 * Gets the first entry from the queue to the writing thread 
+	 * @return TrainingDataEntry
+	 */
 	public static TrainingDataEntry getEntry()
 	{
 		if(TrainingData.isEmpty() &&  (Runtime.getRuntime().availableProcessors() - 1 != barrier))
@@ -196,6 +244,9 @@ public class TrainingData {
 		
 	}
 	
+	/**
+	 * Update barrier for asynchronus use
+	 */
 	public static synchronized  void updateBarrier()
 	{
 		barrier++;
