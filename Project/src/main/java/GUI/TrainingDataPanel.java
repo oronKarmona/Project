@@ -27,6 +27,8 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 
+import Main.SystemOperations;
+
 public class TrainingDataPanel extends JPanel{
 
 	
@@ -99,7 +101,14 @@ public class TrainingDataPanel extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO run clusters
+
+				
+				if(DBNametextField.getText().isEmpty())
+				{
+					return;
+				}
+				
+				SystemOperations.BuildTrainingData(DBNametextField.getText());
 		        timer = new Timer(1000, setProgress);
 		        timer.start();				
 			}

@@ -29,6 +29,8 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 
+import Main.SystemOperations;
+
 public class ClustersPanel extends JPanel{
 
 	private JLabel DBName;
@@ -130,7 +132,12 @@ public class ClustersPanel extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO run clusters
+				if(DBNametextField.getText().isEmpty() ||numberOfClusters.getText().isEmpty() )
+				{
+					return;
+				}
+				
+				SystemOperations.BuildClusters(DBName.getText(), Integer.parseInt(numberOfClusters.getText()));
 		        timer = new Timer(1000, setProgress);
 		        timer.start();
 				

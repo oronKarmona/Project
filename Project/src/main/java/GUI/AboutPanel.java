@@ -91,8 +91,7 @@ public class AboutPanel extends JPanel{
 
 	    aboutProjectText= new JLabel("About The Project",SwingConstants.CENTER);	
 	    aboutProjectText.setFont(new Font(aboutProjectText.getFont().getName(), Font.BOLD, 20));
-	    aboutProjectText.setBackground(new Color(135,206,235));
-	    aboutProjectText.setOpaque(true);
+
 	    
 	    constraints.gridx = 0;
 	    constraints.gridy = 0;

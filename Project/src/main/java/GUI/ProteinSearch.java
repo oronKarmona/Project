@@ -253,8 +253,6 @@ private void setActions(){
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-//		if(proteinIDtextField.equals("")){
-//		}
 		cleanResults();
 		String id = proteinIDtextField.getText();
 		if(id.isEmpty() || id.length() < 7){
@@ -372,6 +370,9 @@ private void cleanResults() {
 	
 	proteinName.setText("");
 	proteinString.setText("");
+	errorLabel.setVisible(false);
+	indexErrorLabel.setVisible(false);
+	
 	repaint();
 }
 	

@@ -27,6 +27,8 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 
+import Main.SystemOperations;
+
 public class TestingPanel extends JPanel{
 
 	private JLabel DBName;
@@ -99,7 +101,13 @@ public class TestingPanel extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO run clusters
+				
+				if(DBNametextField.getText().isEmpty())
+				{
+					return;
+				}
+				
+				SystemOperations.BuildTestingData("clusterResistance",DBNametextField.getText());
 		        timer = new Timer(1000, setProgress);
 		        timer.start();				
 			}

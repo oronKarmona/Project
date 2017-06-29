@@ -25,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -62,7 +63,6 @@ public class ClusterSearch  extends JPanel{
 		initBackground();
 		initPanel();		
 		setActions();
-		//elasticSearchService = new ElasticSearchService("proteins", "known_structure");
 	}
 
 	private void initBackground() {
@@ -137,7 +137,8 @@ public class ClusterSearch  extends JPanel{
 	    neighborsString.setLineWrap(true);
 
 	    neighborsString.setEditable(false);
-		
+	    JScrollPane sp = new JScrollPane(neighborsString);  
+
 	    Border blackline = BorderFactory.createLineBorder(Color.black);
 		TitledBorder title = BorderFactory.createTitledBorder(blackline, "Neighbors");
 		title.setTitleJustification(TitledBorder.LEFT);
@@ -190,16 +191,16 @@ public class ClusterSearch  extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 
 			String id = clusterIndextextField.getText();
-			if(id.isEmpty()){
-				
+			if(id.isEmpty())
+			{	
 				errorLabel.setText("*insert cluster index");
 				errorLabel.setVisible(true);
-
 				return;
 			}
 			
 			id = String.format(clusterIndextextField.getText()+".net");
-			if(!checkIfFileExists(id)){    	
+			if(!checkIfFileExists(id))
+			{    	
 				errorLabel.setText("*No cluster was found");
 				errorLabel.setVisible(true);
 			}
@@ -207,15 +208,8 @@ public class ClusterSearch  extends JPanel{
 				errorLabel.setVisible(false);
 				try {
 					Desktop.getDesktop().open(new File(searchedFile));
-//					Map<String, Object> map =elasticSearchService.getProtein(proteinIDtextField.getText());
-//					if(map == null){
-//						indexErrorLabel.setVisible(false);
-//						errorLabel.setVisible(false);
-//					}
-//					else{
-//						proteinName.setText(map.get("name").toString());
-//						proteinString.setText(map.get("aminoAcids").toString());
-//					}
+				//	neighborsString.setText(ReadPajekFile.Read);
+					
 					repaint();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
