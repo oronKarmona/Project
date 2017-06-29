@@ -61,7 +61,7 @@ public class Main extends JFrame {
 	       //about
 	       m_aboutPanel = new AboutPanel("about");
 	       //hamming
-		   m_paramsSettings= new ParamsSettingsPanel("hamming");
+		   m_paramsSettings= new ParamsSettingsPanel("paramsSettings");
 		  
 		   //Run App
 		   m_trainingMenu = new TrainingDataPanel("training");
@@ -275,9 +275,10 @@ public class Main extends JFrame {
 	    {
 	    	getContentPane().add(panel, BorderLayout.CENTER);
 	    }
+
 	    else
 	    {
-		    getContentPane().add(panel,BorderLayout.WEST);
+		    getContentPane().add(panel,BorderLayout.CENTER);
 
 	    }
 	    getContentPane().doLayout();

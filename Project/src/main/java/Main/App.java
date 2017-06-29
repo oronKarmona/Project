@@ -49,9 +49,10 @@ public class App
 	//	WeightedGraphFile w = new WeightedGraphFile("cluster",0+"");
 	//	WeightFunctionCalculation wf = new WeightFunctionCalculation(0,1000000);
 	//	WeightedGraphFile w = new WeightedGraphFile("cluster",0+"");
-//		 Main main = new Main();
-//	      main.setBounds(200, 100, 750, 550);
-//	      main.setVisible(true);
+		 Main main = new Main();
+	      main.setBounds(200, 100, 750, 550);
+	      main.setVisible(true);
+	      main.setResizable(false);
 //	   
 
 
@@ -64,17 +65,17 @@ public class App
 //		e.SearchPCNDB(327646, 0);
 //		e.SearchForNeighborsInPCN(275852, 1);
 		
-		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-
-		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
-
-		CreateClusters bfs = new CreateClusters(7,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
-				"cluster",95);							
-		for(int i = 0; i < 1; i++)
-		{
-			System.out.println("Cluster " + i);
-			
-				bfs.setClusterStart(i);
+//		knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+//
+//		uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+//
+//		CreateClusters bfs = new CreateClusters(7,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
+//				"cluster",95);							
+//		for(int i = 0; i < 1; i++)
+//		{
+//			System.out.println("Cluster " + i);
+//			
+//				bfs.setClusterStart(i);
 //				PajekFormatHelper pf = new PajekFormatHelper("cluster", i+"");
 ////				LinearRegressionUpdateHelper helper = new LinearRegressionUpdateHelper("cluster", i, 4, 60, uknownStructurePDB, knownStructrePDB);
 ////				WeightFunctionCalculation wf = new WeightFunctionCalculation(i,1000000);
@@ -86,7 +87,7 @@ public class App
 
 		
 	//	System.out.println("Total Time: " + (System.currentTimeMillis()-startTime)/(60*1000));
-    }
+    //}
 	
 	public void calculateBetaLinearRegression()
 	{

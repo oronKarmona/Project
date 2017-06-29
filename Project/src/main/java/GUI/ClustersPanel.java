@@ -1,7 +1,9 @@
 package GUI;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -10,6 +12,12 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -31,36 +39,60 @@ public class ClustersPanel extends JPanel{
 	private JTextField numberOfClusterstextField;
 	private JProgressBar m_progressBar;	
 	Timer timer;
+	private JLabel title;
 
 	public ClustersPanel(String name) {
 
 		this.setName(name);
+		initBackground();
 		initPanel();		
 	}
+	private void initBackground() {
 
+		   image=null;
+	       try{
+	            image = ImageIO.read(new File("panelbackground.jpg"));
+	        }
+	        catch (IOException e){
+	            e.printStackTrace();
+	        }
+		          
+			
+		}
 	private void initPanel() {
 		
-
+		title = new JLabel();
+		title.setFont(new Font(title.getFont().getName(), Font.BOLD, 20));
+		add(title);
+		
 		setLayout(new GridBagLayout());
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 	    constraints.fill = GridBagConstraints.HORIZONTAL;	  
 	    constraints.insets = new Insets(5, 10, 5, 5);
 	    
+			    
+		/*
+		 * Create Cluster DB
+		 */
 	    
-
-	    
+//	    constraints.gridx = 1;
+//	    constraints.gridy = 1;
+//		title = new JLabel();
+//		title.setFont(new Font(title.getFont().getName(), Font.BOLD, 20));
+//		add(title,constraints);
+		
 	    /*
 	     * DB Name: __________ 
 	     */
 	    constraints.gridx = 0;
-	    constraints.gridy = 1;
+	    constraints.gridy = 2;
 	    DBName = new JLabel();
 	    DBName.setFont(new Font(DBName.getFont().getName(), Font.BOLD, 14));
 		add(DBName,constraints);
 		
 	    constraints.gridx = 1;
-	    constraints.gridy = 1;
+	    constraints.gridy = 2;
 	    DBNametextField = new JTextField(20);
 	    DBNametextField.setToolTipText("insert cluster DB name");
 		add(DBNametextField,constraints);
@@ -69,13 +101,13 @@ public class ClustersPanel extends JPanel{
 	     * Number of clusters: __________ 
 	     */
 	    constraints.gridx = 0;
-	    constraints.gridy = 2;
+	    constraints.gridy = 3;
 	    numberOfClusters = new JLabel();
 	    numberOfClusters.setFont(new Font(numberOfClusters.getFont().getName(), Font.BOLD, 14));
 		add(numberOfClusters,constraints);
 		
 	    constraints.gridx = 1;
-	    constraints.gridy = 2;
+	    constraints.gridy = 3;
 	    numberOfClusterstextField = new JTextField(20);
 		add(numberOfClusterstextField,constraints);
 		
@@ -84,8 +116,13 @@ public class ClustersPanel extends JPanel{
 		 * Run
 		 */
 	    constraints.gridx = 0;
-	    constraints.gridy = 3;
+	    constraints.gridy = 4;
 	    runButton = new JButton("Run");
+		runButton.setForeground(Color.WHITE);
+		runButton.setBackground(Color.black);
+		runButton.setBorder(new LineBorder(Color.BLACK));
+		runButton.setFont(new Font(runButton.getFont().getName(), Font.BOLD, 16));
+		runButton.setPreferredSize(new Dimension(60, 35));
 		add(runButton,constraints);
 	 
 		
@@ -106,13 +143,16 @@ public class ClustersPanel extends JPanel{
 	    constraints.gridx = 3;
 	    constraints.gridy = 0;
 	    Helpbutton = new JButton();
-	    try {
-		   ImageIcon help = new ImageIcon("help.png");
-		   Image image = help.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
-		   Helpbutton.setIcon(new ImageIcon(image));
-	    } catch (Exception ex) {
-	      System.out.println(ex);
-	    }
+	    BufferedImage buttonIcon = null;
+		try {
+			buttonIcon = ImageIO.read(new File("HelpButton.png"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			Helpbutton.setText("?");
+		}
+	    Helpbutton = new JButton(new ImageIcon(buttonIcon));
+	    Helpbutton.setBorder(BorderFactory.createEmptyBorder());
+	    Helpbutton.setContentAreaFilled(false);
 
 	    
         final JPopupMenu helpString = new JPopupMenu("Menu");
@@ -138,9 +178,8 @@ public class ClustersPanel extends JPanel{
         m_progressBar.setStringPainted(true);
         m_progressBar.setBorder(new LineBorder(Color.black));
         m_progressBar.setPreferredSize(new Dimension(300,20));
-        constraints.weightx = 2;
 		 constraints.gridx = 1;
-		 constraints.gridy = 4;
+		 constraints.gridy = 5;
 		 constraints.fill = GridBagConstraints.HORIZONTAL;
 		  add(m_progressBar,constraints);
 		  
@@ -157,14 +196,17 @@ public class ClustersPanel extends JPanel{
             } 
         }
     };
+	private Image image;
 	
 	@Override
     public void paintComponent(Graphics G) {
         super.paintComponent(G);
 
+        title.setText("Create Clusters DB");
         DBName.setText("DB Name:");
         numberOfClusters.setText("Number of clusters: ");
-        Helpbutton.setPreferredSize(new Dimension(40, 40));
+        Helpbutton.setPreferredSize(new Dimension(50, 50));
+        G.drawImage(image, 0, 0, null);
 
     }
 	
