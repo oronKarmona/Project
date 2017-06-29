@@ -29,6 +29,13 @@ import javax.swing.border.LineBorder;
 
 import Main.SystemOperations;
 
+/***
+ * TestingPanel Panel
+ * Create the Testing DB.
+ * Insert the DB type (name in elsticsearch) .
+ * @author Litaf
+ *
+ */
 public class TestingPanel extends JPanel{
 
 	private JLabel DBName;

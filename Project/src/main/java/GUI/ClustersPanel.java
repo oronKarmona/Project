@@ -31,6 +31,13 @@ import javax.swing.border.LineBorder;
 
 import Main.SystemOperations;
 
+/***
+ * ClustersPanel Panel
+ * Create the clusters DB.
+ * Insert the DB type (name in elsticsearch) and the number of cluster you wish to create.
+ * @author Litaf
+ *
+ */
 public class ClustersPanel extends JPanel{
 
 	private JLabel DBName;
@@ -73,17 +80,6 @@ public class ClustersPanel extends JPanel{
 	    constraints.fill = GridBagConstraints.HORIZONTAL;	  
 	    constraints.insets = new Insets(5, 10, 5, 5);
 	    
-			    
-		/*
-		 * Create Cluster DB
-		 */
-	    
-//	    constraints.gridx = 1;
-//	    constraints.gridy = 1;
-//		title = new JLabel();
-//		title.setFont(new Font(title.getFont().getName(), Font.BOLD, 20));
-//		add(title,constraints);
-		
 	    /*
 	     * DB Name: __________ 
 	     */

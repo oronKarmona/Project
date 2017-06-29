@@ -42,7 +42,18 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-
+ 
+/***
+ * ProteinSearch Panel
+ * search proteins information in the DB
+ * Seacrh by protein index or protein Id (by astral id)
+ * If the server in down - an error dialog will apear
+ * If the searching parameters are incorrect- an error label will apear
+ * If the protein has a known structure- it's strucutre will open in RasMol
+ * (Must download the pdb~style DB before) 
+ * @author ליטף
+ *
+ */
 public class ProteinSearch extends JPanel{
 
 

@@ -25,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -37,6 +38,7 @@ import javax.swing.text.JTextComponent;
 import org.apache.logging.log4j.core.Layout;
 
 import DB.ElasticSearchService;
+import Helpers.ReadPajekFile;
 
 /***
  * ClusterSearch panel
@@ -56,6 +58,7 @@ public class ClusterSearch  extends JPanel{
 	private String searchedFile;
 	private JButton Helpbutton;
 	private Image image;
+	private JScrollPane scroller;
 	
 	public ClusterSearch(String name) {
 
@@ -128,24 +131,17 @@ public class ClusterSearch  extends JPanel{
 		/*
 		 * neighbors string
 		 */
-	
 	    constraints.gridx = 0;
-	    constraints.gridy = 5;
+	    constraints.gridy = 3;
 	    
-	    neighborsString = new JTextArea(5,5);
-	    neighborsString.setWrapStyleWord(true);
-	    neighborsString.setLineWrap(true);
+	    neighborsString = new JTextArea(10,40);
 
 	    neighborsString.setEditable(false);
-	    JScrollPane sp = new JScrollPane(neighborsString);  
+	    neighborsString.setVisible(true);
 
-	    Border blackline = BorderFactory.createLineBorder(Color.black);
-		TitledBorder title = BorderFactory.createTitledBorder(blackline, "Neighbors");
-		title.setTitleJustification(TitledBorder.LEFT);
-
-		neighborsString.setBorder(title);
-	    add(neighborsString,constraints);
-
+	    scroller = new JScrollPane(neighborsString);  
+	    add(scroller,constraints);  
+	    
 	    
 	    /*
 	     * Help
@@ -208,7 +204,7 @@ public class ClusterSearch  extends JPanel{
 				errorLabel.setVisible(false);
 				try {
 					Desktop.getDesktop().open(new File(searchedFile));
-				//	neighborsString.setText(ReadPajekFile.Read);
+					neighborsString.setText(ReadPajekFile.read(searchedFile));
 					
 					repaint();
 				} catch (IOException e1) {
@@ -240,6 +236,7 @@ public class ClusterSearch  extends JPanel{
 
         clusterIndex.setText("Cluster ID:");
         Helpbutton.setPreferredSize(new Dimension(50, 50));
+	//	neighborsString.setPreferredSize(new Dimension(550,600));
         G.drawImage(image, 0, 0, null);
 
     }

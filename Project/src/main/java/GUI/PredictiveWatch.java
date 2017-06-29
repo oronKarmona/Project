@@ -36,7 +36,7 @@ import Helpers.ResistanceRMSDParser;
  * Gui Class - PredictiveWatch
  * user will insert the cluster that he want to see the predicted results
  * the class will present the resistacne and Rmsd results of the choosen cluster
- * @author ליטף
+ * @author Litaf
  *
  */
 public class PredictiveWatch extends JPanel{

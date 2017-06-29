@@ -20,6 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
@@ -27,6 +28,15 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import Main.SystemOperations;
+ /***
+  * ParamsSettingsPanel panel
+  * change the parameters in the project (code)
+  * changing the BFS depth- control the size of the clusters that the project will built
+  * changing the hamming treshold- control the similarty in the training data
+  * @author Litaf
+  *
+  */
 public class ParamsSettingsPanel extends JPanel{
 	
 	   private JTextArea hammingExplanationArea;
@@ -101,6 +111,41 @@ public class ParamsSettingsPanel extends JPanel{
 			changeBfsButton.setFont(new Font(changeBfsButton.getFont().getName(), Font.BOLD, 16));
 			changeBfsButton.setPreferredSize(new Dimension(75, 35));
 			
+
+		    changeBfsButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					errorLabel.setText("");
+					errorHammingLabel.setText("");
+					if(newBfs.getText().isEmpty())
+					{
+						errorLabel.setText("string is empty");
+						errorLabel.setVisible(true);
+						return;
+					}
+					try{
+						int num = Integer.parseInt(newBfs.getText());
+						if(num < 0){
+							
+							errorLabel.setText("string is incorrect.please insert a number bigger than 0");
+							errorLabel.setVisible(true);
+							return;
+						}
+					}catch(Exception e1){
+						errorLabel.setText("string is incorrect.please insert a number bigger than 0");
+						errorLabel.setVisible(true);
+						e1.printStackTrace();
+						return;
+					}
+					
+					SystemOperations.sedHammingDistanceThreshold(Integer.parseInt(newBfs.getText()));
+	                JOptionPane.showMessageDialog(null, "Bfs depth was changed!");
+
+				}
+			});
+		    
+		    
 		    changeHamingButton = new JButton("Change");
 
 		    changeHamingButton.setForeground(Color.WHITE);
@@ -109,6 +154,41 @@ public class ParamsSettingsPanel extends JPanel{
 		    changeHamingButton.setFont(new Font(changeBfsButton.getFont().getName(), Font.BOLD, 16));
 		    changeHamingButton.setPreferredSize(new Dimension(75,35));
 		    
+		    
+		    changeHamingButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+
+					errorLabel.setText("");
+					errorHammingLabel.setText("");
+					if(newHamming.getText().isEmpty())
+					{
+						errorHammingLabel.setText("string is empty");
+						errorHammingLabel.setVisible(true);
+						return;
+					}
+					try{
+						int num = Integer.parseInt(newHamming.getText());
+						if(num < 0 || num >100){
+							
+							errorHammingLabel.setText("string is incorrect.please insert a number between 1-100");
+							errorHammingLabel.setVisible(true);
+							return;
+						}
+					}catch(Exception e1){
+						errorHammingLabel.setText("string is incorrect.please insert a number between 1-100");
+						errorHammingLabel.setVisible(true);
+						e1.printStackTrace();
+						return;
+					}
+					
+					SystemOperations.sedHammingDistanceThreshold(Integer.parseInt(newHamming.getText()));
+	                JOptionPane.showMessageDialog(null, "Hamming threshold was changed!");
+
+					
+				}
+			});
 		    /*
 		     * Help
 		     */
@@ -194,7 +274,7 @@ public class ParamsSettingsPanel extends JPanel{
 		    errorLabel = new JLabel("");
 		    errorLabel.setForeground(Color.RED);
 			errorLabel.setFont(new Font(errorLabel.getFont().getName(), Font.BOLD, 12));
-
+			add(errorLabel, constraints);
 		    
 		    /*
 		     * Hamming:
@@ -245,7 +325,7 @@ public class ParamsSettingsPanel extends JPanel{
 		    errorHammingLabel = new JLabel("");
 		    errorHammingLabel.setForeground(Color.RED);
 		    errorHammingLabel.setFont(new Font(errorLabel.getFont().getName(), Font.BOLD, 12));
-		    
+		    add(errorHammingLabel, constraints);
 
 	}
 

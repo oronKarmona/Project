@@ -29,6 +29,13 @@ import javax.swing.border.LineBorder;
 
 import Main.SystemOperations;
 
+/***
+ * StructurePanel Panel
+ * Create the structure DB for the training DB.
+ * Insert the DB type (name in elsticsearch) .
+ * @author Litaf
+ *
+ */
 public class StructurePanel extends JPanel{
 
 	private JLabel DBName;

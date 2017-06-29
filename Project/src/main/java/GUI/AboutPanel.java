@@ -32,6 +32,12 @@ import java.awt.Font;
 
 import javax.swing.SwingConstants;
 
+/***
+ * AboutPanel panel
+ * Present pur project purpose and who are we
+ * @author Litaf
+ *
+ */
 public class AboutPanel extends JPanel{
 
 

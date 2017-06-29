@@ -29,6 +29,13 @@ import javax.swing.border.LineBorder;
 
 import Main.SystemOperations;
 
+/***
+ * TrainingDataPanel Panel
+ * Create the Training DB.
+ * Insert the DB type (name in elsticsearch) .
+ * @author Litaf
+ *
+ */
 public class TrainingDataPanel extends JPanel{
 
 	

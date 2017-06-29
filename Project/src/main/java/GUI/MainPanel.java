@@ -8,7 +8,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-
+ /***
+  * MainPanel - home panel - show image.
+  * @author Litaf
+  *
+  */
 public class MainPanel extends JPanel{
 	
     private Image m_image;
