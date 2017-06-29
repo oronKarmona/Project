@@ -3,6 +3,7 @@ package GUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -11,10 +12,12 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.media.j3d.Background;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -26,6 +29,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.JTextComponent;
 
@@ -42,7 +46,6 @@ import DB.ElasticSearchService;
  */
 public class ClusterSearch  extends JPanel{
 	
-	
 	private JLabel clusterIndex;
 	private JTextField clusterIndextextField;
 	private JButton searchButton;
@@ -51,12 +54,28 @@ public class ClusterSearch  extends JPanel{
 	
 	private String searchedFile;
 	private JButton Helpbutton;
+	private Image image;
+	
 	public ClusterSearch(String name) {
 
 		this.setName(name);
+		initBackground();
 		initPanel();		
 		setActions();
 		//elasticSearchService = new ElasticSearchService("proteins", "known_structure");
+	}
+
+	private void initBackground() {
+
+	   image=null;
+       try{
+            image = ImageIO.read(new File("panelbackground.jpg"));
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+	          
+		
 	}
 
 	private void initPanel() {
@@ -72,20 +91,25 @@ public class ClusterSearch  extends JPanel{
 	     * protien id: __________ search
 	     */
 	    constraints.gridx = 0;
-	    constraints.gridy = 0;
+	    constraints.gridy = 1;
 		clusterIndex = new JLabel();
 		clusterIndex.setFont(new Font(clusterIndex.getFont().getName(), Font.BOLD, 14));
 		add(clusterIndex,constraints);
 		
 	    constraints.gridx = 1;
-	    constraints.gridy = 0;
+	    constraints.gridy = 1;
 	    clusterIndextextField = new JTextField(20);
 	    clusterIndextextField.setToolTipText("insert cluster index");
 		add(clusterIndextextField,constraints);
 		
 	    constraints.gridx = 2;
-	    constraints.gridy = 0;
+	    constraints.gridy = 1;
 		searchButton = new JButton("Search");
+		searchButton.setForeground(Color.WHITE);
+		searchButton.setBackground(Color.black);
+		searchButton.setBorder(new LineBorder(Color.BLACK));
+		searchButton.setFont(new Font(searchButton.getFont().getName(), Font.BOLD, 16));
+		searchButton.setPreferredSize(new Dimension(60, 35));
 		add(searchButton,constraints);
 
 		
@@ -94,7 +118,7 @@ public class ClusterSearch  extends JPanel{
 		 */
 		constraints.gridwidth = 5;
 	    constraints.gridx = 0;
-	    constraints.gridy = 1;
+	    constraints.gridy = 2;
 	    errorLabel = new JLabel("");
 		errorLabel.setFont(new Font(errorLabel.getFont().getName(), Font.BOLD, 12));
 		errorLabel.setForeground(Color.RED);
@@ -106,7 +130,7 @@ public class ClusterSearch  extends JPanel{
 		 */
 	
 	    constraints.gridx = 0;
-	    constraints.gridy = 4;
+	    constraints.gridy = 5;
 	    
 	    neighborsString = new JTextArea(5,5);
 	    neighborsString.setWrapStyleWord(true);
@@ -125,16 +149,20 @@ public class ClusterSearch  extends JPanel{
 	    /*
 	     * Help
 	     */
-	    constraints.gridx = 2;
+	    constraints.gridx = 3;
 	    constraints.gridy = 0;
 	    Helpbutton = new JButton();
-	    try {
-		   ImageIcon help = new ImageIcon("help.png");
-		   Image image = help.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
-		   Helpbutton.setIcon(new ImageIcon(image));
-	    } catch (Exception ex) {
-	      System.out.println(ex);
-	    }
+	    
+	    BufferedImage buttonIcon = null;
+		try {
+			buttonIcon = ImageIO.read(new File("HelpButton.png"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			Helpbutton.setText("?");
+		}
+	    Helpbutton = new JButton(new ImageIcon(buttonIcon));
+	    Helpbutton.setBorder(BorderFactory.createEmptyBorder());
+	    Helpbutton.setContentAreaFilled(false);
 
         final JPopupMenu helpString = new JPopupMenu("Menu");
         helpString.add("Find cluster from DB.");
@@ -217,6 +245,8 @@ public class ClusterSearch  extends JPanel{
         super.paintComponent(G);
 
         clusterIndex.setText("Cluster ID:");
+        Helpbutton.setPreferredSize(new Dimension(50, 50));
+        G.drawImage(image, 0, 0, null);
 
     }
 }

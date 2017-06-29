@@ -102,15 +102,15 @@ public class AboutPanel extends JPanel{
 	    upperPanel.add(area,constraints);
 	    
 	    //***************************** Lower Panel ************************//
-        Image image;
-		try {
+		Image im;
+	    try {
 	        File imagefile = new File("litaf.jpg");
-			image = ImageIO.read(imagefile);
-			scaledImage1 = image.getScaledInstance(150,150,Image.SCALE_SMOOTH);
+			im = ImageIO.read(imagefile);
+			scaledImage1 = im.getScaledInstance(150,150,Image.SCALE_SMOOTH);
 
 			imagefile = new File("oron.jpg");
-			image = ImageIO.read(imagefile);
-			scaledImage2 = image.getScaledInstance(150,150,Image.SCALE_SMOOTH);
+			im = ImageIO.read(imagefile);
+			scaledImage2 = im.getScaledInstance(150,150,Image.SCALE_SMOOTH);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

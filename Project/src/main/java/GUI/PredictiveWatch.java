@@ -10,8 +10,12 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -20,11 +24,21 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 
 import Helpers.ResistanceRMSD;
 import Helpers.ResistanceRMSDParser;
 
+/***
+ * Gui Class - PredictiveWatch
+ * user will insert the cluster that he want to see the predicted results
+ * the class will present the resistacne and Rmsd results of the choosen cluster
+ * @author ליטף
+ *
+ */
 public class PredictiveWatch extends JPanel{
 
 	
@@ -36,14 +50,27 @@ public class PredictiveWatch extends JPanel{
 	private JTable resultsTable;
 	private JButton Helpbutton;
 	private String[][] data; 
+	private Image image;
+
+	 
 	public PredictiveWatch(String name) {
 
 		this.setName(name);
+		initBackground();
 		initPanel();		
 		//setActions();
 		//elasticSearchService = new ElasticSearchService("proteins", "known_structure");
 	}
-	
+	   private void initBackground() {
+
+		   image=null;
+	       try{
+	            image = ImageIO.read(new File("panelbackground.jpg"));
+	        }
+	        catch (IOException e){
+	            e.printStackTrace();
+	        }				
+		}
 	private void initPanel() {
 
 		setLayout(new GridBagLayout());
@@ -54,17 +81,22 @@ public class PredictiveWatch extends JPanel{
 	    /*
 	     * Help
 	     */
+	    
+	    constraints.weightx = 1;
 	    constraints.gridx = 4;
 	    constraints.gridy = 0;
 	
-	    Helpbutton = new JButton();
-	    try {
-		   ImageIcon help = new ImageIcon("help.png");
-		   Image image = help.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
-		   Helpbutton.setIcon(new ImageIcon(image));
-	    } catch (Exception ex) {
-	      System.out.println(ex);
-	    }
+
+	    BufferedImage buttonIcon = null;
+		try {
+			buttonIcon = ImageIO.read(new File("HelpButton.png"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			Helpbutton.setText("?");
+		}
+	    Helpbutton = new JButton(new ImageIcon(buttonIcon));
+	    Helpbutton.setBorder(BorderFactory.createEmptyBorder());
+	    Helpbutton.setContentAreaFilled(false);
 
 	    
         final JPopupMenu helpString = new JPopupMenu("Menu");
@@ -102,8 +134,12 @@ public class PredictiveWatch extends JPanel{
 	    constraints.gridy = 1;
 		searchButton = new JButton("Search");
 		add(searchButton,constraints);
-
-		
+		searchButton.setForeground(Color.WHITE);
+		searchButton.setBackground(Color.black);
+		searchButton.setBorder(new LineBorder(Color.BLACK));
+		searchButton.setFont(new Font(searchButton.getFont().getName(), Font.BOLD, 16));
+		searchButton.setPreferredSize(new Dimension(60, 35));
+	    
 		searchButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -138,7 +174,6 @@ public class PredictiveWatch extends JPanel{
 		/*
 		 * error labal
 		 */
-		constraints.gridwidth = 3;
 	    constraints.gridx = 0;
 	    constraints.gridy = 2;
 	    errorLabel = new JLabel("");
@@ -175,7 +210,8 @@ public class PredictiveWatch extends JPanel{
 	    scrollPane.setPreferredSize(new Dimension(600, 300));
 	    add(scrollPane,constraints);
 
-
+	    JTableHeader  header = resultsTable.getTableHeader();
+	    header.setBackground(new Color(135,206,235));
 	}
 	@Override
     public void paintComponent(Graphics G) {
@@ -183,7 +219,8 @@ public class PredictiveWatch extends JPanel{
 
         clusterIndex.setText("Cluster Index: ");
         resultsLabel.setText("Results: ");
-        Helpbutton.setPreferredSize(new Dimension(40, 40));
+        Helpbutton.setPreferredSize(new Dimension(50, 50));
+        G.drawImage(image, 0, 0, null);
 
     }
 	

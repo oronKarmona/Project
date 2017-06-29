@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 public class MainPanel extends JPanel{
 	
     private Image m_image;
+	private Image image;
 
     public MainPanel(String name) {
 
@@ -26,7 +27,16 @@ public class MainPanel extends JPanel{
 		
     	m_image = image;	
     }
- 
+	   private void initBackground() {
+
+		   image=null;
+	       try{
+	            image = ImageIO.read(new File("panelbackground.jpg"));
+	        }
+	        catch (IOException e){
+	            e.printStackTrace();
+	        }				
+		}
 	@Override
     public void paintComponent(Graphics G) {
         super.paintComponent(G);
