@@ -6,17 +6,46 @@ import java.util.Map;
 import DB.ElasticSearchService;
 import Helpers.UpdateHamming;
 import Protein.Protein;
-
+/***
+ * Thread for updating the hamming distance of the training data [internal use only]
+ * @author Oron
+ *
+ */
 public class UpdateHammingThread extends Thread
 {
+	/***
+	 * known structural proteins 
+	 */
 	private ArrayList<Protein> proteinsdb ; 
+	/**
+	 * Returned object from the elasticsearch db
+	 */
 	private Map<String, Object> map ;  
+	/***
+	 * ElasticSearch client
+	 */
 	private ElasticSearchService es ;
+	/***
+	 * proteins indices as index map 
+	 */
 	private Map<Integer , Integer> indexMap;
+	/***
+	 * details of the training data entry
+	 */
 	private int firstP , secondP , firstF, secondF , hamming,i,typeSize;
+	/***
+	 * String of the fragments for hamming calculation 
+	 */
 	private String  fragmentA = "", fragmentB = "";
+	/***
+	 * counter for progress check
+	 */
 	private int ctr = 0 ;
-	
+	/***
+	 * Constructor
+	 * @param proteinsdb - known structural proteins 
+	 * @param indexMap - proteins indices as index map 
+	 */
 	public UpdateHammingThread(ArrayList<Protein> proteinsdb ,Map<Integer , Integer> indexMap ) 
 	{
 		this.indexMap = indexMap;
@@ -35,7 +64,10 @@ public class UpdateHammingThread extends Thread
 			UpdateDoc(index);
 		}
 	}
-	
+	/***
+	 * Updating the document of the given index 
+	 * @param index - index to update 
+	 */
 	private void UpdateDoc(int index)
 	{
 			try{
@@ -72,7 +104,12 @@ public class UpdateHammingThread extends Thread
 			}
 	
 	}
-	
+	/***
+	 * Hamming distance calculation 
+	 * @param protein1
+	 * @param protein2
+	 * @return
+	 */
 	private int hamming(String protein1 , String protein2)
 	{
 		

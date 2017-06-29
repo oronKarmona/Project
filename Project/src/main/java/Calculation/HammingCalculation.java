@@ -1,7 +1,7 @@
 package Calculation;
 /***
  * 
- * @author ליטף
+ * @author LITAF
  * HammingCalculation
  * initiate the wanted threshold
  * Calculate mathid: return true if the fragments passes the predetermined threshold

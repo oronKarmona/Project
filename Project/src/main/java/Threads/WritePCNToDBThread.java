@@ -10,13 +10,30 @@ import DB.ElasticSearchService;
 import PCN.NodePCN;
 import PCN.Node;
 import PCN.WritePCNtoDB;
-
+/**
+ * 	Writing the PCN data to ElasticSearch DB
+ * @author Oron
+ *
+ */
 public class WritePCNToDBThread extends Thread
 {
+	/**
+	 * Number of the pcn file 
+	 */
 	private int pcn_file_number ; 
+	/**
+	 * Name of the PCN file 
+	 */
 	private String pcn_file_name ; 
+	/**
+	 * Elastic Seach cilent
+	 */
 	private ElasticSearchService es ; 
-	
+	/***
+	 * Constructor
+	 * @param pcn_file_name - Name of the PCN file 
+	 * @param es - Elastic Seach cilent
+	 */
 	public WritePCNToDBThread(String pcn_file_name ,ElasticSearchService es )
 	{
 		this.pcn_file_name = pcn_file_name ; 
@@ -38,7 +55,11 @@ public class WritePCNToDBThread extends Thread
 		}
 			
 	}
-	
+	/***
+	 * Parsing the PCN file 
+	 * @param pcn_file
+	 * @throws FileNotFoundException
+	 */
 	private void readFile(File pcn_file) throws FileNotFoundException
 	{
 		NodePCN currentNode = new NodePCN();
@@ -104,7 +125,10 @@ public class WritePCNToDBThread extends Thread
 		}
 	}
 	
-	
+	/**
+	 * Writing the parsed data to the database
+	 * @param currentNode - data 
+	 */
 	private void writeToDB(NodePCN currentNode)
 	{
 		es.addToBulk(currentNode);

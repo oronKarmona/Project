@@ -5,14 +5,24 @@ import Table.TrainingDataEntry;
 import DB.ElasticSearchService;
 
 /***
- * This class is used to write to the elastic search db
+ * This class is used to write training data entries to the elastic search db
  * @author Oron
  *
  */
 public class ElasticSearchWriteThread extends Thread 
 {
+	/***
+	 * elasticSearch client 
+	 */
 	private ElasticSearchService es = null;
+	/***
+	 * counter for progress check
+	 */
 	private long ctr = 0 ;
+	/***
+	 * constructor
+	 * @param es - elasticsearch client to be used 
+	 */
 	public  ElasticSearchWriteThread(ElasticSearchService es)
 	{
 		

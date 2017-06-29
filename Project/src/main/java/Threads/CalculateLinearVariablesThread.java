@@ -7,19 +7,60 @@ import Calculation.LinearSystemSolution;
 import DB.ElasticSearchService;
 import Helpers.LinearTableValues;
 import Protein.Protein;
-
+/***
+ * Calculate the linear regression x , y values for each document in the training data index 
+ * @author Oron
+ *
+ */
 public class CalculateLinearVariablesThread extends Thread{
 
+	/***
+	 * ElasticSearch for training data index in the elasticSearch
+	 */
 	private ElasticSearchService trainingDataClient ;
+	/***
+	 * ElasticSearch for proteins data index in the elasticSearch
+	 */
 	private ElasticSearchService proteinsDataClient ;
+	/***
+	 * ElasticSearch for sacing results in  linear data index in the elasticSearch (optional)
+	 */
 	private ElasticSearchService linearDataClient ;
+	/***
+	 * Maps for easy access to records of the elasticsearch
+	 */
 	private Map<String,Object> trainingDataRecord , proteinAsMap;
+	/***
+	 * Hamming distance calculation object
+	 */
 	private HammingCalculation m_hammingCalculation;
+	/***
+	 * details of the training data the needs to be considered for the linear values
+	 */
 	private int firstProteinIndex , secondProteinIndex ,fragmentHammingDistance , contextHammingDistance; 
+	/***
+	 * Proteins of the comparison 
+	 */
 	private Protein firstProtein , secondProtein;
+	/***
+	 * Fragments of the compared proteins
+	 */
 	private int firstProteinFragment , secondProteinFragment;
+	/***
+	 * RMSD result of the compared proteins
+	 */
 	private double rmsd ; 
+	/***
+	 * context of the proteins fragments (10 amino acids for each side of the fragment [ 10 + fragment + 10 ] ) 
+	 */
 	private String firstContext = null, secondContext = null;
+	
+	/***
+	 * Constructor
+	 * @param trainingDataClient
+	 * @param proteinsDataClient
+	 * @param linearDataClient
+	 */
 	public CalculateLinearVariablesThread( ElasticSearchService trainingDataClient, ElasticSearchService proteinsDataClient, 
 											ElasticSearchService linearDataClient) {
 		
@@ -46,7 +87,10 @@ public class CalculateLinearVariablesThread extends Thread{
 		}
 	}
 	
-	
+	/***
+	 * calculation function 
+	 * @param index - index to be manipulated in the training data 
+	 */
 	private void calculateVariables(long index)
 	{
 		trainingDataRecord = trainingDataClient.get((int)index);
@@ -82,7 +126,11 @@ public class CalculateLinearVariablesThread extends Thread{
 	}
 	
 	
-	
+	/***
+	 * Gets protein according to its index 
+	 * @param index - protein index 
+	 * @return protein with the provided index 
+	 */
 	private Protein getProteinFromDB(int index )
 	{
 		proteinAsMap = proteinsDataClient.getProtein(index);

@@ -8,30 +8,85 @@ import DB.ElasticSearchService;
 import Protein.Protein;
 import Table.TrainingData;
 import Table.TrainingDataEntry;
-
+/***
+ * Thread class for building making the training data claculation 
+ * @author Oron
+ *
+ */
 public class BuildTrainningDataTheard extends Thread{
-	
+	/***
+	 * known structure proteins 
+	 */
 	private static ArrayList<Protein> m_proteinsDB;
+	/***
+	 * Training data entries
+	 */
 	private ArrayList<TrainingDataEntry> m_trainingData;
+	/***
+	 * Hamming distance object for calculating the hamming distance due to a threshold
+	 */
 	private HammingCalculation m_hammingCalculation;
+	/***
+	 * Default hamming distance in case of wrong hamming distance set by the user 
+	 */
 	private static final double threshold = 60;
+	/**
+	 * current time for testing purpose
+	 */
 	private long current_time ;
+	/***
+	 * writing data to the elasticsearch db
+	 */
 	private ElasticSearchService m_elasticSearchService;
-	private int m_Threadindex; // to be used for progress bar
+	/***
+	 * to be used for progress bar
+	 */
+	private int m_Threadindex; 
+	/***
+	 * indices for the for loops
+	 */
 	private int i=0	,j = 0;
+	/***
+	 * fragment count of the compared proteins
+	 */
 	private int p1_fragment_count,p2_fragment_count;
+	/***
+	 * Second protein of the comparison
+	 */
 	private Protein protein;
+	/***
+	 * indices of the compared proteins
+	 */
 	private int index , p;
+	/***
+	 * Data entry of the training data
+	 */
 	private TrainingDataEntry dataEntry  = new TrainingDataEntry();
+	/***
+	 * rmsd calculation result
+	 */
 	private RMSDCalculation rmsd;
-	
-	public BuildTrainningDataTheard(ArrayList<Protein> proteinsDB, int Threadindex, ElasticSearchService elasticSearchService)
+	/***
+	 * Constructor
+	 * @param proteinsDB - database of the known structural proteins
+	 * @param Threadindex - thread index 
+	 * @param elasticSearchService - elasticSearch client
+	 * @param hammingThreshold - hamming distance threshold set by the user
+	 */
+	public BuildTrainningDataTheard(ArrayList<Protein> proteinsDB, int Threadindex, ElasticSearchService elasticSearchService , double hammingThreshold)
 	{
 		try{
-			m_hammingCalculation = new HammingCalculation(threshold);
+			m_hammingCalculation = new HammingCalculation(hammingThreshold);
 		}
 		catch(Exception e){
 			e.printStackTrace();
+			try {
+				System.out.println("Setting Threshold to 60% for recovering from user error");
+				m_hammingCalculation = new HammingCalculation(threshold);
+				
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		}
 		m_elasticSearchService = elasticSearchService;
 		m_trainingData = new ArrayList<>();
@@ -53,7 +108,10 @@ public class BuildTrainningDataTheard extends Thread{
 		}
 		
 	}
-	
+	/***
+	 * Making the calculation of the training data table
+	 * @param proteinToCompareTo - first protein of the comparison 
+	 */
 	private void initTable(Protein proteinToCompareTo)
 	{//1
 		 index = m_proteinsDB.indexOf(proteinToCompareTo); 
@@ -98,21 +156,6 @@ public class BuildTrainningDataTheard extends Thread{
 		
 		
 	}//1
-	
-	private int hamming(String protein1 , String protein2)
-	{
-		
-		  int hammingDistance = 0;
-		    int stringLength = protein1.length();
-
-		    for (int j = 0; j < stringLength; j++) {
-		      if (protein1.charAt(j) != protein2.charAt(j)) {
-		        hammingDistance++;
-		      }
-		    }
-		 
-		    return hammingDistance;
-	}
 	
 	public ArrayList<TrainingDataEntry> GetTrainingData() {
 		return m_trainingData;

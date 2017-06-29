@@ -37,7 +37,7 @@ import DB.ElasticSearchService;
  * ClusterSearch panel
  * Recive cluster index from the user and searching in the clusters DB the
  * right cluster. Display the cluster neighbors and open in pajek tool
- * @author ליטף
+ * @author LITAF
  *
  */
 public class ClusterSearch  extends JPanel{
