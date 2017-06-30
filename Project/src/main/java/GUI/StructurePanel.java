@@ -27,6 +27,8 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 
+import org.elasticsearch.client.transport.NoNodeAvailableException;
+
 import Main.SystemOperations;
 
 /***
@@ -111,15 +113,20 @@ public class StructurePanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if(DBNametextField.getText().isEmpty())
-				{
-					return;
+				try{
+					if(DBNametextField.getText().isEmpty())
+					{
+						return;
+					}
+					
+					SystemOperations.BuildProteinStructuralData(DBNametextField.getText());
+	
+			        timer = new Timer(1000, setProgress);
+			        timer.start();
 				}
-				
-				SystemOperations.BuildProteinStructuralData(DBNametextField.getText());
-
-		        timer = new Timer(1000, setProgress);
-		        timer.start();				
+				catch (NoNodeAvailableException e2){
+	                JOptionPane.showMessageDialog(null, "Server is down", "Error",JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		
@@ -178,7 +185,7 @@ public class StructurePanel extends JPanel{
             m_progressBar.setValue(counter);
             counter++;
             if (counter>100) {
-                JOptionPane.showMessageDialog(null, "Finished Building Clusters!");
+                JOptionPane.showMessageDialog(null, "Finished adding the structure data!");
                 timer.stop();
             } 
         }

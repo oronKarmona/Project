@@ -29,6 +29,8 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 
+import org.elasticsearch.client.transport.NoNodeAvailableException;
+
 import Main.SystemOperations;
 
 /***
@@ -128,6 +130,8 @@ public class ClustersPanel extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				try{
 				if(DBNametextField.getText().isEmpty() ||numberOfClusters.getText().isEmpty() )
 				{
 					return;
@@ -136,7 +140,10 @@ public class ClustersPanel extends JPanel{
 				SystemOperations.BuildClusters(DBName.getText(), Integer.parseInt(numberOfClusters.getText()));
 		        timer = new Timer(1000, setProgress);
 		        timer.start();
-				
+				}
+				catch (NoNodeAvailableException e2){
+	                JOptionPane.showMessageDialog(null, "Server is down", "Error",JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 
