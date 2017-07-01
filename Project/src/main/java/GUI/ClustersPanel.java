@@ -127,9 +127,13 @@ public class ClustersPanel extends JPanel{
 				public void actionPerformed(ActionEvent e) {
 					
 					try{
-					throw new IOException();
-					// SystemOperations.BuildClusters(DBName.getText(), Integer.parseInt(numberOfClusters.getText()));
+					 SystemOperations.WritePCNtoElastic();
+		             JOptionPane.showMessageDialog(null, "PCN Built", "Info",JOptionPane.INFORMATION_MESSAGE);
+
 			        }
+					catch (NoNodeAvailableException e3){
+		                JOptionPane.showMessageDialog(null, "Server is down", "Error",JOptionPane.ERROR_MESSAGE);
+					}
 					catch (Exception e2){
 		                JOptionPane.showMessageDialog(null, "Please make sure you download the PCN\nFile from the internet", "Error",JOptionPane.ERROR_MESSAGE);
 					}
@@ -230,8 +234,9 @@ public class ClustersPanel extends JPanel{
 
 	    
         final JPopupMenu helpString = new JPopupMenu("Menu");
-        helpString.add("Create as many clusters (small networks)");
-        helpString.add("in the BFS depth (change in setting window)");
+        helpString.add("First, create the PCN DB");
+        helpString.add("After creating the DB, you can create as many clusters");
+        helpString.add("(small networks) in the BFS depth (change in setting window)");
         helpString.add("and save them in the ElasticSearch DB");
         Helpbutton.addActionListener(new ActionListener() {
 			
