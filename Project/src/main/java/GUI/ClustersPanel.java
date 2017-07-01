@@ -144,7 +144,7 @@ public class ClustersPanel extends JPanel{
 	     * Build Clusters
 	     */
 	    constraints.gridx = 0;
-	    constraints.gridy = 3;
+	    constraints.gridy = 4;
 		title2 = new JLabel();
 		title2.setFont(new Font(title2.getFont().getName(), Font.BOLD, 16));
 		title2.setForeground(Color.BLUE);
@@ -154,13 +154,13 @@ public class ClustersPanel extends JPanel{
 	     * DB Name: __________ 
 	     */
 	    constraints.gridx = 0;
-	    constraints.gridy = 4;
+	    constraints.gridy = 5;
 	    DBName = new JLabel();
 	    DBName.setFont(new Font(DBName.getFont().getName(), Font.BOLD, 14));
 		add(DBName,constraints);
 		
 	    constraints.gridx = 1;
-	    constraints.gridy = 4;
+	    constraints.gridy = 5;
 	    DBNametextField = new JTextField(20);
 	    DBNametextField.setToolTipText("insert cluster DB name");
 		add(DBNametextField,constraints);
@@ -169,13 +169,13 @@ public class ClustersPanel extends JPanel{
 	     * Number of clusters: __________ 
 	     */
 	    constraints.gridx = 0;
-	    constraints.gridy = 5;
+	    constraints.gridy = 6;
 	    numberOfClusters = new JLabel();
 	    numberOfClusters.setFont(new Font(numberOfClusters.getFont().getName(), Font.BOLD, 14));
 		add(numberOfClusters,constraints);
 		
 	    constraints.gridx = 1;
-	    constraints.gridy = 5;
+	    constraints.gridy = 6;
 	    numberOfClusterstextField = new JTextField(20);
 		add(numberOfClusterstextField,constraints);
 		
@@ -184,7 +184,7 @@ public class ClustersPanel extends JPanel{
 		 * Run
 		 */
 	    constraints.gridx = 0;
-	    constraints.gridy = 6;
+	    constraints.gridy = 7;
 	    runButton = new JButton("Run");
 		runButton.setForeground(Color.WHITE);
 		runButton.setBackground(Color.black);
@@ -258,7 +258,7 @@ public class ClustersPanel extends JPanel{
         m_progressBar.setBorder(new LineBorder(Color.black));
         m_progressBar.setPreferredSize(new Dimension(300,20));
 		 constraints.gridx = 1;
-		 constraints.gridy = 7;
+		 constraints.gridy = 8;
 		 constraints.fill = GridBagConstraints.HORIZONTAL;
 		  add(m_progressBar,constraints);
 		  
@@ -282,8 +282,7 @@ public class ClustersPanel extends JPanel{
         super.paintComponent(G);
 
         title1.setText("Create PCN DB");
-        
-        
+               
         title2.setText("Create Clusters DB");
 
         PCNName.setText("Make sure to download Pcn files");
