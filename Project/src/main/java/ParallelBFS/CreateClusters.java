@@ -53,6 +53,15 @@ public class CreateClusters
 	 * distance factor
 	 */
 	private static int distance_threshold  ;
+	
+	public static int getDistance_threshold() {
+		return distance_threshold;
+	}
+	public static void setDistance_threshold(int distance_threshold) {
+		CreateClusters.distance_threshold = distance_threshold;
+	}
+
+
 	/***
 	 * proteins pdb of known and unknown
 	 */
