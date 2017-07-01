@@ -1,5 +1,6 @@
 package TestingData;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,10 +54,9 @@ public class CalculateRmsdForEntry
 				readProteins = new ElasticSearchService("proteins", "known_structure");
 				clusterMap = new HashMap<Integer, String>();
 				proteinMap = new HashMap<Integer,Protein>();
-				number_of_vertex = (int)readCluster.getCountOfDocInType() - 2 ;
 				this.createProteinMap();
 				this.updateEntries();
-				System.out.println();
+				WriteDataToFile.WriteDataToFile(entries, "result");
 			}
 			
 			
@@ -91,7 +91,7 @@ public class CalculateRmsdForEntry
 					rmsd = r.Calculate(p1.getFragmentCoordinates(e.getProtein1_fragment()), p2.getFragmentCoordinates(e.getProtein2_fragment()));
 					
 					e.setRmsd(rmsd);
-					System.out.println();
+					
 					
 				}
 			}
@@ -149,11 +149,20 @@ public class CalculateRmsdForEntry
 			private void createProteinMap()
 			{
 				System.out.println("creating cluster map");
+				try{
+					number_of_vertex = (int)readCluster.getCountOfDocInType() - 2 ;
 				for(int i = 0 ; i < number_of_vertex ; i++)
 				{
 					System.out.println(i);
 					graph.add(readCluster.getVertexAt(i));
 					clusterMap.put( i + 1 , this.node_toString(graph.get(graph.size() - 1))) ;
+				}} catch(Exception e){
+					try {
+						clusterMap = DBbypass.DBparser("cluster0.net");
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 				System.out.println("finished cluster map");
 				

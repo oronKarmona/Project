@@ -1,5 +1,6 @@
 package Main;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
@@ -8,6 +9,7 @@ import DB.ElasticSearchService;
 import Helpers.LinearRegressionUpdateHelper;
 import Helpers.PajekFormatHelper;
 import Helpers.WeightedGraphFile;
+import PCN.WritePCNtoDB;
 import ParallelBFS.CreateClusters;
 import Protein.Protein;
 import Table.TrainingData;
@@ -139,6 +141,19 @@ public class SystemOperations
 	{
 		hammingDistance = threshold ; 
 	}
+	/***
+	 * Parses the PCN file to the elasticSearch DB
+	 * @throws FileNotFoundException
+	 */
+	public static void WritePCNtoElastic() throws FileNotFoundException
+	{
+		 if(!new File("pcn//pcn~0").exists()){
+		    	throw  new FileNotFoundException();
+		    }
+		WritePCNtoDB w = new WritePCNtoDB("pcn//pcn~", 50, "pcn", "data", false);
+		// כשיהיה לי את הפי סי אנ של החלבונים הידועים אני אעדכן את השורה הזו
+		//w = new WritePCNtoDB(pcn_file_name, numberOfFiles, index, type, startFromLast);
+	}
 	
 	/***
 	 * GetHamming Distance threshold
@@ -147,5 +162,6 @@ public class SystemOperations
 	public static String getHammingDistanceThreshold()
 	{
 		return Double.toString(hammingDistance)+"%";
+
 	}
 }

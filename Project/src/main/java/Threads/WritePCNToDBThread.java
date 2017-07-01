@@ -45,13 +45,15 @@ public class WritePCNToDBThread extends Thread
 	{
 		while((pcn_file_number = WritePCNtoDB.getNextFileNumber()) != -1 )
 		{
-			try {
-				readFile(new File(pcn_file_name+pcn_file_number));
-			} 
-			catch (FileNotFoundException e) {
-				System.out.println("File not Found: " + pcn_file_name+pcn_file_number);
-				e.printStackTrace();
-			}
+			
+				try {
+					readFile(new File(pcn_file_name+pcn_file_number));
+				} catch (FileNotFoundException e) {
+					
+					e.printStackTrace();
+				}
+			 
+		
 		}
 			
 	}
