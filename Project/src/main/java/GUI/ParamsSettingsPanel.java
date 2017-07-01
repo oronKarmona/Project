@@ -139,9 +139,9 @@ public class ParamsSettingsPanel extends JPanel{
 						return;
 					}
 					
-					SystemOperations.sedHammingDistanceThreshold(Integer.parseInt(newBfs.getText()));
+					SystemOperations.setBfsDepth(Integer.parseInt(newBfs.getText()));
 	                JOptionPane.showMessageDialog(null, "Bfs depth was changed!");
-
+	    	        repaint();
 				}
 			});
 		    
@@ -186,7 +186,7 @@ public class ParamsSettingsPanel extends JPanel{
 					SystemOperations.sedHammingDistanceThreshold(Integer.parseInt(newHamming.getText()));
 	                JOptionPane.showMessageDialog(null, "Hamming threshold was changed!");
 
-					
+	                repaint();
 				}
 			});
 		    /*
@@ -332,8 +332,8 @@ public class ParamsSettingsPanel extends JPanel{
 		@Override
 	    public void paintComponent(Graphics G) {
 	        super.paintComponent(G);
-	        currentBfs.setText("5");
-	        currentHamming.setText("60%");
+	        currentBfs.setText(SystemOperations.getBfsDepth());
+	        currentHamming.setText(SystemOperations.getHammingDistanceThreshold());
 	        bfsLabel.setText("BFS");
 	        hammingLabel.setText("Hamming Threshold");
 	        currentLabel.setText("Current");

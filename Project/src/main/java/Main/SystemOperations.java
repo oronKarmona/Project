@@ -32,7 +32,15 @@ public class SystemOperations
 	/**
 	 * Hamming distance threshold for trainingData
 	 */
-	private static double hammingDistance;
+	private static double hammingDistance = 60;
+	/**
+	 * TrainingData class
+	 */
+	private static TrainingData trainingData = null;
+	/**
+	 * CreateClusters class
+	 */
+	private static CreateClusters bfs = null;
 	
 	/***
 	 * Build Protein Structural Data
@@ -55,9 +63,8 @@ public class SystemOperations
 	public static void BuildTrainingData(String elasticType) 
 	{
 		ArrayList<Protein>knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-		TrainingData trainingData = new TrainingData(knownStructrePDB ,elasticType,hammingDistance);
+		trainingData = new TrainingData(knownStructrePDB ,elasticType,hammingDistance);
 	}
-	
 	/***
 	 * Create Clusters
 	 */
@@ -67,7 +74,7 @@ public class SystemOperations
 
 		ArrayList<Protein> uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
 		
-		CreateClusters bfs = new CreateClusters(bfsDepth,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
+		bfs = new CreateClusters(bfsDepth,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
 				elastic_index,95);		
 		
 		for(int i = 0; i < index; i++)
@@ -115,7 +122,16 @@ public class SystemOperations
 	{
 		bfsDepth = depth ; 
 	}
+	/***
+	 * get Bfs depth
+	 * @param depth - depth of the bfs  
+	 */
+	public static String getBfsDepth()
+	{
+		return Integer.toString(bfsDepth);
+	}
 
+	
 	
 	/***
 	 * SetHamming Distance threshold
@@ -137,5 +153,15 @@ public class SystemOperations
 		WritePCNtoDB w = new WritePCNtoDB("pcn//pcn~", 50, "pcn", "data", false);
 		// כשיהיה לי את הפי סי אנ של החלבונים הידועים אני אעדכן את השורה הזו
 		//w = new WritePCNtoDB(pcn_file_name, numberOfFiles, index, type, startFromLast);
+	}
+	
+	/***
+	 * GetHamming Distance threshold
+	 * @param threshold - threshold defined by user
+	 */
+	public static String getHammingDistanceThreshold()
+	{
+		return Double.toString(hammingDistance)+"%";
+
 	}
 }

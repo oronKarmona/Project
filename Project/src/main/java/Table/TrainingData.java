@@ -69,6 +69,14 @@ public class TrainingData {
 	 * default value is 60
 	 */
 	private double hammingThreshold = 60;
+	
+	public double getHammingThreshold() {
+		return hammingThreshold;
+	}
+	public void setHammingThreshold(double hammingThreshold) {
+		this.hammingThreshold = hammingThreshold;
+	}
+
 	/***
 	 * ElasticSearch client 
 	 */
