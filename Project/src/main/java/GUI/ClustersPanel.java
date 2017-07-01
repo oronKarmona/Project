@@ -31,7 +31,10 @@ import javax.swing.border.LineBorder;
 
 import org.elasticsearch.client.transport.NoNodeAvailableException;
 
+import Helpers.PCNpdbParser;
 import Main.SystemOperations;
+import PCN.WritePCNtoDB;
+import Threads.WritePCNToDBThread;
 
 /***
  * ClustersPanel Panel
@@ -43,14 +46,19 @@ import Main.SystemOperations;
 public class ClustersPanel extends JPanel{
 
 	private JLabel DBName;
+	private JLabel PCNName;
+
 	private JButton Helpbutton;
 	private JButton runButton;
+	private JButton runPCNButton;
+
 	private JTextField DBNametextField;
 	private JLabel numberOfClusters;
 	private JTextField numberOfClusterstextField;
 	private JProgressBar m_progressBar;	
 	Timer timer;
-	private JLabel title;
+	private JLabel title1;
+	private JLabel title2;
 
 	public ClustersPanel(String name) {
 
@@ -72,27 +80,83 @@ public class ClustersPanel extends JPanel{
 		}
 	private void initPanel() {
 		
-		title = new JLabel();
-		title.setFont(new Font(title.getFont().getName(), Font.BOLD, 20));
-		add(title);
-		
 		setLayout(new GridBagLayout());
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 	    constraints.fill = GridBagConstraints.HORIZONTAL;	  
 	    constraints.insets = new Insets(5, 10, 5, 5);
 	    
+	    
+	    /*
+	     * Build PCN 
+	     */
+	    constraints.gridx = 0;
+	    constraints.gridy = 1;
+
+	    title1 = new JLabel();
+		title1.setFont(new Font(title1.getFont().getName(), Font.BOLD, 16));
+		title1.setForeground(Color.BLUE);
+		add(title1,constraints);
+		
+	    /*
+	     * PCN instructions 
+	     */
+	    constraints.gridx = 0;
+	    constraints.gridy = 2;
+	    PCNName = new JLabel();
+	    PCNName.setFont(new Font(PCNName.getFont().getName(), Font.BOLD, 14));
+		add(PCNName,constraints);
+		
+	    /*
+	     * parse pcn
+	     */
+		  constraints.gridx = 0;
+		    constraints.gridy = 3;
+		    runPCNButton = new JButton("Run");
+		    runPCNButton.setForeground(Color.WHITE);
+		    runPCNButton.setBackground(Color.black);
+			runPCNButton.setBorder(new LineBorder(Color.BLACK));
+			runPCNButton.setFont(new Font(runPCNButton.getFont().getName(), Font.BOLD, 16));
+			runPCNButton.setPreferredSize(new Dimension(60, 35));
+			add(runPCNButton,constraints);
+		 
+			
+			runPCNButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					try{
+					throw new IOException();
+					// SystemOperations.BuildClusters(DBName.getText(), Integer.parseInt(numberOfClusters.getText()));
+			        }
+					catch (Exception e2){
+		                JOptionPane.showMessageDialog(null, "Please make sure you download the PCN\nFile from the internet", "Error",JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			});
+	    
+	    /*
+	     * Build Clusters
+	     */
+	    constraints.gridx = 0;
+	    constraints.gridy = 3;
+		title2 = new JLabel();
+		title2.setFont(new Font(title2.getFont().getName(), Font.BOLD, 16));
+		title2.setForeground(Color.BLUE);
+		add(title2,constraints);
+		
 	    /*
 	     * DB Name: __________ 
 	     */
 	    constraints.gridx = 0;
-	    constraints.gridy = 2;
+	    constraints.gridy = 4;
 	    DBName = new JLabel();
 	    DBName.setFont(new Font(DBName.getFont().getName(), Font.BOLD, 14));
 		add(DBName,constraints);
 		
 	    constraints.gridx = 1;
-	    constraints.gridy = 2;
+	    constraints.gridy = 4;
 	    DBNametextField = new JTextField(20);
 	    DBNametextField.setToolTipText("insert cluster DB name");
 		add(DBNametextField,constraints);
@@ -101,13 +165,13 @@ public class ClustersPanel extends JPanel{
 	     * Number of clusters: __________ 
 	     */
 	    constraints.gridx = 0;
-	    constraints.gridy = 3;
+	    constraints.gridy = 5;
 	    numberOfClusters = new JLabel();
 	    numberOfClusters.setFont(new Font(numberOfClusters.getFont().getName(), Font.BOLD, 14));
 		add(numberOfClusters,constraints);
 		
 	    constraints.gridx = 1;
-	    constraints.gridy = 3;
+	    constraints.gridy = 5;
 	    numberOfClusterstextField = new JTextField(20);
 		add(numberOfClusterstextField,constraints);
 		
@@ -116,7 +180,7 @@ public class ClustersPanel extends JPanel{
 		 * Run
 		 */
 	    constraints.gridx = 0;
-	    constraints.gridy = 4;
+	    constraints.gridy = 6;
 	    runButton = new JButton("Run");
 		runButton.setForeground(Color.WHITE);
 		runButton.setBackground(Color.black);
@@ -189,7 +253,7 @@ public class ClustersPanel extends JPanel{
         m_progressBar.setBorder(new LineBorder(Color.black));
         m_progressBar.setPreferredSize(new Dimension(300,20));
 		 constraints.gridx = 1;
-		 constraints.gridy = 5;
+		 constraints.gridy = 7;
 		 constraints.fill = GridBagConstraints.HORIZONTAL;
 		  add(m_progressBar,constraints);
 		  
@@ -212,7 +276,12 @@ public class ClustersPanel extends JPanel{
     public void paintComponent(Graphics G) {
         super.paintComponent(G);
 
-        title.setText("Create Clusters DB");
+        title1.setText("Create PCN DB");
+        
+        
+        title2.setText("Create Clusters DB");
+
+        PCNName.setText("Make sure to download Pcn files");
         DBName.setText("DB Name:");
         numberOfClusters.setText("Number of clusters: ");
         Helpbutton.setPreferredSize(new Dimension(50, 50));
