@@ -103,16 +103,14 @@ public class SystemOperations
 	 * Build Testing Data
 	 * @param read_file_name - the name of the file with the resistance 
 	 * @param cluster_type - the name of the cluster type to be manipulated 
+	 * @throws FileNotFoundException 
 	 */
-	public static void BuildTestingData(String read_file_name, String cluster_type)
+	public static void BuildTestingData(String read_file_name, String cluster_type) throws FileNotFoundException
 	{
-		try {
+	
 			ArrayList<Protein> knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
-			ArrayList<TestingEntry> entries = ReadResistencesFile.ParseFile(read_file_name);
-			CalculateRmsdForEntry c = new CalculateRmsdForEntry(entries, "cluster", cluster_type, knownStructrePDB);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+			CalculateRmsdForEntry c = new CalculateRmsdForEntry( read_file_name, "cluster", cluster_type, knownStructrePDB);
+	
 	}
 	/***
 	 * set Bfs depth

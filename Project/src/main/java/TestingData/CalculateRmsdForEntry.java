@@ -39,16 +39,21 @@ public class CalculateRmsdForEntry
 		private ArrayList<NodePCN> graph;
 		private ArrayList<Protein> known_proteins;
 		private ArrayList<TestingEntry> entries ;
+		
+		private String cluster_index , cluster_type;
 			/**
 			 * constructor
 			 * @param entries - test entries
 			 * @param cluster_index
 			 * @param cluster_type
+			 * @throws FileNotFoundException 
 			 */
-			public CalculateRmsdForEntry(ArrayList<TestingEntry> entries , String cluster_index , String cluster_type , ArrayList<Protein> known_proteins)
+			public CalculateRmsdForEntry(String read_file_name, String cluster_index , String cluster_type , ArrayList<Protein> known_proteins) throws FileNotFoundException
 			{
-				this.entries = entries ; 
+				this.entries =  ReadResistencesFile.ParseFile(read_file_name); ; 
 				this.known_proteins = known_proteins;
+				this.cluster_index = cluster_index;
+				this.cluster_type = cluster_type;
 				graph  = new ArrayList<NodePCN>();
 				readCluster = new ElasticSearchService(cluster_index, cluster_type);
 				readProteins = new ElasticSearchService("proteins", "known_structure");
@@ -56,7 +61,7 @@ public class CalculateRmsdForEntry
 				proteinMap = new HashMap<Integer,Protein>();
 				this.createProteinMap();
 				this.updateEntries();
-				WriteDataToFile.WriteDataToFile(entries, "result");
+				WriteDataToFile.WriteDataToFile(entries, "RMSD"+read_file_name);
 			}
 			
 			
@@ -99,50 +104,14 @@ public class CalculateRmsdForEntry
 			private Protein getProtein(int protein_index)
 			{
 				Protein p =null;
-//				Map<String, Object> map  = readProteins.get(protein_index - 320572);
-//				p.setAminoAcids((String)map.get("aminoAcids"));
-//				p.setAstralID((String)map.get("astralID"));
-//				p.setStructure((ArrayList<Structure>)map.get("structure"));
-//				p.setStructure(fromMaptToStructure(p));
+
 				
 				p = proteinMap.get(protein_index);
-//				for(Protein pr : known_proteins)
-//				{
-//					if(pr.getProteinIndex() == protein_index - 320572)
-//						return pr;
-//				}
-//				return null ;
+
 				return p ;
 			}
 			
-//			private ArrayList<Structure> fromMaptToStructure(Protein p )
-//			{
-//				Map<String,Object> smap;
-//				Structure temp = new Structure();
-//				ArrayList<Structure> structure = new ArrayList<Structure>();
-//				for(int i = 0 ; i < p.getStructure().size() ; i++)
-//				{
-//					smap = (Map<String,Object>) p.getStructure().get(i);
-//					Point point = new Point()
-//					if(smap == null)
-//						return null;
-//					Object o = smap.get("p");
-//					temp.setAminoAcid((String)smap.get("AminoAcid"));
-//					temp.setIndex((Integer)smap.get("atomIndex"));
-//					temp.setP((Point) smap.get("p"));
-//					temp.setResidueSequenceNumber((Integer)smap.get("residueSequenceNumber"));
-//					temp.setType((String)smap.get("type"));
-//					
-//					structure.add(new Structure(temp));
-//					
-//				}
-//				
-//				if(structure.isEmpty())
-//					return null;
-//				else
-//					return structure;
-//				
-//			}
+
 			/**
 			 * creates map of proteins 
 			 */
@@ -158,9 +127,8 @@ public class CalculateRmsdForEntry
 					clusterMap.put( i + 1 , this.node_toString(graph.get(graph.size() - 1))) ;
 				}} catch(Exception e){
 					try {
-						clusterMap = DBbypass.DBparser("cluster0.net");
+						clusterMap = DBbypass.DBparser(cluster_index+cluster_type+".net");
 					} catch (FileNotFoundException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
