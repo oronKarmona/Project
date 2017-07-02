@@ -48,7 +48,7 @@ public class SystemOperations
 	 */
 	public static void BuildProteinStructuralData(String elasticType)
 	{
-		ArrayList<Protein>knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+		ArrayList<Protein>knownStructrePDB = getKnownStructureProteins();
 		ElasticSearchService es = new ElasticSearchService("proteins" , elasticType );
 		for(Protein p  : knownStructrePDB)
 			es.add(p);
@@ -62,7 +62,7 @@ public class SystemOperations
 	 */
 	public static void BuildTrainingData(String elasticType) 
 	{
-		ArrayList<Protein>knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+		ArrayList<Protein>knownStructrePDB = getKnownStructureProteins();
 		trainingData = new TrainingData(knownStructrePDB ,elasticType,hammingDistance);
 	}
 	/***
@@ -70,9 +70,9 @@ public class SystemOperations
 	 */
 	public static void BuildClusters(String elastic_index,int index)
 	{
-		ArrayList<Protein> knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+		ArrayList<Protein> knownStructrePDB =  getKnownStructureProteins();
 
-		ArrayList<Protein> uknownStructurePDB =  App.Read_unknown_structure_PDB("1//ProteomDB");
+		ArrayList<Protein> uknownStructurePDB =  App.Read_unknown_structure_PDB("proteinsData\\ProteomDB");
 		
 		bfs = new CreateClusters(bfsDepth,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
 				elastic_index,95);		
@@ -108,7 +108,7 @@ public class SystemOperations
 	public static void BuildTestingData(String read_file_name, String cluster_type) throws FileNotFoundException
 	{
 	
-			ArrayList<Protein> knownStructrePDB = App.Read_knowStructuralPDB_files("Output" , 20 );
+			ArrayList<Protein> knownStructrePDB =  getKnownStructureProteins();
 			CalculateRmsdForEntry c = new CalculateRmsdForEntry( read_file_name, "cluster", cluster_type, knownStructrePDB);
 	
 	}
@@ -161,5 +161,14 @@ public class SystemOperations
 	{
 		return Double.toString(hammingDistance)+"%";
 
+	}
+	/***
+	 * Get knownStructre proteins
+	 * @return ArrayList with known structure protein
+	 */
+	private static ArrayList<Protein> getKnownStructureProteins()
+	{
+		ArrayList<Protein> knownStructrePDB = App.Read_knowStructuralPDB_files("proteinsData\\Output" , 20 );
+		return knownStructrePDB;
 	}
 }

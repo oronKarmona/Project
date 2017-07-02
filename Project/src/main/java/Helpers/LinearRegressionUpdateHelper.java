@@ -50,7 +50,7 @@ public class LinearRegressionUpdateHelper {
 	
 	private void readRegressionFile() {
 
-		m_beta = JSONhelper.readCoefficientsRegression("regression_coefficients");
+		m_beta = JSONhelper.readCoefficientsRegression("regression coefficients\\regression_coefficients");
 
 	}
 
