@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import DB.ElasticSearchService;
-import GUI.ProgressBar;
+import GUI.MyProgressBar;
 import Main.App;
 import Protein.Protein;
 import Threads.BuildTrainningDataTheard;
@@ -39,7 +39,7 @@ public class TrainingData {
 	/***
 	 * progress bar for visualising the progress of each thread
 	 */
-	private static ProgressBar pb ;
+	private static MyProgressBar pb ;
 	/***
 	 * Number of threads assigned to the calculation
 	 */
