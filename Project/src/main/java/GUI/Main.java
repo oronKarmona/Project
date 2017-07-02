@@ -87,7 +87,7 @@ public class Main extends JFrame {
 		
 //		setBackground(new Color(153, 255, 204));
 
-      ImageIcon icon = new ImageIcon("proteinIcon.png");
+      ImageIcon icon = new ImageIcon(Main.class.getResource("/resources/proteinIcon.png"));
       setIconImage(icon.getImage());
       setName("protein connectivity network");
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
@@ -185,7 +185,7 @@ public class Main extends JFrame {
 	private void home() {
 		   
 		   final JMenu homeMenu = new JMenu();
-		   ImageIcon home = new ImageIcon("homeIcon.png");
+		   ImageIcon home = new ImageIcon( Main.class.getResource("/resources/homeIcon.png"));
 		   Image image = home.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
 		   homeMenu.setIcon(new ImageIcon(image));		   
 		   homeMenu.addMenuListener(new MenuListener() {

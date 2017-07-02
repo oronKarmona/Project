@@ -23,7 +23,7 @@ public class MainPanel extends JPanel{
 		this.setName(name);
 		Image image=null;
 	       try{
-	            image = ImageIO.read(new File("background.jpeg"));
+	            image = ImageIO.read(Main.class.getResource("/resources/background.jpeg"));
 	        }
 	        catch (IOException e){
 	            e.printStackTrace();
@@ -35,7 +35,7 @@ public class MainPanel extends JPanel{
 
 		   image=null;
 	       try{
-	            image = ImageIO.read(new File("panelbackground.jpg"));
+	            image = ImageIO.read(Main.class.getResource("/resources/panelbackground.jpg"));
 	        }
 	        catch (IOException e){
 	            e.printStackTrace();

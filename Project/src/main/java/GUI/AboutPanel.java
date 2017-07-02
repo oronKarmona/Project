@@ -27,6 +27,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.awt.FlowLayout;
 import java.awt.Font;
 
@@ -64,7 +65,7 @@ public class AboutPanel extends JPanel{
 		//setBackground(new Color(204, 204, 255));
 		image=null;
 	       try{
-	            image = ImageIO.read(new File("panelbackground.jpg"));
+	            image = ImageIO.read(Main.class.getResource("/resources/panelbackground.jpg"));
 	        }
 	        catch (IOException e){
 	            e.printStackTrace();
@@ -111,11 +112,11 @@ public class AboutPanel extends JPanel{
 	    //***************************** Lower Panel ************************//
 		Image im;
 	    try {
-	        File imagefile = new File("litaf.jpg");
+	        URL imagefile = Main.class.getResource("/resources/litaf.jpg");
 			im = ImageIO.read(imagefile);
 			scaledImage1 = im.getScaledInstance(150,150,Image.SCALE_SMOOTH);
 
-			imagefile = new File("oron.jpg");
+			imagefile = Main.class.getResource("/resources/oron.jpg");
 			im = ImageIO.read(imagefile);
 			scaledImage2 = im.getScaledInstance(150,150,Image.SCALE_SMOOTH);
 			

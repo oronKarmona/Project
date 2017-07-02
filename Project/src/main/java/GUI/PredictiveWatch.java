@@ -68,7 +68,7 @@ public class PredictiveWatch extends JPanel{
 
 		   image=null;
 	       try{
-	            image = ImageIO.read(new File("panelbackground.jpg"));
+	            image = ImageIO.read(Main.class.getResource("/resources/panelbackground.jpg"));
 	        }
 	        catch (IOException e){
 	            e.printStackTrace();
@@ -92,7 +92,7 @@ public class PredictiveWatch extends JPanel{
 
 	    BufferedImage buttonIcon = null;
 		try {
-			buttonIcon = ImageIO.read(new File("HelpButton.png"));
+			buttonIcon = ImageIO.read(Main.class.getResource("/resources/HelpButton.png"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 			Helpbutton.setText("?");

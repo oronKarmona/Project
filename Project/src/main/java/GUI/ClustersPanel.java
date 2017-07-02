@@ -70,7 +70,7 @@ public class ClustersPanel extends JPanel{
 
 		   image=null;
 	       try{
-	            image = ImageIO.read(new File("panelbackground.jpg"));
+	            image = ImageIO.read(Main.class.getResource("/resources/panelbackground.jpg"));
 	        }
 	        catch (IOException e){
 	            e.printStackTrace();
@@ -206,7 +206,7 @@ public class ClustersPanel extends JPanel{
 
 				}
 				int num = Integer.parseInt(numberOfClusterstextField.getText());
-				//SystemOperations.BuildClusters(DBNametextField.getText().toLowerCase(), Integer.parseInt(numberOfClusters.getText()));
+				SystemOperations.BuildClusters(DBNametextField.getText().toLowerCase(), Integer.parseInt(numberOfClusters.getText()));
 		        timer = new Timer(1000, setProgress);
 		        timer.start();
 				}
@@ -228,7 +228,7 @@ public class ClustersPanel extends JPanel{
 	    Helpbutton = new JButton();
 	    BufferedImage buttonIcon = null;
 		try {
-			buttonIcon = ImageIO.read(new File("HelpButton.png"));
+			buttonIcon = ImageIO.read(Main.class.getResource("/resources/HelpButton.png"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 			Helpbutton.setText("?");
