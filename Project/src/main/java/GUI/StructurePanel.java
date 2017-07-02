@@ -119,7 +119,7 @@ public class StructurePanel extends JPanel{
 						return;
 					}
 					
-					SystemOperations.BuildProteinStructuralData(DBNametextField.getText());
+					SystemOperations.BuildProteinStructuralData(DBNametextField.getText().toLowerCase());
 	
 			        timer = new Timer(1000, setProgress);
 			        timer.start();
@@ -151,6 +151,8 @@ public class StructurePanel extends JPanel{
 	    
         final JPopupMenu helpString = new JPopupMenu("Menu");
         helpString.add("Create DB of known structure proteins");
+        helpString.add("DB name must be in lower case");
+
 
         Helpbutton.addActionListener(new ActionListener() {
 			

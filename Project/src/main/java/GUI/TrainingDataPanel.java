@@ -117,7 +117,7 @@ public class TrainingDataPanel extends JPanel{
 					return;
 				}
 				
-				SystemOperations.BuildTrainingData(DBNametextField.getText());
+				SystemOperations.BuildTrainingData(DBNametextField.getText().toLowerCase());
 		        timer = new Timer(1000, setProgress);
 		        timer.start();
 				}
@@ -148,6 +148,7 @@ public class TrainingDataPanel extends JPanel{
 
         final JPopupMenu helpString = new JPopupMenu("Menu");
         helpString.add("Create training data DB from a preexisting protein database.");
+        helpString.add("DB name must be in lower case");
         helpString.add("This stage include: Dividing the protein sequences into");
         helpString.add("a variety of subsequences,Defining a threshold value for");
         helpString.add("protein sequence similarity (is settings window) and creating");

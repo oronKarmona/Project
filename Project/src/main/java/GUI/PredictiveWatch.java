@@ -19,6 +19,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -31,6 +32,7 @@ import javax.swing.table.TableCellRenderer;
 
 import Helpers.ResistanceRMSD;
 import Helpers.ResistanceRMSDParser;
+import Main.SystemOperations;
 
 /***
  * Gui Class - PredictiveWatch
@@ -100,9 +102,11 @@ public class PredictiveWatch extends JPanel{
 
 	    
         final JPopupMenu helpString = new JPopupMenu("Menu");
-        helpString.add("insert cluster index to see the");
-        helpString.add("predictive abilty results");
- 
+        helpString.add("Insert generated file name from the resistance calculation.");
+        helpString.add("Make sure to move the file to the project path");
+        helpString.add("The program will calclute the RMSD results and");
+        helpString.add("show the predictive abilty results");
+
         Helpbutton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -146,26 +150,35 @@ public class PredictiveWatch extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 
 				int i = 0;
-				ResistanceRMSDParser.readFile("data.txt");
-				data = new String[ResistanceRMSDParser.getData().size()][6];
-				for (ResistanceRMSD r : ResistanceRMSDParser.getData()) {
+				if(checkIfFileExists(clusterIndextextField.getText()))
+				{
+					String cluster = clusterIndextextField.getText().substring(17, 18);
+					SystemOperations.BuildTestingData(clusterIndextextField.getText(), cluster);
+					ResistanceRMSDParser.readFile(String.format("RMSD"+clusterIndextextField.getText()));
+					data = new String[ResistanceRMSDParser.getData().size()][6];
+					for (ResistanceRMSD r : ResistanceRMSDParser.getData()) {
+						
+						data[i][0] = r.getProtein1();
+						data[i][1] = r.getFragment1();
+						data[i][2] = r.getProtein2();
+						data[i][3] = r.getFragment2();
+						data[i][4] = r.getR();
+						data[i][5] = r.getRmsd();
+						i++;
+						
+					}
 					
-					data[i][0] = r.getProtein1();
-					data[i][1] = r.getFragment1();
-					data[i][2] = r.getProtein2();
-					data[i][3] = r.getFragment2();
-					data[i][4] = r.getR();
-					data[i][5] = r.getRmsd();
-					i++;
 					
+				    DefaultTableModel model = (DefaultTableModel) resultsTable.getModel();
+		
+				    for (String[] strings : data) {
+				    	model.addRow(strings);
+					}
 				}
-				
-				
-			    DefaultTableModel model = (DefaultTableModel) resultsTable.getModel();
+		else
+            JOptionPane.showMessageDialog(null, "File doesn't exsits", "Error",JOptionPane.ERROR_MESSAGE);
 
-			    for (String[] strings : data) {
-			    	model.addRow(strings);
-				}
+		
 		           
 			}
 
@@ -217,12 +230,21 @@ public class PredictiveWatch extends JPanel{
     public void paintComponent(Graphics G) {
         super.paintComponent(G);
 
-        clusterIndex.setText("Cluster Index: ");
+        clusterIndex.setText("File name ");
         resultsLabel.setText("Results: ");
         Helpbutton.setPreferredSize(new Dimension(50, 50));
         G.drawImage(image, 0, 0, null);
 
     }
+	private boolean checkIfFileExists(String path) {
+		
+		File file = new File(String.format(path+".txt"));
+		 if(!file.exists()){
+	    	return false;
+	    }
+		 return true;
+		
+	}
 	
 	
 }

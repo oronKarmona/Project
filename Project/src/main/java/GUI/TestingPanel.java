@@ -117,7 +117,7 @@ public class TestingPanel extends JPanel{
 					return;
 				}
 				
-				SystemOperations.BuildTestingData("clusterResistance",DBNametextField.getText());
+				SystemOperations.BuildTestingData("clusterResistance",DBNametextField.getText().toLowerCase());
 		        timer = new Timer(1000, setProgress);
 		        timer.start();
 			}
@@ -148,6 +148,7 @@ public class TestingPanel extends JPanel{
 
         final JPopupMenu helpString = new JPopupMenu("Menu");
         helpString.add("Create testing data DB.");
+        helpString.add("DB name must be in lower case");
         helpString.add("This stage include: calculating for each small network (cluster)");
         helpString.add("the resistance of every edge, and saving if to txt file,");
         helpString.add("calculating the RMSD of every edge that connectes between two");

@@ -56,7 +56,7 @@ public class ClustersPanel extends JPanel{
 	private JLabel numberOfClusters;
 	private JTextField numberOfClusterstextField;
 	private JProgressBar m_progressBar;	
-	Timer timer;
+	private Timer timer;
 	private JLabel title1;
 	private JLabel title2;
 
@@ -202,15 +202,20 @@ public class ClustersPanel extends JPanel{
 				try{
 				if(DBNametextField.getText().isEmpty() ||numberOfClusters.getText().isEmpty() )
 				{
-					return;
+	                JOptionPane.showMessageDialog(null, "One or two fields are empty", "Error",JOptionPane.ERROR_MESSAGE);
+
 				}
-				
-				SystemOperations.BuildClusters(DBName.getText(), Integer.parseInt(numberOfClusters.getText()));
+				int num = Integer.parseInt(numberOfClusters.getText());
+				SystemOperations.BuildClusters(DBNametextField.getText().toLowerCase(), Integer.parseInt(numberOfClusters.getText()));
 		        timer = new Timer(1000, setProgress);
 		        timer.start();
 				}
+
 				catch (NoNodeAvailableException e2){
 	                JOptionPane.showMessageDialog(null, "Server is down", "Error",JOptionPane.ERROR_MESSAGE);
+				}
+				catch (NumberFormatException e1){
+	                JOptionPane.showMessageDialog(null, "Wrong format, number of clusters have to be an int number", "Error",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -235,6 +240,7 @@ public class ClustersPanel extends JPanel{
 	    
         final JPopupMenu helpString = new JPopupMenu("Menu");
         helpString.add("First, create the PCN DB");
+        helpString.add("DB name must be in lower case");
         helpString.add("After creating the DB, you can create as many clusters");
         helpString.add("(small networks) in the BFS depth (change in setting window)");
         helpString.add("and save them in the ElasticSearch DB");

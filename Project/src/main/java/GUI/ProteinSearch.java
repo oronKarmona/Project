@@ -96,12 +96,6 @@ public class ProteinSearch extends JPanel{
 	private void initPanel() {
 
 		setLayout(new GridBagLayout());
-//		try {
-//			Desktop.getDesktop().open(new File("1.net"));
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 
 	    GridBagConstraints constraints = new GridBagConstraints();
 	    constraints.fill = GridBagConstraints.HORIZONTAL;	  
