@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -102,10 +103,9 @@ public class PredictiveWatch extends JPanel{
 
 	    
         final JPopupMenu helpString = new JPopupMenu("Menu");
-        helpString.add("Insert generated file name from the resistance calculation.");
-        helpString.add("Make sure to move the file to the project path");
-        helpString.add("The program will calclute the RMSD results and");
-        helpString.add("show the predictive abilty results");
+        helpString.add("Insert generated file name (RMSDclusterResistance)");
+        helpString.add("with the desire index. The program will calculate the");
+        helpString.add("RMSD results and show the predictive abilty results");
 
         Helpbutton.addActionListener(new ActionListener() {
 			
@@ -152,22 +152,18 @@ public class PredictiveWatch extends JPanel{
 				int i = 0;
 				if(checkIfFileExists(clusterIndextextField.getText()))
 				{
-					String cluster = clusterIndextextField.getText().substring(17, 18);
-					SystemOperations.BuildTestingData(clusterIndextextField.getText(), cluster);
 					ResistanceRMSDParser.readFile(String.format("RMSD"+clusterIndextextField.getText()));
 					data = new String[ResistanceRMSDParser.getData().size()][6];
-					for (ResistanceRMSD r : ResistanceRMSDParser.getData()) {
-						
+					for (ResistanceRMSD r : ResistanceRMSDParser.getData()) 
+					{	
 						data[i][0] = r.getProtein1();
 						data[i][1] = r.getFragment1();
 						data[i][2] = r.getProtein2();
 						data[i][3] = r.getFragment2();
 						data[i][4] = r.getR();
 						data[i][5] = r.getRmsd();
-						i++;
-						
+						i++;	
 					}
-					
 					
 				    DefaultTableModel model = (DefaultTableModel) resultsTable.getModel();
 		

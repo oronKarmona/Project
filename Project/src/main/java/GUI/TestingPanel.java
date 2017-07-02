@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -89,7 +90,6 @@ public class TestingPanel extends JPanel{
 	    constraints.gridx = 1;
 	    constraints.gridy = 1;
 	    DBNametextField = new JTextField(20);
-	    DBNametextField.setToolTipText("insert cluster DB name");
 		add(DBNametextField,constraints);
 
 		
@@ -116,8 +116,15 @@ public class TestingPanel extends JPanel{
 				{
 					return;
 				}
+				String cluster = DBNametextField.getText().substring(17, 18);
+				try 
+				{
+					SystemOperations.BuildTestingData(DBNametextField.getText()+".txt", cluster);
+				} catch (FileNotFoundException e1) {
 				
-				SystemOperations.BuildTestingData("clusterResistance",DBNametextField.getText().toLowerCase());
+	                JOptionPane.showMessageDialog(null, "File not found", "Error",JOptionPane.ERROR_MESSAGE);
+
+				}
 		        timer = new Timer(1000, setProgress);
 		        timer.start();
 			}
@@ -126,9 +133,7 @@ public class TestingPanel extends JPanel{
 			}
 			}
 		});
-		
-		
-		
+				
 	    /*
 	     * Help
 	     */
@@ -147,8 +152,9 @@ public class TestingPanel extends JPanel{
 	    Helpbutton.setContentAreaFilled(false);
 
         final JPopupMenu helpString = new JPopupMenu("Menu");
-        helpString.add("Create testing data DB.");
-        helpString.add("DB name must be in lower case");
+        helpString.add("Create testing data file.");
+        helpString.add("Insert generated file name from the resistance calculation.");
+        helpString.add("Make sure to move the file to the project path");
         helpString.add("This stage include: calculating for each small network (cluster)");
         helpString.add("the resistance of every edge, and saving if to txt file,");
         helpString.add("calculating the RMSD of every edge that connectes between two");
@@ -198,7 +204,7 @@ public class TestingPanel extends JPanel{
         super.paintComponent(G);
 
         title.setText("Create Testing DB");
-        DBName.setText("DB Name:");
+        DBName.setText("Cluster File Name:");
         Helpbutton.setPreferredSize(new Dimension(50, 50));
         G.drawImage(image, 0, 0, null);
 
