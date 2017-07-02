@@ -145,12 +145,12 @@ public class SystemOperations
 	 */
 	public static void WritePCNtoElastic() throws FileNotFoundException
 	{
-		 if(!new File("pcn//pcn~0").exists()){
+		 if(!new File("pcn//pcn~0").exists() || !new File("pcn//PDB_Proteom_Map2~0").exists()){
 		    	throw  new FileNotFoundException();
 		    }
-		WritePCNtoDB w = new WritePCNtoDB("pcn//pcn~", 50, "pcn", "data", false);
-		// כשיהיה לי את הפי סי אנ של החלבונים הידועים אני אעדכן את השורה הזו
-		//w = new WritePCNtoDB(pcn_file_name, numberOfFiles, index, type, startFromLast);
+		 WritePCNtoDB w = new WritePCNtoDB("pcn//PDB_Proteom_Map2~", 61, "pcn", "data", false);
+		 w = new WritePCNtoDB("pcn//pcn~", 50, "pcn", "data", true);
+		
 	}
 	
 	/***

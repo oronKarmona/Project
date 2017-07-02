@@ -69,7 +69,7 @@ public class JSONhelper
 	        	{
 		            @SuppressWarnings("resource")
 					Object obj = parser.parse(new FileReader(FileName+i+".json"));
-		 
+		            System.out.println("Read " + (1+i) + " from " + amount);
 		            JSONArray jsonArray = (JSONArray) obj;
 		            
 		             proteinsDB.addAll((ArrayList<Protein> )new Gson().fromJson(jsonArray.toJSONString(),new TypeToken<ArrayList<Protein>>(){}.getType()))  ;
