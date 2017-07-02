@@ -117,7 +117,7 @@ public class TrainingDataPanel extends JPanel{
 					return;
 				}
 				
-				SystemOperations.BuildTrainingData(DBNametextField.getText().toLowerCase());
+		//		SystemOperations.BuildTrainingData(DBNametextField.getText().toLowerCase());
 		        timer = new Timer(1000, setProgress);
 		        timer.start();
 				}

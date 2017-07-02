@@ -200,13 +200,13 @@ public class ClustersPanel extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				
 				try{
-				if(DBNametextField.getText().isEmpty() ||numberOfClusters.getText().isEmpty() )
+				if(DBNametextField.getText().isEmpty() ||numberOfClusterstextField.getText().isEmpty() )
 				{
 	                JOptionPane.showMessageDialog(null, "One or two fields are empty", "Error",JOptionPane.ERROR_MESSAGE);
 
 				}
-				int num = Integer.parseInt(numberOfClusters.getText());
-				SystemOperations.BuildClusters(DBNametextField.getText().toLowerCase(), Integer.parseInt(numberOfClusters.getText()));
+				int num = Integer.parseInt(numberOfClusterstextField.getText());
+				//SystemOperations.BuildClusters(DBNametextField.getText().toLowerCase(), Integer.parseInt(numberOfClusters.getText()));
 		        timer = new Timer(1000, setProgress);
 		        timer.start();
 				}

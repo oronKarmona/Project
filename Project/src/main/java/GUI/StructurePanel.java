@@ -119,7 +119,7 @@ public class StructurePanel extends JPanel{
 						return;
 					}
 					
-					SystemOperations.BuildProteinStructuralData(DBNametextField.getText().toLowerCase());
+					//SystemOperations.BuildProteinStructuralData(DBNametextField.getText().toLowerCase());
 	
 			        timer = new Timer(1000, setProgress);
 			        timer.start();
