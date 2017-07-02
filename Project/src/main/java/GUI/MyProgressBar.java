@@ -12,7 +12,7 @@ import javax.swing.JProgressBar;
  *
  */
 @SuppressWarnings("serial")
-public class ProgressBar extends JFrame{
+public class MyProgressBar extends JFrame{
 	/***
 	 * ArrayList the holds all the progress bars used in this class
 	 */
@@ -38,7 +38,7 @@ public class ProgressBar extends JFrame{
 	 * Constructor 
 	 * @param msg - message to be displayed at top of the window
 	 */
-	public ProgressBar(String msg) {
+	public MyProgressBar(String msg) {
 		super(msg);
 		getContentPane().setLayout(new FlowLayout());
 		pbThreads = new ArrayList<JProgressBar>();
