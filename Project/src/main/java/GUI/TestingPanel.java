@@ -45,8 +45,6 @@ public class TestingPanel extends JPanel{
 	private JButton Helpbutton;
 	private JButton runButton;
 	private JTextField DBNametextField;
-	private JProgressBar m_progressBar;	
-	private Timer timer;
 	private Image image;
 	private JLabel title;
 
@@ -122,11 +120,10 @@ public class TestingPanel extends JPanel{
 					SystemOperations.BuildTestingData(DBNametextField.getText()+".txt", cluster);
 				} catch (FileNotFoundException e1) {
 				
-	                JOptionPane.showMessageDialog(null, "File not found", "Error",JOptionPane.ERROR_MESSAGE);
-
 				}
-		        timer = new Timer(1000, setProgress);
-		        timer.start();
+                JOptionPane.showMessageDialog(null, "File Created!", "Info",JOptionPane.INFORMATION_MESSAGE);
+
+		      
 			}
 			catch (NoNodeAvailableException e2){
                 JOptionPane.showMessageDialog(null, "Server is down", "Error",JOptionPane.ERROR_MESSAGE);
@@ -172,32 +169,11 @@ public class TestingPanel extends JPanel{
         
         add(Helpbutton, constraints);
         
-		/*
-		 * progress bar
-		 */
-        m_progressBar = new JProgressBar(0 , 100);
-        m_progressBar.setValue(0);
-        m_progressBar.setStringPainted(true);
-        m_progressBar.setBorder(new LineBorder(Color.black));
-        m_progressBar.setPreferredSize(new Dimension(300,20));
-		 constraints.gridx = 1;
-		 constraints.gridy = 4;
-		 constraints.fill = GridBagConstraints.HORIZONTAL;
-		  add(m_progressBar,constraints);
+
 		
 	}	
 	
-	ActionListener setProgress = new ActionListener() {
-        int counter = 0;
-        public void actionPerformed(ActionEvent ae) {
-            m_progressBar.setValue(counter);
-            counter++;
-            if (counter>100) {
-                JOptionPane.showMessageDialog(null, "Finished Building The Testing Data!");
-                timer.stop();
-            } 
-        }
-    };
+
 	
 	@Override
     public void paintComponent(Graphics G) {

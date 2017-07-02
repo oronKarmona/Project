@@ -152,7 +152,7 @@ public class PredictiveWatch extends JPanel{
 				int i = 0;
 				if(checkIfFileExists(clusterIndextextField.getText()))
 				{
-					ResistanceRMSDParser.readFile(String.format("RMSD"+clusterIndextextField.getText()));
+					ResistanceRMSDParser.readFile(String.format(clusterIndextextField.getText()+".txt"));
 					data = new String[ResistanceRMSDParser.getData().size()][6];
 					for (ResistanceRMSD r : ResistanceRMSDParser.getData()) 
 					{	
