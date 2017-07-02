@@ -15,8 +15,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import GUI.ClustersPanel;
+import GUI.StructurePanel;
+import GUI.TrainingDataPanel;
 import Jama.Matrix;
 import Main.App;
+import Main.SystemOperations.panelName;
 import Protein.Protein;
 
 /***
@@ -56,18 +60,48 @@ public class JSONhelper
 	
 	/***
 	 * reading json file from specific path
+	 * @param name 
 	 * @return data from the file as ArrayList<Protein>
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<Protein> ReadJsonFile(String FileName,int amount)
+	public static ArrayList<Protein> ReadJsonFile(String FileName,int amount, panelName name)
 	{
 		 JSONParser parser = new JSONParser();
 		 ArrayList<Protein> proteinsDB  = new ArrayList<Protein>();
+		 switch(name)
+		 {
+		 		case Structure:
+		 				StructurePanel.setParameters(0, amount);
+		 				break;
+		 		case Training:
+		 			TrainingDataPanel.setParameters(0, amount);
+		 			break;
+		 		case Cluster:
+		 			ClustersPanel.setParameters(0, amount);
+		 			break;
+		 			
+		 }
 	        try {
+	        	
 	        	
 	        	for(int i = 0 ; i < amount ; i ++)
 	        	{
 		            System.out.println("Read " + (1+i) + " from " + amount);
+		            
+		            
+		            switch(name)
+		   		 {
+		   		 		case Structure:
+		   		 				StructurePanel.updateProgress(i+1);
+		   		 				break;
+		   		 		case Training:
+		   		 				TrainingDataPanel.updateProgress(i+1);
+		   		 				break;
+		   		 		case Cluster:
+					 			ClustersPanel.updateProgress(i+1);
+					 			break;
+		   		 }
+		            
 					Object obj = parser.parse(new FileReader(FileName+i+".json"));
 		            JSONArray jsonArray = (JSONArray) obj;
 		            

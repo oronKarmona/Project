@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Threads.WritePCNToDBThread;
 import DB.ElasticSearchService;
+import GUI.ClustersPanel;
 /***
  * Write PCN to db in multithreading
  * @author Oron
@@ -99,6 +100,7 @@ public class WritePCNtoDB
 		if ( currentFileNumber == numberOfFiles - 1)
 			return -1 ; 
 		currentFileNumber++;
+		ClustersPanel.updateProgress(currentFileNumber);
 		System.out.println("Current File: " + pcn_file_name+currentFileNumber );
 		return currentFileNumber; 
 	}

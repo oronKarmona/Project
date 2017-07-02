@@ -17,6 +17,8 @@ import com.google.gson.GsonBuilder;
 
 import DB.ElasticSearchService;
 import GUI.MyProgressBar;
+import GUI.StructurePanel;
+import GUI.TrainingDataPanel;
 import Main.App;
 import Protein.Protein;
 import Threads.BuildTrainningDataTheard;
@@ -93,6 +95,7 @@ public class TrainingData {
 		m_proteinsDB = proteinsDB;
 		threadNum = Runtime.getRuntime().availableProcessors();
 		this.hammingThreshold = hammingThreshold;
+		TrainingDataPanel.setParameters(0, proteinsDB.size());
 		initDB(elasticType);
 		initTraningData();
 	}
@@ -191,7 +194,7 @@ public class TrainingData {
 		if(LastRead  == 0 )
 			firstTime = false;
 
-	
+		TrainingDataPanel.updateProgress(LastRead);
 		if(LastRead % 100 == 0)
 		{
 			now = LocalDateTime.now();

@@ -145,7 +145,7 @@ public class App
 	public static ArrayList<Protein> Read_knowStructuralPDB_files(String fileName , int amount )
 	{
 		// ("Output" , 20 ) default
-		ArrayList<Protein>  proteinsDB = JSONhelper.ReadJsonFile(fileName , amount); //reading the pdb from json files
+		ArrayList<Protein>  proteinsDB = JSONhelper.ReadJsonFile(fileName , amount,null); //reading the pdb from json files
 		return proteinsDB;
 	}
 	

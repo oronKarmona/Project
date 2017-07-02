@@ -55,7 +55,7 @@ public class ClustersPanel extends JPanel{
 	private JTextField DBNametextField;
 	private JLabel numberOfClusters;
 	private JTextField numberOfClusterstextField;
-	private JProgressBar m_progressBar;	
+	private static JProgressBar m_progressBar;	
 	private JLabel title1;
 	private JLabel title2;
 
@@ -286,6 +286,19 @@ public class ClustersPanel extends JPanel{
         G.drawImage(image, 0, 0, null);
 
     }
+	
+	public static void setParameters(int min , int max)
+	{
+		m_progressBar.setMinimum(min);
+		m_progressBar.setMaximum(max);
+	}
+	public static void updateProgress(int data)
+	{
+		int check = m_progressBar.getValue();
+        m_progressBar.setValue(data);
+        m_progressBar.update(m_progressBar.getGraphics());
+        m_progressBar.repaint();
+	}
 	
 	
 }
