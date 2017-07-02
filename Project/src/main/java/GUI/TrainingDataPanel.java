@@ -46,7 +46,6 @@ public class TrainingDataPanel extends JPanel{
 	private JButton runButton;
 	private JTextField DBNametextField;
 	private JProgressBar m_progressBar;	
-	private Timer timer;
 	private Image image;
 	private JLabel title;
 
@@ -117,9 +116,8 @@ public class TrainingDataPanel extends JPanel{
 					return;
 				}
 				
-				SystemOperations.BuildTrainingData(DBNametextField.getText().toLowerCase());
-		        timer = new Timer(1000, setProgress);
-		        timer.start();
+				SystemOperations.BuildTrainingData(DBNametextField.getText().toLowerCase(),m_progressBar);
+
 				}
 				catch (NoNodeAvailableException e2){
 	                JOptionPane.showMessageDialog(null, "Server is down", "Error",JOptionPane.ERROR_MESSAGE);
@@ -182,17 +180,7 @@ public class TrainingDataPanel extends JPanel{
 		  add(m_progressBar,constraints);
 		
 	}
-	ActionListener setProgress = new ActionListener() {
-        int counter = 0;
-        public void actionPerformed(ActionEvent ae) {
-            m_progressBar.setValue(counter);
-            counter++;
-            if (counter>100) {
-                JOptionPane.showMessageDialog(null, "Finished Building the training data!");
-                timer.stop();
-            } 
-        }
-    };
+
 	@Override
     public void paintComponent(Graphics G) {
         super.paintComponent(G);

@@ -56,7 +56,6 @@ public class ClustersPanel extends JPanel{
 	private JLabel numberOfClusters;
 	private JTextField numberOfClusterstextField;
 	private JProgressBar m_progressBar;	
-	private Timer timer;
 	private JLabel title1;
 	private JLabel title2;
 
@@ -206,9 +205,8 @@ public class ClustersPanel extends JPanel{
 
 				}
 				int num = Integer.parseInt(numberOfClusterstextField.getText());
-				SystemOperations.BuildClusters(DBNametextField.getText().toLowerCase(), Integer.parseInt(numberOfClusters.getText()));
-		        timer = new Timer(1000, setProgress);
-		        timer.start();
+				SystemOperations.BuildClusters(DBNametextField.getText().toLowerCase(), Integer.parseInt(numberOfClusters.getText()),m_progressBar);
+
 				}
 
 				catch (NoNodeAvailableException e2){
@@ -270,17 +268,7 @@ public class ClustersPanel extends JPanel{
 		  
         
 	}
-	ActionListener setProgress = new ActionListener() {
-        int counter = 0;
-        public void actionPerformed(ActionEvent ae) {
-            m_progressBar.setValue(counter);
-            counter++;
-            if (counter>100) {
-                JOptionPane.showMessageDialog(null, "Finished Building Clusters!");
-                timer.stop();
-            } 
-        }
-    };
+	
 	private Image image;
 	
 	@Override

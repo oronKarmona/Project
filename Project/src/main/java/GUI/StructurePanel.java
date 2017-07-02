@@ -45,7 +45,6 @@ public class StructurePanel extends JPanel{
 	private JButton runButton;
 	private JTextField DBNametextField;
 	private JProgressBar m_progressBar;	
-	private Timer timer;
 	private Image image;
 	private JLabel title;
 
@@ -119,10 +118,8 @@ public class StructurePanel extends JPanel{
 						return;
 					}
 					
-					SystemOperations.BuildProteinStructuralData(DBNametextField.getText().toLowerCase());
-	
-			        timer = new Timer(1000, setProgress);
-			        timer.start();
+					SystemOperations.BuildProteinStructuralData(DBNametextField.getText().toLowerCase(),m_progressBar);
+
 				}
 				catch (NoNodeAvailableException e2){
 	                JOptionPane.showMessageDialog(null, "Server is down", "Error",JOptionPane.ERROR_MESSAGE);
@@ -180,19 +177,7 @@ public class StructurePanel extends JPanel{
 		  add(m_progressBar,constraints);
 		
 	}
-	
-	ActionListener setProgress = new ActionListener() {
-        int counter = 0;
-        public void actionPerformed(ActionEvent ae) {
-            m_progressBar.setValue(counter);
-            counter++;
-            if (counter>100) {
-                JOptionPane.showMessageDialog(null, "Finished adding the structure data!");
-                timer.stop();
-            } 
-        }
-    };
-	
+
 	@Override
     public void paintComponent(Graphics G) {
         super.paintComponent(G);

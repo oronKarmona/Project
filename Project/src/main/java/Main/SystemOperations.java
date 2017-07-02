@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import javax.swing.JProgressBar;
+
 import Calculation.WeightFunctionCalculation;
 import DB.ElasticSearchService;
 import Helpers.LinearRegressionUpdateHelper;
@@ -46,7 +48,7 @@ public class SystemOperations
 	 * Build Protein Structural Data
 	 * @param elasticType - the name of the type of the elastic search
 	 */
-	public static void BuildProteinStructuralData(String elasticType)
+	public static void BuildProteinStructuralData(String elasticType, JProgressBar progressBar)
 	{
 		ArrayList<Protein>knownStructrePDB = getKnownStructureProteins();
 		ElasticSearchService es = new ElasticSearchService("proteins" , elasticType );
@@ -60,7 +62,7 @@ public class SystemOperations
 	 * Build Training Data
 	 * @param elasticType - the name of the type of the elastic search
 	 */
-	public static void BuildTrainingData(String elasticType) 
+	public static void BuildTrainingData(String elasticType, JProgressBar progressBar) 
 	{
 		ArrayList<Protein>knownStructrePDB = getKnownStructureProteins();
 		trainingData = new TrainingData(knownStructrePDB ,elasticType,hammingDistance);
@@ -68,7 +70,7 @@ public class SystemOperations
 	/***
 	 * Create Clusters
 	 */
-	public static void BuildClusters(String elastic_index,int index)
+	public static void BuildClusters(String elastic_index,int index, JProgressBar progressBar)
 	{
 		ArrayList<Protein> knownStructrePDB =  getKnownStructureProteins();
 
