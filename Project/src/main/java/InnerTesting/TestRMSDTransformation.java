@@ -1,4 +1,4 @@
-package testing;
+package InnerTesting;
 
 import java.io.BufferedWriter;
 import java.io.File;

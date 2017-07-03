@@ -2,12 +2,12 @@ Calculation
 DB
 GUI
 Helpers
+InsideTesting
 Main
 PCN
 ParallelBFS
+Project.TrainingData
 Protein
-Table
 TestingData
 Threads
-ToRemove
-testing
+TrainingData

@@ -51,7 +51,7 @@ import java.util.Map;
  * If the searching parameters are incorrect- an error label will apear
  * If the protein has a known structure- it's strucutre will open in RasMol
  * (Must download the pdb~style DB before) 
- * @author ליטף
+ * @author Litaf
  *
  */
 public class ProteinSearch extends JPanel{
