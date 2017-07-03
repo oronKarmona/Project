@@ -49,7 +49,7 @@ public class TestingPanel extends JPanel{
 	private Image image;
 	private JLabel title;
 	public JLabel status;
-	public JProgressBar m_progressBar;
+	public static JProgressBar m_progressBar;
 	
 	public TestingPanel(String name) {
 
@@ -111,20 +111,30 @@ public class TestingPanel extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				String cluster = "";
+				boolean status = true;
 			try{
 				if(DBNametextField.getText().isEmpty())
 				{
 					return;
 				}
-				String cluster = DBNametextField.getText().substring(17, 18);
-				try 
+				try{
+				 cluster = DBNametextField.getText().substring(17, 18);
+				}catch(Exception e1)
 				{
-					SystemOperations.BuildTestingData(DBNametextField.getText()+".txt", cluster);
-				} catch (FileNotFoundException e1) {
-				
+					JOptionPane.showMessageDialog(null, "Illegal name", "Info",JOptionPane.INFORMATION_MESSAGE);
+					status = false;
 				}
-                JOptionPane.showMessageDialog(null, "File Created!", "Info",JOptionPane.INFORMATION_MESSAGE);
+				
+				try{
+					SystemOperations.setBadArgument(true);
+					SystemOperations.BuildTestingData(DBNametextField.getText()+".txt", cluster);
+					
+				} catch (FileNotFoundException e1) {
+					status = false;
+				}
+				if(status)
+					JOptionPane.showMessageDialog(null, "File Created!", "Info",JOptionPane.INFORMATION_MESSAGE);
 
 		      
 			}
@@ -208,4 +218,17 @@ public class TestingPanel extends JPanel{
         G.drawImage(image, 0, 0, null);
 
     }
+	
+	public static void setParameters(int min , int max)
+	{
+		m_progressBar.setMinimum(min);
+		m_progressBar.setMaximum(max);
+	}
+	public static void updateProgress(int data)
+	{
+		int check = m_progressBar.getValue();
+        m_progressBar.setValue(data);
+        m_progressBar.update(m_progressBar.getGraphics());
+        m_progressBar.repaint();
+	}
 }

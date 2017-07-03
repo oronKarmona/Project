@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 
 import GUI.ClustersPanel;
 import GUI.StructurePanel;
+import GUI.TestingPanel;
 import GUI.TrainingDataPanel;
 import Jama.Matrix;
 import Main.App;
@@ -79,6 +80,9 @@ public class JSONhelper
 		 		case Cluster:
 		 			ClustersPanel.setParameters(0, amount);
 		 			break;
+		 		case Testing:
+		 			TestingPanel.setParameters(0, amount);
+		 			break;
 		 			
 		 }
 	        try {
@@ -100,6 +104,9 @@ public class JSONhelper
 		   		 		case Cluster:
 					 			ClustersPanel.updateProgress(i+1);
 					 			break;
+		   		 		case Testing:
+			   		 			TestingPanel.updateProgress(i+1);
+			   		 			break;
 		   		 }
 		            
 					Object obj = parser.parse(new FileReader(FileName+i+".json"));

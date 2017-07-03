@@ -120,6 +120,8 @@ public class CalculateRmsdForEntry
 				System.out.println("creating cluster map");
 				try{
 					number_of_vertex = (int)readCluster.getCountOfDocInType() - 2 ;
+					if(number_of_vertex == 0)
+						throw new Exception();
 				for(int i = 0 ; i < number_of_vertex ; i++)
 				{
 					System.out.println(i);

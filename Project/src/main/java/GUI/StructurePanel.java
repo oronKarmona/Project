@@ -47,8 +47,8 @@ public class StructurePanel extends JPanel{
 	private static JProgressBar m_progressBar;	
 	private Image image;
 	private JLabel title;
-	public JLabel status;
-
+	private static JLabel status;
+	private static String msg = "";
 	
 	public StructurePanel(String name) {
 
@@ -170,8 +170,9 @@ public class StructurePanel extends JPanel{
         
 		 constraints.gridx = 0;
 		 constraints.gridy = 3;
-		 status = new JLabel("");
+		 status = new JLabel("STATUS");
 		 status.setForeground(Color.RED);
+		  add(status,constraints);
 
 		/*
 		 * progress bar
@@ -194,6 +195,7 @@ public class StructurePanel extends JPanel{
 
         title.setText("Create Structual DB");
         DBName.setText("DB Name:");
+        status.setText(msg);
         Helpbutton.setPreferredSize(new Dimension(50, 50));
         G.drawImage(image, 0, 0, null);
 
@@ -209,5 +211,20 @@ public class StructurePanel extends JPanel{
         m_progressBar.setValue(data);
         m_progressBar.update(m_progressBar.getGraphics());
         m_progressBar.repaint();
+	}
+	
+	public static void updateStatus(String msg)
+	{
+		status.setText(msg);
+		status.update(status.getGraphics());
+		StructurePanel.setMSG(msg);
+		
+		
+	}
+	
+	public static void setMSG(String newMsg)
+	{
+		msg = newMsg;
+		status.repaint();
 	}
 }

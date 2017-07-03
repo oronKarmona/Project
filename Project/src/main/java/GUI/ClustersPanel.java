@@ -129,7 +129,7 @@ public class ClustersPanel extends JPanel{
 					
 					try{
 					 SystemOperations.WritePCNtoElastic();
-		             JOptionPane.showMessageDialog(null, "PCN Built", "Info",JOptionPane.INFORMATION_MESSAGE);
+//		             JOptionPane.showMessageDialog(null, "PCN Built", "Info",JOptionPane.INFORMATION_MESSAGE);
 
 			        }
 					catch (NoNodeAvailableException e3){
@@ -260,7 +260,7 @@ public class ClustersPanel extends JPanel{
         
 		 constraints.gridx = 0;
 		 constraints.gridy = 7;
-		 status = new JLabel("");
+		 status = new JLabel("STATUS");
 		 status.setForeground(Color.RED);
 
         

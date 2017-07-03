@@ -62,12 +62,18 @@ public class SystemOperations
 	 */
 	public static void BuildProteinStructuralData(String elasticType, JProgressBar progressBar)
 	{
+		if(!SystemOperations.optionPane("Confirm to start reading proteins JSON Data"))
+			return;
+		
 		ArrayList<Protein>knownStructrePDB = getKnownStructureProteins(panelName.Structure);
 		
 		ElasticSearchService es = new ElasticSearchService("proteins" , elasticType );
 		StructurePanel.updateProgress(0);
 		StructurePanel.setParameters(0,knownStructrePDB.size());
 		int ctr = 1 ; 
+		if(!SystemOperations.optionPane("Confirm to insert proteins to DB"))
+			return;
+		
 		for(Protein p  : knownStructrePDB)
 		{
 			StructurePanel.updateProgress(ctr);
@@ -84,8 +90,12 @@ public class SystemOperations
 	 */
 	public static void BuildTrainingData(String elasticType, JProgressBar progressBar) 
 	{
+		if(!SystemOperations.optionPane("Confirm to start reading proteins JSON Data"))
+			return;
 		ArrayList<Protein>knownStructrePDB = getKnownStructureProteins(panelName.Training);
 		TrainingDataPanel.updateProgress(0);
+		if(!SystemOperations.optionPane("Confirm to start Training Data calculation [Long process,go make some coffe]"))
+			return;
 		trainingData = new TrainingData(knownStructrePDB ,elasticType,hammingDistance);
 	}
 	/***
@@ -93,10 +103,16 @@ public class SystemOperations
 	 */
 	public static void BuildClusters(String elastic_index,int index, JProgressBar progressBar)
 	{
+		if(!SystemOperations.optionPane("Confirm to start reading proteins JSON Data"))
+			return;
 		ArrayList<Protein> knownStructrePDB =  getKnownStructureProteins(panelName.Cluster);
 
 		ArrayList<Protein> uknownStructurePDB =  App.Read_unknown_structure_PDB("proteinsData\\ProteomDB");
 		ClustersPanel.updateProgress(0);
+		
+		if(!SystemOperations.optionPane("Confirm to start Cluster creation with bfs depth "+ bfsDepth +" [Long process,go make some coffe]"))
+			return;
+		
 		bfs = new CreateClusters(bfsDepth,uknownStructurePDB , knownStructrePDB, 20/3 , "pcn" , "data",
 				elastic_index,95);		
 		ClustersPanel.setParameters(0, index);
@@ -131,10 +147,17 @@ public class SystemOperations
 	 */
 	public static void BuildTestingData(String read_file_name, String cluster_type) throws FileNotFoundException
 	{
-	
+			if(!status)
+				return ;
 			ArrayList<Protein> knownStructrePDB =  getKnownStructureProteins(panelName.Testing);
 			CalculateRmsdForEntry c = new CalculateRmsdForEntry( read_file_name, "cluster", cluster_type, knownStructrePDB);
 	
+	}
+	private static boolean status = false; 
+	
+	public static void setBadArgument(boolean state)
+	{
+		status = state;
 	}
 	/***
 	 * set Bfs depth
@@ -172,12 +195,15 @@ public class SystemOperations
 		 if(!new File("pcn//pcn~0").exists() || !new File("pcn//PDB_Proteom_Map2~0").exists()){
 		    	throw  new FileNotFoundException();
 		    }
+		 if(!SystemOperations.optionPane("Confirm to read PCN files"))
+				return;
 		 ClustersPanel.setParameters(0, 61);
 		 ClustersPanel.updateProgress(0);
 		 WritePCNtoDB w = new WritePCNtoDB("pcn//PDB_Proteom_Map2~", 61, "pcn", "data", false);
 		 ClustersPanel.setParameters(0, 50);
 		 ClustersPanel.updateProgress(0);
 		 w = new WritePCNtoDB("pcn//pcn~", 50, "pcn", "data", true);
+		 JOptionPane.showMessageDialog(null, "PCN Built", "Info",JOptionPane.INFORMATION_MESSAGE);
 		
 	}
 	
@@ -198,5 +224,20 @@ public class SystemOperations
 	{
 		ArrayList<Protein> knownStructrePDB = JSONhelper.ReadJsonFile("proteinsData\\Output" , 20 , name);
 		return knownStructrePDB;
+	}
+	
+	private static boolean optionPane(String msg)
+	{
+		int selectedOption = JOptionPane.showConfirmDialog(null, 
+                msg, 
+                "Choose", 
+                JOptionPane.YES_NO_OPTION); 
+		
+			if (selectedOption == JOptionPane.YES_OPTION) 
+			{
+							return true;
+			}
+			
+			return false;
 	}
 }
