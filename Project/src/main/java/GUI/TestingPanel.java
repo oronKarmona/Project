@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -47,7 +48,9 @@ public class TestingPanel extends JPanel{
 	private JTextField DBNametextField;
 	private Image image;
 	private JLabel title;
-
+	public JLabel status;
+	public JProgressBar m_progressBar;
+	
 	public TestingPanel(String name) {
 
 		this.setName(name);
@@ -169,7 +172,27 @@ public class TestingPanel extends JPanel{
         
         add(Helpbutton, constraints);
         
-
+        /*
+         * status labal
+         */
+        
+		 constraints.gridx = 0;
+		 constraints.gridy = 3;
+		 status = new JLabel("");
+		 status.setForeground(Color.RED);
+		 
+			/*
+			 * progress bar
+			 */
+	        m_progressBar = new JProgressBar(0 , 100);
+	        m_progressBar.setValue(0);
+	        m_progressBar.setStringPainted(true);
+	        m_progressBar.setBorder(new LineBorder(Color.black));
+	        m_progressBar.setPreferredSize(new Dimension(300,20));
+			 constraints.gridx = 1;
+			 constraints.gridy =4 ;
+			 constraints.fill = GridBagConstraints.HORIZONTAL;
+			  add(m_progressBar,constraints);
 		
 	}	
 	

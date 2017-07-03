@@ -47,7 +47,9 @@ public class StructurePanel extends JPanel{
 	private static JProgressBar m_progressBar;	
 	private Image image;
 	private JLabel title;
+	public JLabel status;
 
+	
 	public StructurePanel(String name) {
 
 		this.setName(name);		
@@ -162,7 +164,15 @@ public class StructurePanel extends JPanel{
         
         add(Helpbutton, constraints);
         
-	    
+        /*
+         * status labal
+         */
+        
+		 constraints.gridx = 0;
+		 constraints.gridy = 3;
+		 status = new JLabel("");
+		 status.setForeground(Color.RED);
+
 		/*
 		 * progress bar
 		 */
@@ -172,7 +182,7 @@ public class StructurePanel extends JPanel{
         m_progressBar.setBorder(new LineBorder(Color.black));
         m_progressBar.setPreferredSize(new Dimension(300,20));
 		 constraints.gridx = 1;
-		 constraints.gridy = 3;
+		 constraints.gridy = 4;
 		 constraints.fill = GridBagConstraints.HORIZONTAL;
 		  add(m_progressBar,constraints);
 		

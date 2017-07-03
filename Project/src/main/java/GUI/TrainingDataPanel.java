@@ -48,6 +48,7 @@ public class TrainingDataPanel extends JPanel{
 	private static JProgressBar m_progressBar;	
 	private Image image;
 	private JLabel title;
+	public JLabel status;
 
 	public TrainingDataPanel(String name) {
 
@@ -166,6 +167,15 @@ public class TrainingDataPanel extends JPanel{
         
         add(Helpbutton, constraints);
         
+        /*
+         * status labal
+         */
+        
+		 constraints.gridx = 0;
+		 constraints.gridy = 4;
+		 status = new JLabel("");
+		 status.setForeground(Color.RED);
+		 
 		/*
 		 * progress bar
 		 */
@@ -175,7 +185,7 @@ public class TrainingDataPanel extends JPanel{
         m_progressBar.setBorder(new LineBorder(Color.black));
         m_progressBar.setPreferredSize(new Dimension(300,20));
 		 constraints.gridx = 1;
-		 constraints.gridy = 4;
+		 constraints.gridy = 5;
 		 constraints.fill = GridBagConstraints.HORIZONTAL;
 		  add(m_progressBar,constraints);
 		

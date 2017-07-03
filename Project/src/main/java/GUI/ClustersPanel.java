@@ -58,7 +58,9 @@ public class ClustersPanel extends JPanel{
 	private static JProgressBar m_progressBar;	
 	private JLabel title1;
 	private JLabel title2;
+	public JLabel status;
 
+	
 	public ClustersPanel(String name) {
 
 		this.setName(name);
@@ -252,7 +254,17 @@ public class ClustersPanel extends JPanel{
 		});
         
         add(Helpbutton, constraints);
-	    
+        /*
+         * status labal
+         */
+        
+		 constraints.gridx = 0;
+		 constraints.gridy = 7;
+		 status = new JLabel("");
+		 status.setForeground(Color.RED);
+
+        
+        
 		/*
 		 * progress bar
 		 */
