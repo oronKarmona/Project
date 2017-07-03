@@ -12,6 +12,7 @@ import DB.ElasticSearchService;
 import GUI.ClustersPanel;
 import GUI.StructurePanel;
 import GUI.TrainingDataPanel;
+import Helpers.GeneralMethods;
 import Helpers.JSONhelper;
 import Helpers.LinearRegressionUpdateHelper;
 import Helpers.PajekFormatHelper;
@@ -19,10 +20,10 @@ import Helpers.WeightedGraphFile;
 import PCN.WritePCNtoDB;
 import ParallelBFS.CreateClusters;
 import Protein.Protein;
-import Table.TrainingData;
 import TestingData.CalculateRmsdForEntry;
 import TestingData.ReadResistencesFile;
 import TestingData.TestingEntry;
+import TrainingData.TrainingData;
 
 /***
  * System Operations for the user 
@@ -107,7 +108,7 @@ public class SystemOperations
 			return;
 		ArrayList<Protein> knownStructrePDB =  getKnownStructureProteins(panelName.Cluster);
 
-		ArrayList<Protein> uknownStructurePDB =  App.Read_unknown_structure_PDB("proteinsData\\ProteomDB");
+		ArrayList<Protein> uknownStructurePDB =  GeneralMethods.Read_unknown_structure_PDB("proteinsData\\ProteomDB");
 		ClustersPanel.updateProgress(0);
 		
 		if(!SystemOperations.optionPane("Confirm to start Cluster creation with bfs depth "+ bfsDepth +" [Long process,go make some coffe]"))

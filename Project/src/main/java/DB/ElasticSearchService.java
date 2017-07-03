@@ -43,7 +43,7 @@ import PCN.NodePCN;
 import PCN.Node;
 import ProGAL.proteins.ProteinComplex;
 import Protein.Protein;
-import Table.TrainingDataEntry;
+import TrainingData.TrainingDataEntry;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
 /***
  * This class creates a client and manipulates the elastic search data base with the methods sets inside it

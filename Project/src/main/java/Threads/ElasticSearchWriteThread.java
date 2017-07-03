@@ -1,7 +1,7 @@
 package Threads;
 
-import Table.TrainingData;
-import Table.TrainingDataEntry;
+import TrainingData.TrainingData;
+import TrainingData.TrainingDataEntry;
 import DB.ElasticSearchService;
 
 /***

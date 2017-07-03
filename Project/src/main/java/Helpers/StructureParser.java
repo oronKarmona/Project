@@ -13,9 +13,12 @@ import java.util.List;
 
 
 
+
+
 import org.apache.commons.io.FileUtils;
 
-import Main.App;
+
+
 import ProGAL.geom3d.Point;
 import Protein.Protein;
 import Protein.Structure;
@@ -253,7 +256,7 @@ public class StructureParser {
     	for(Protein protein : proteinsDB)
     	{
     		//status for console
-    		App.animate("Reading proteins structure data : ",currentPosition++,proteinsDB.size());
+    		GeneralMethods.animate("Reading proteins structure data : ",currentPosition++,proteinsDB.size());
    
     		try{
     				
@@ -268,7 +271,7 @@ public class StructureParser {
 		    				for(Structure s : structure)
 		    				{
 		    					t = s.getAminoAcid();
-		    					aa += App.aaStringToChar(t);
+		    					aa += GeneralMethods.aaStringToChar(t);
 		    				}
     						}catch(Exception e )
     						{
@@ -306,7 +309,7 @@ public class StructureParser {
     	currentPosition = 0 ;
     	for (Protein p : proteinToRemove) {
     		//status for console
-    		App.animate("Removing problematic proteins : ",currentPosition++,proteinToRemove.size());
+    		GeneralMethods.animate("Removing problematic proteins : ",currentPosition++,proteinToRemove.size());
     		proteinsDB.remove(p);
 		}
 

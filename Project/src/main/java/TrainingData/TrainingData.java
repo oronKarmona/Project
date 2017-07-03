@@ -1,4 +1,4 @@
-package Table;
+package TrainingData;
 
 import java.io.FileWriter;
 import java.io.IOException;

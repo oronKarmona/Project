@@ -1,4 +1,4 @@
-package Table;
+package TrainingData;
 /**
  * Training data entry which contains the calculation results with the compared protein indices
  * @author Oron

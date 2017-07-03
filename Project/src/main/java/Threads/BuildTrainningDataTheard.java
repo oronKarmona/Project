@@ -6,8 +6,8 @@ import Calculation.HammingCalculation;
 import Calculation.RMSDCalculation;
 import DB.ElasticSearchService;
 import Protein.Protein;
-import Table.TrainingData;
-import Table.TrainingDataEntry;
+import TrainingData.TrainingData;
+import TrainingData.TrainingDataEntry;
 /***
  * Thread class for building making the training data claculation 
  * @author Oron
